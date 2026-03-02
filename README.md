@@ -3,7 +3,7 @@
 Addon for [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) by MrJulsen.\
 **Aims to enhance the TrafficCraft mod with quality-of-life and cool features.**
 This mod extends TrafficCraft’s capabilities and is required when using it.  
-:( Please forgive the rough edges—documentation and images are a work in progress, updated daily.
+:( Please forgive the rough documentation and images, they're a work in progress, updated daily.
 
 <p align="left">
   <!-- <a href="https://discord.com">
@@ -15,10 +15,10 @@ This mod extends TrafficCraft’s capabilities and is required when using it.
 </p>
 
 > [!TIP]
-> (barebones) **In-game documentation available!** You should get the hang of things with that
+> basic **ingame documentation available!** You should get the hang of things with that
 
 > [!CAUTION]
-> This mod is in **ALPHA**. Expect bugs, crashes, and potential world corruption. Use at your own risk.
+> This mod is in **ALPHA**. Expect bugs, crashes, and potential world corruption. Always make backups
 
 ---
 
