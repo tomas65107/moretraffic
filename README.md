@@ -9,7 +9,7 @@ This mod extends TrafficCraft’s capabilities and is required when using it.
   <!-- <a href="https://discord.com">
     <img src="https://i.imgur.com/jKd8Td5.png" alt="Join the Discord server" width="242"/>
   </a> -->
-  <a href="https://modrinth.com">
+  <a href="https://modrinth.com/mod/moretraffic">
     <img src="https://imgur.com/JtKIaEM.png" alt="Get the mod on Modrinth" width="242"/>
   </a>
 </p>
