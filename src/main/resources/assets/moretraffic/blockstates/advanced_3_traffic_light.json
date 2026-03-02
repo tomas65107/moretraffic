@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north,position=top,orientation=vertical,scale=1_0x": { "model": "moretraffic:block/traffic_light/triple1x", "y": 0 },
+    "facing=east,position=top,orientation=vertical,scale=1_0x": { "model": "moretraffic:block/traffic_light/triple1x", "y": 90 },
+    "facing=south,position=top,orientation=vertical,scale=1_0x": { "model": "moretraffic:block/traffic_light/triple1x", "y": 180 },
+    "facing=west,position=top,orientation=vertical,scale=1_0x": { "model": "moretraffic:block/traffic_light/triple1x", "y": 270 },
+
+
+
+    "facing=north,position=top,orientation=vertical_support,scale=1_0x": { "model": "moretraffic:block/traffic_light/triple1x_support", "y": 0 },
+    "facing=east,position=top,orientation=vertical_support,scale=1_0x": { "model": "moretraffic:block/traffic_light/triple1x_support", "y": 90 },
+    "facing=south,position=top,orientation=vertical_support,scale=1_0x": { "model": "moretraffic:block/traffic_light/triple1x_support", "y": 180 },
+    "facing=west,position=top,orientation=vertical_support,scale=1_0x": { "model": "moretraffic:block/traffic_light/triple1x_support", "y": 270 }
+
+  }
+}

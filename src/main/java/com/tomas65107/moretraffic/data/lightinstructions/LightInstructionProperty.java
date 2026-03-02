@@ -1,0 +1,71 @@
+package com.tomas65107.moretraffic.data.lightinstructions;
+
+import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
+
+public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, ModifyLight {
+
+    enum PropertyTypes {
+        DELAY {
+            @Override
+            public LightInstructionProperty create() {
+                return new Delay(0);
+            }
+        },
+        MODIFY_LIGHT {
+            @Override
+            public LightInstructionProperty create() {
+                return new ModifyLight("", DyeColor.BLACK, DyeColor.BLACK, DyeColor.BLACK);
+            }
+        },
+        AWAIT_REDSTONE {
+            @Override
+            public LightInstructionProperty create() {
+                return new AwaitRedstone(0);
+            }
+        };
+
+        public abstract LightInstructionProperty create();
+
+        public String getNameOfProperty() {
+            return switch(this) {
+                case AWAIT_REDSTONE -> "AwaitRedstone";
+                case DELAY -> "Delay";
+                case MODIFY_LIGHT -> "ModifyLight";
+            };
+        }
+
+        public Component getComponentOfProperty(boolean getMessage) {
+            return switch(this) {
+                case AWAIT_REDSTONE -> Component.translatable("gui.moretraffic.control_cabinet.instruction.await_redstone" + (getMessage ? ".message" : ""));
+                case DELAY -> Component.translatable("gui.moretraffic.control_cabinet.instruction.delay" + (getMessage ? ".message" : ""));
+                case MODIFY_LIGHT -> Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light" + (getMessage ? ".message" : ""));
+            };
+        }
+
+        public static PropertyTypes getPropertyOfName(String name) {
+            return switch(name) {
+                case "AwaitRedstone" -> AWAIT_REDSTONE;
+                case "Delay" -> DELAY;
+                case "ModifyLight" -> MODIFY_LIGHT;
+                default -> throw new IllegalStateException("Unexpected value: " + name);
+            };
+        }
+
+        public Class getClassOfProperty() {
+            return switch(this) {
+                case AWAIT_REDSTONE -> AwaitRedstone.class;
+                case DELAY -> Delay.class;
+                case MODIFY_LIGHT -> ModifyLight.class;
+            };
+        }
+
+    }
+
+    PropertyTypes getClassType();
+    boolean executePayload(LightControlCabinetBlockEntity be, LightInstructionProperty instruction, Level level, BlockPos blockPos);
+
+}

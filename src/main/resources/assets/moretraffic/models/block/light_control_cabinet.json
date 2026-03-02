@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "moretraffic:block/light_control_cabinet",
+    "south": "moretraffic:block/light_control_cabinet_side",
+    "east":  "moretraffic:block/light_control_cabinet_side",
+    "west":  "moretraffic:block/light_control_cabinet_side",
+    "up":    "moretraffic:block/light_control_cabinet_vertical",
+    "down":  "moretraffic:block/light_control_cabinet_vertical"
+  }
+}

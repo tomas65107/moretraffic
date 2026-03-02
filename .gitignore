@@ -1,0 +1,45 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Gradle
+.gradle/
+build/
+
+# Runtime / Dev
+run/
+runs/
+run-data/
+logs/
+repo/
+
+# Eclipse
+eclipse
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Gradle cache leftovers
+file-system.probe
+vcs-1/
+configuration-cache/
+
+# Generated artifacts
+*.class
+*.jar
