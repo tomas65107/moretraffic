@@ -1,67 +1,65 @@
 # MoreTraffic
 
-Addon for [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) by MrJulsen.\
-**Aims to enhance the TrafficCraft mod with quality-of-life and cool features.**
-This mod extends TrafficCraft’s capabilities and is required when using it.  
-:( Please forgive the rough documentation and images, they're a work in progress, updated daily.
+*Addon for [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) by MrJulsen.*\
+**Enhances TrafficCraft with quality-of-life improvements and useful features: light mask editor, more light colors, full customization, automation, grouping, and more.**
 
 <p align="left">
-  <!-- <a href="https://discord.com">
-    <img src="https://i.imgur.com/jKd8Td5.png" alt="Join the Discord server" width="242"/>
-  </a> -->
-  <a href="https://modrinth.com/mod/moretraffic">
-    <img src="https://imgur.com/JtKIaEM.png" alt="Get the mod on Modrinth" width="242"/>
+  <a href="https://discord.gg/XaGFT5dAbh">
+    <img src="https://imgur.com/QCLCqlV.png" alt="Discord server" width="242"/>
+  </a>
+    <a href="https://modrinth.com/mod/moretraffic">
+    <img src="https://imgur.com/uH4qxdK.png" alt="Modrinth" width="242"/>
+  </a>
+      <a href="https://github.com/tomas65107/moretraffic">
+    <img src="https://imgur.com/kBhMKkL.png" alt="Github" width="242"/>
   </a>
 </p>
 
-> [!TIP]
-> basic **ingame documentation available!** You should get the hang of things with that
+> [!IMPORTANT]
+> The mod is a work in progress and is in **alpha**. Expect bugs, crashes. Always make world backups.\
+> You can [**report any bugs or crashes here**](https://github.com/tomas65107/moretraffic/issues), and try to [attach the log](https://minecraft.wiki/w/Tutorial:Obtaining_a_crash_report) and describe what you did
 
-> [!CAUTION]
-> This mod is in **ALPHA**. Expect bugs, crashes, and potential world corruption. Always make backups
-
----
+> - You can find list of planned features below
+> - Documentation can be found in-game by hovering on the (i) icons
+> - Make sure you have downloaded trafficcraft alongside this mod (modrinth does this automatically)
 
 ## Content
-This mod focuses on **enhancing TrafficCraft** with new traffic light mechanics, control systems, and more.
+Learn more on the content currently present and planned in the future.
 
 ### ✅ Features in the mod
 
-- **Traffic Lights Overhaul**  
-  Fully customizable traffic lights: change position, orientation, and scale. Edit light masks in-game individually.  
-  <img width="324" height="218" src="https://github.com/user-attachments/assets/87bee6ef-020b-4fd4-8dd4-2b6e0e685262" alt="Traffic Light Screenshot" />
-  <img width="324" height="218" src="https://github.com/user-attachments/assets/7b03f51a-b1d9-44cf-8b2c-bc4cf82be2b9" alt="Traffic Light Screenshot" />
-  <img width="232.5" height="173" src="https://github.com/user-attachments/assets/549b0554-d496-4b52-9092-41a0c3e6f3de" alt="Traffic Light Screenshot" />
+- **Traffic Lights Overhaul**
+  - You can now control a variety of things on traffic lights: Orientation, Position, Scale
+  - Precise custom color control for each light
+  - In-game editing of fully custom traffic light masks and you can import masks from images
+  <img width="216" height="145" src="https://github.com/user-attachments/assets/87bee6ef-020b-4fd4-8dd4-2b6e0e685262" alt="Traffic Light Screenshot" />
+  <img width="216" height="145" src="https://github.com/user-attachments/assets/7b03f51a-b1d9-44cf-8b2c-bc4cf82be2b9" alt="Traffic Light Screenshot" />
 
-- **Traffic Light Control Cabinet**  
-  Program and control traffic lights with granular precision. Efficient even with large groups of lights; TPS-friendly.  
-  <img width="324" height="218" src="https://github.com/user-attachments/assets/99f23fbb-5d47-4e6b-a0b3-1739d9ed8baf" alt="Control Cabinet Screenshot" />
-  <img width="324" height="218" src="https://github.com/user-attachments/assets/f5e065d3-2adb-4f50-b7c7-6512bb7c411d" alt="Control Cabinet Screenshot" />
+- **Traffic Light Control Cabinet**
+  - Program your fully custom traffic light loops
+  - You have a fine control over traffic lights and have a redstone trigger
+  - You also have grouping of light available to create big networks in seconds
+  <img width="216" height="145" src="https://github.com/user-attachments/assets/99f23fbb-5d47-4e6b-a0b3-1739d9ed8baf" alt="Control Cabinet Screenshot" />
+  <img width="216" height="145" src="https://github.com/user-attachments/assets/f5e065d3-2adb-4f50-b7c7-6512bb7c411d" alt="Control Cabinet Screenshot" />
 
 - **New Commands**
-  - `/copypos [optional arguments]` — copy the position of the block you are looking at
-- **Bug Fixes**
-  - Fixed TrafficCraft traffic pole issue (no breaking tool assigned)
-- **Crafting & Survival Support**
+  - `/copypos [optional argument]` — copy the position of the block you are looking at. Helpful when making groups quickly
+- **Bug Fixes for TrafficCraft**
+  - Fixed TrafficCraft's traffic pole not having a tool assigned and thus breaking speed is slow.
+- **Survival Support and Optimalizations**
   - Recipes added and optimized for survival gameplay
+  - Optimalizations also have been made to not lag servers
 
 ---
 
 ### ⚡ Planned Features
+This mod is new, so i could not fit all of my ideas and bugfixes into one release.\
+These are the things i want to add along with notes:
 
-- Copying additional in-game elements via commands
-- Traffic light bounding box fixes
-- Block entity renderer bug fixes
-- In-game size presets and new traffic light models
+- Add correct traffic light bounding box _(ive given up on adding all of them for now)_
+- Add In-game size presets for traffic lights _(now just dont work)_
+- Add traffic countdown clock for traffic light _(dont really know how the player should change the timer)_
 - Improved documentation and images
-- Enhanced group GUI for faster editing
-- **More creative additions coming soon…**
-
----
-
-## License
-
-**GNU LESSER GENERAL PUBLIC LICENSE**
-
-> [!NOTE]
-> When downloaded via Modrinth, this mod is automatically included alongside **MoreTraffic**.
+- Make group GUI more pretty
+- Add more light types that can be customized _(not really for traffic but cool nontheless)_
+- **And more ofc…**
