@@ -5,6 +5,7 @@ import com.tomas65107.moretraffic.data.AbstractSheet;
 import com.tomas65107.moretraffic.data.ColorsManager;
 import com.tomas65107.moretraffic.data.SpritesManager;
 import com.tomas65107.moretraffic.data.TrafficLightGroup;
+import com.tomas65107.moretraffic.data.helpers.TextCutter;
 import com.tomas65107.moretraffic.data.helpers.TextHelper;
 import com.tomas65107.moretraffic.data.lightinstructions.AwaitRedstone;
 import com.tomas65107.moretraffic.data.lightinstructions.Delay;
@@ -25,8 +26,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -36,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.*;
 import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
@@ -240,8 +245,117 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
         addBaseWidget(new AdvancedButton(guiX+10, guiY+194, 15, 15, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.import")), true, b->{
 
+            int sheetWidth = 180;
+            int sheetHeight = 90;
+
+            int sheetX = guiX + (guiWidth - sheetWidth) / 2;
+            int sheetY = guiY + (guiHeight - sheetHeight) / 2;
+
+            this.addElement(
+                    new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.import").getString(), true, sheetWidth, sheetHeight) {
+
+                        @Override
+                        public void init(Consumer<AbstractWidget> adder) {
+
+                            String clipboard = Minecraft.getInstance().keyboardHandler.getClipboard();
+
+                            boolean validClipboardContents = false;
+                            CompoundTag tagToSave = new CompoundTag();
+
+                            if (!clipboard.isBlank()) {
+                                try {
+
+                                    CompoundTag parsed = TagParser.parseTag(clipboard);
+
+                                    be.saveAdditional(tagToSave, Minecraft.getInstance().level.registryAccess());
+
+                                    if (parsed.contains("Instructions")) {
+                                        tagToSave.put("Instructions", parsed.get("Instructions").copy());
+                                    }
+
+                                    if (parsed.contains("Groups")) {
+                                        tagToSave.put("Groups", parsed.get("Groups").copy());
+                                    }
+
+                                    //everything finished without throwing
+                                    validClipboardContents = true;
+
+                                } catch (Exception e) {
+                                    validClipboardContents = false;
+                                }
+                            }
+
+                            var button = new AdvancedButton(10, 25, 160, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.import.from_clipboard"), null, null, b -> {
+                                if (!tagToSave.isEmpty()) {
+                                    be.loadAdditional(tagToSave, Minecraft.getInstance().level.registryAccess());
+                                    updateBEAndRefreshBE();
+                                    onClose();
+                                }
+                            });
+
+                            if (validClipboardContents && (!tagToSave.isEmpty())) {
+                                adder.accept(button);
+                            } else {
+                                int offset = 23;
+                                for (Component component : cutTextComponent(Component.translatable("gui.moretraffic.import_invalid_data"), 0, 170, true)) {
+                                    adder.accept(new LabelWidget(align(CENTER, component, sheetWidth/2), offset, component, rgb(INVALID), true));
+                                    offset += 10;
+                                }
+                            }
+                        }
+                    });
+
         }));
         addBaseWidget(new AdvancedButton(guiX+26, guiY+194, 15, 15, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.export")), true, b->{
+
+            int sheetWidth = 180;
+            int sheetHeight = 130;
+
+            int sheetX = guiX + (guiWidth - sheetWidth) / 2;
+            int sheetY = guiY + (guiHeight - sheetHeight) / 2;
+
+            this.addElement(
+                    new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.export").getString(), true, sheetWidth, sheetHeight) {
+
+                        Checkbox includeInstructions;
+                        Checkbox includeGroups;
+                        AdvancedButton button;
+
+                        @Override
+                        public void init(Consumer<AbstractWidget> adder) {
+
+                            adder.accept(new LabelWidget(10, 25, Component.translatable("gui.moretraffic.control_cabinet.export.include"), rgb(SECONDARY), true));
+
+                            includeInstructions = Checkbox.builder(Component.translatable("gui.moretraffic.control_cabinet.export.include_instruction"), Minecraft.getInstance().font).pos(10, 36) .selected(false) .onValueChange((b, a)-> updateButton()) .build();
+                            includeGroups = Checkbox.builder(Component.translatable("gui.moretraffic.control_cabinet.export.include_groups"), Minecraft.getInstance().font).pos(10, 54) .selected(false) .onValueChange((b, a)-> updateButton()) .build();
+                            adder.accept(includeInstructions);
+                            adder.accept(includeGroups);
+
+                            button = new AdvancedButton(10, sheetHeight - 30, 100, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.export.to_clipboard"), null, null, b -> {
+                                CompoundTag exportTag = new CompoundTag();
+                                be.saveAdditional(exportTag, Minecraft.getInstance().level.registryAccess());
+
+                                CompoundTag toCopy = new CompoundTag();
+
+                                if (includeInstructions.selected() && exportTag.contains("Instructions"))
+                                    toCopy.put("Instructions", exportTag.get("Instructions").copy());
+
+                                if (includeGroups.selected() && exportTag.contains("Groups"))
+                                    toCopy.put("Groups", exportTag.get("Groups").copy());
+
+                                Minecraft.getInstance().keyboardHandler.setClipboard(toCopy.toString());
+                                onClose();
+                            });
+                            adder.accept(button);
+                            updateButton();
+                        }
+
+                        private void updateButton() {
+                            button.active = (includeInstructions.selected() || includeGroups.selected());
+                        }
+
+                    });
+
 
         }));
         addBaseWidget(new AdvancedButton(guiX+51, guiY+194, 15, 15, be.shouldLoop ? SpritesManager.ICON_REPEAT : SpritesManager.ICON_ONETIME, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.repeat"), Component.translatable("gui.moretraffic.control_cabinet.repeat.message."+(be.shouldLoop ? "yes":"no")), Component.translatable("gui.moretraffic.change")), true, b->{
@@ -271,7 +385,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                             NoticeBoxTooltip tooltip1 = new NoticeBoxTooltip(
                                     Component.translatable("gui.moretraffic.control_cabinet.groups.title"),
                                     Component.translatable("gui.moretraffic.control_cabinet.groups.message"),
-                                    Component.translatable("gui.moretraffic.control_cabinet.groups.cta"), ColorsManager.HEADER, false);
+                                    Component.translatable("gui.moretraffic.control_cabinet.groups.cta"), HEADER, false);
                             int finalWidthOfPrevContent = Minecraft.getInstance().font.width(Component.translatable("gui.moretraffic.control_cabinet.groups").withStyle(ChatFormatting.BOLD));
                             adder.accept(new HelpElementWidget(finalWidthOfPrevContent + 10, 5, ICON_INFO, tooltip1));
 
@@ -438,7 +552,6 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
     public Object verifyAndParseCoordinates(String str) {
         String[] parts = str.trim().split("\\s*,\\s*");
         if (parts.length != 3) {
-            MoreTraffic.LOGGER.debug("FAIL," + str);
             return "Must contain 3 coordinates";
         }
 

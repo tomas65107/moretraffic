@@ -18,10 +18,11 @@ import java.awt.*;
 
 import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightPosition.BOTTOM;
+import static com.tomas65107.moretraffic.rendering.MaterialValues.*;
 
 public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRenderer<AdvancedTrafficLightBlockEntity> {
 
-    private static final ResourceLocation LIGHT_TEXTURE =
+    public static final ResourceLocation LIGHT_TEXTURE =
             ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/block/light_on.png");
 
 
@@ -63,12 +64,11 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
             graphics.poseStack().pushPose();
             graphics.poseStack().translate(baseX, y, baseZ + 0.0625F);
             if (be.lights.get(index).color == DyeColor.BLACK) {
-                LIGHT.setLight(15728700); //black
+                LIGHT.setLight(NOT_EMISSIVE); //black
             } else {
-                LIGHT.setLight(15728880); //default
+                LIGHT.setLight(EMISSIVE); //default
             }
-//            LIGHT.setLight(15728880);
-            LIGHT.setTint(getBoostedTint(be, index));
+            LIGHT.setTint(getBoostedTint(be.lights.get(index).color));
             LIGHT.render(graphics);
             if (be.lights.get(index).mask != null) {
                 renderMask(graphics, be.lights.get(index).mask);
@@ -79,9 +79,9 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
         graphics.poseStack().popPose();
     }
 
-    private static int getBoostedTint(AdvancedTrafficLightBlockEntity be, int index) {
-        if (be.lights.get(index).color == DyeColor.BLACK) {return DyeColor.BLACK.getTextureDiffuseColor();}
-        int color = be.lights.get(index).color.getTextureDiffuseColor();
+    static int getBoostedTint(DyeColor dyeColor) {
+        if (dyeColor == DyeColor.BLACK) {return DyeColor.BLACK.getTextureDiffuseColor();}
+        int color = dyeColor.getTextureDiffuseColor();
 
         // extract RGB in 0..1
         float r = ((color >> 16) & 0xFF) / 255f;
@@ -151,7 +151,7 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
                         dir -> Pair.of(new Vec2(u0, v0), new Vec2(u1, v1))
                 );
 
-                pixelCube.setLight(15728880);
+                pixelCube.setLight(MASKED_EMISSIVE);
                 pixelCube.setTint(rgb(new Color(30, 30, 30)));
 
                 graphics.poseStack().pushPose();

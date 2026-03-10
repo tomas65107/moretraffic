@@ -1,10 +1,13 @@
 package com.tomas65107.moretraffic.registration;
 
 import com.tomas65107.moretraffic.mod.MoreTraffic;
+import com.tomas65107.moretraffic.registration.basedescription.SimpleBlockItem;
+import com.tomas65107.moretraffic.registration.basedescription.SimpleItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
 
 public class MTItems {
 
@@ -14,10 +17,10 @@ public class MTItems {
     public static final DeferredItem<BlockItem> ADV_2_TRAFFIC_LIGHT_ITEM = ITEMS.registerSimpleBlockItem(MTBlocks.ADV_2_TRAFFIC_LIGHT);
     public static final DeferredItem<BlockItem> ADV_1_TRAFFIC_LIGHT_ITEM = ITEMS.registerSimpleBlockItem(MTBlocks.ADV_1_TRAFFIC_LIGHT);
 
-    public static final DeferredItem<BlockItem> LIGHT_CONTROL_CABINET = ITEMS.registerSimpleBlockItem(MTBlocks.LIGHT_CONTROL_CABINET);
+    public static final DeferredItem<SimpleBlockItem> BLINKER = ITEMS.register("blinker", () -> new SimpleBlockItem(MTBlocks.BLINKER.get(), new Item.Properties(), true, true, true));
 
-    public static final DeferredItem<Item> LIGHT_DIODE = ITEMS.registerItem("light_diode",
-            Item::new
-    );
+    public static final DeferredItem<SimpleBlockItem> LIGHT_CONTROL_CABINET = ITEMS.register("control_cabinet", () -> new SimpleBlockItem(MTBlocks.LIGHT_CONTROL_CABINET.get(), new Item.Properties(), true, false, true));
+
+    public static final DeferredItem<SimpleItem> LIGHT_DIODE = ITEMS.registerItem("light", (p) -> new SimpleItem(p, true, true, true));
 
 }

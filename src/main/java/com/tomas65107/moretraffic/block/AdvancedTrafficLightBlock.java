@@ -7,9 +7,11 @@ import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightPositi
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightScale;
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
 import com.tomas65107.moretraffic.registration.MTBlocks;
+import com.tomas65107.moretraffic.registration.MTItems;
 import com.tomas65107.moretraffic.rendering.BlockBoundingBoxes;
 import de.mrjulsen.trafficcraft.block.data.ColorableBlock;
 import de.mrjulsen.trafficcraft.block.data.ITrafficPostLike;
+import de.mrjulsen.trafficcraft.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +32,7 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShape;
+import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.*;
 
 public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleWaterloggedBlock, EntityBlock, ITrafficPostLike {
     public AdvancedTrafficLightBlock(Properties properties) {
@@ -62,6 +67,11 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
     }
 
     @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        return new ItemStack(MTItems.LIGHT_DIODE.asItem());
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection().getOpposite())
@@ -72,11 +82,11 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
 
     private VoxelShape boundingBoxGetter(BlockState state) throws InvalidRequestStateException {
         if (state.getBlock() == MTBlocks.ADV_1_TRAFFIC_LIGHT.get()) {
-            return rotateShape(state.getValue(FACING), new BlockBoundingBoxes().advancedTraffic1Light);
+            return rotateShape(state.getValue(FACING), advancedTraffic1Light);
         } else if (state.getBlock() == MTBlocks.ADV_2_TRAFFIC_LIGHT.get()) {
-            return rotateShape(state.getValue(FACING), new BlockBoundingBoxes().advancedTraffic2Light);
+            return rotateShape(state.getValue(FACING), advancedTraffic2Light);
         } else if (state.getBlock() == MTBlocks.ADV_3_TRAFFIC_LIGHT.get()) {
-            return rotateShape(state.getValue(FACING), new BlockBoundingBoxes().advancedTraffic3Light);
+            return rotateShape(state.getValue(FACING), advancedTraffic3Light);
         }
         throw new InvalidRequestStateException();
     }

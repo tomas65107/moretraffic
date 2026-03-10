@@ -1,25 +1,65 @@
+# MoreTraffic
 
-Installation information
-=======
+*Addon for [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) by MrJulsen.*\
+**Enhances TrafficCraft with quality-of-life improvements and useful features: light mask editor, more light colors, full customization, automation, grouping, and more.**
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+<p align="left">
+  <a href="https://discord.gg/XaGFT5dAbh">
+    <img src="https://imgur.com/FDxn61c.png" alt="Discord server" width="242"/>
+  </a>
+    <a href="https://modrinth.com/mod/moretraffic">
+    <img src="https://imgur.com/uH4qxdK.png" alt="Modrinth" width="242"/>
+  </a>
+      <a href="https://github.com/tomas65107/moretraffic">
+    <img src="https://imgur.com/kBhMKkL.png" alt="Github" width="242"/>
+  </a>
+</p>
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+> [!IMPORTANT]
+> The mod is a work in progress and is in **alpha**. Expect bugs, crashes. Always make world backups.\
+> You can [**report any bugs or crashes here**](https://github.com/tomas65107/moretraffic/issues), and try to [attach the log](https://minecraft.wiki/w/Tutorial:Obtaining_a_crash_report) and describe what you did
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+> - You can find list of planned features below
+> - Documentation can be found in-game by hovering on the (i) icons
+> - Make sure you have downloaded trafficcraft alongside this mod (modrinth does this automatically)
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+## Content
+Learn more on the content currently present and planned in the future.
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+### ✅ Features in the mod
+
+- **Traffic Lights Overhaul**
+    - You can now control a variety of things on traffic lights: Orientation, Position, Scale
+    - Precise custom color control for each light
+    - In-game editing of fully custom traffic light masks and you can import masks from images
+      <img width="216" height="145" src="https://github.com/user-attachments/assets/87bee6ef-020b-4fd4-8dd4-2b6e0e685262" alt="Traffic Light Screenshot" />
+      <img width="216" height="145" src="https://github.com/user-attachments/assets/7b03f51a-b1d9-44cf-8b2c-bc4cf82be2b9" alt="Traffic Light Screenshot" />
+
+- **Traffic Light Control Cabinet**
+    - Program your fully custom traffic light loops
+    - You have a fine control over traffic lights and have a redstone trigger
+    - You also have grouping of light available to create big networks in seconds
+      <img width="216" height="145" src="https://github.com/user-attachments/assets/99f23fbb-5d47-4e6b-a0b3-1739d9ed8baf" alt="Control Cabinet Screenshot" />
+      <img width="216" height="145" src="https://github.com/user-attachments/assets/f5e065d3-2adb-4f50-b7c7-6512bb7c411d" alt="Control Cabinet Screenshot" />
+
+- **New Commands**
+    - `/copypos [optional argument]` — copy the position of the block you are looking at. Helpful when making groups quickly
+- **Bug Fixes for TrafficCraft**
+    - Fixed TrafficCraft's traffic pole not having a tool assigned and thus breaking speed is slow.
+- **Survival Support and Optimalizations**
+    - Recipes added and optimized for survival gameplay
+    - Optimalizations also have been made to not lag servers
+
+---
+
+### ⚡ Planned Features
+This mod is new, so i could not fit all of my ideas and bugfixes into one release.\
+These are the things i want to add along with notes:
+
+- Add correct traffic light bounding box _(ive given up on adding all of them for now)_
+- Add In-game size presets for traffic lights _(now just dont work)_
+- Add traffic countdown clock for traffic light _(dont really know how the player should change the timer)_
+- Improved documentation and images
+- Make group GUI more pretty
+- Add more light types that can be customized _(not really for traffic but cool nontheless)_
+- **And more ofc…**

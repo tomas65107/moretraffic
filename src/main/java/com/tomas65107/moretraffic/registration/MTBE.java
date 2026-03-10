@@ -1,10 +1,10 @@
 package com.tomas65107.moretraffic.registration;
 
+import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -28,6 +28,13 @@ public class MTBE {
                     () -> BlockEntityType.Builder.of(
                             LightControlCabinetBlockEntity::new,
                             MTBlocks.LIGHT_CONTROL_CABINET.get()
+                    ).build(null)
+            );
+    public static final Supplier<BlockEntityType<FlashingBlinkerBlockEntity>> BLINKER_BE =
+            BLOCK_ENTITIES.register("blinker",
+                    () -> BlockEntityType.Builder.of(
+                            FlashingBlinkerBlockEntity::new,
+                            MTBlocks.BLINKER.get()
                     ).build(null)
             );
 

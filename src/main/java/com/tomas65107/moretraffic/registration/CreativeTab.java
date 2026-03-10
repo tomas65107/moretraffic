@@ -3,6 +3,7 @@ package com.tomas65107.moretraffic.registration;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -17,11 +18,9 @@ public class CreativeTab {
             .title(Component.translatable("itemGroup.moretraffic"))
             .icon(() -> ADV_3_TRAFFIC_LIGHT_ITEM.asItem().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(ADV_1_TRAFFIC_LIGHT_ITEM);
-                output.accept(ADV_2_TRAFFIC_LIGHT_ITEM);
-                output.accept(ADV_3_TRAFFIC_LIGHT_ITEM);
-                output.accept(LIGHT_CONTROL_CABINET);
                 output.accept(LIGHT_DIODE);
+                output.accept((ItemLike) BLINKER);
+                output.accept((ItemLike) LIGHT_CONTROL_CABINET);
     }).build());
 
 }

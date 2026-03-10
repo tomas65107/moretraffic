@@ -43,7 +43,6 @@ public final class MaskGridMaker {
                         v -> {
                             pressAction = v;
                             if (pressAction ==0 && !Arrays.equals(newRows, MaskData.getRows().clone())) {
-                                MoreTraffic.LOGGER.debug("passed and packet sending");
                                 newMask.accept(new TrafficLightLight.TrafficLightMask(newRows));
                                 newRows = MaskData.getRows().clone();
                             }

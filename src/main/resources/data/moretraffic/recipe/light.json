@@ -7,7 +7,7 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:iron_nugget"
+      "tag": "c:plates/iron"
     },
     "G": {
       "item": "minecraft:glowstone_dust"
@@ -17,7 +17,7 @@
     }
   },
   "result": {
-    "id": "moretraffic:light_diode",
+    "id": "moretraffic:light",
     "count": 1
   }
 }

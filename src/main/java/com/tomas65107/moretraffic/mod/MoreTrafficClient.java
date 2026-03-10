@@ -6,9 +6,12 @@ import com.tomas65107.moretraffic.gui.tooltip.BodyTooltip;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.registration.MTBE;
 import com.tomas65107.moretraffic.registration.MTBlocks;
+import com.tomas65107.moretraffic.rendering.BlinkerBlockEntityRenderer;
 import com.tomas65107.moretraffic.rendering.TrafficLightBlockEntityRenderer;
 import de.mrjulsen.trafficcraft.client.TintedTextures;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 
 import net.minecraft.world.level.block.Block;
@@ -42,6 +45,11 @@ public class MoreTrafficClient {
                 TrafficLightBlockEntityRenderer::new
         );
 
+        BlockEntityRenderers.register(
+                MTBE.BLINKER_BE.get(),
+                BlinkerBlockEntityRenderer::new
+        );
+
         //Block Tinting register
         Minecraft.getInstance().getBlockColors().register(
                 new TintedTextures.TintedBlock(),
@@ -54,6 +62,20 @@ public class MoreTrafficClient {
                 MTBlocks.ADV_1_TRAFFIC_LIGHT.get(),
                 MTBlocks.ADV_2_TRAFFIC_LIGHT.get(),
                 MTBlocks.ADV_3_TRAFFIC_LIGHT.get()
+        );
+
+        Minecraft.getInstance().getBlockColors().register(
+                new TintedTextures.TintedBlock(),
+                MTBlocks.BLINKER.get()
+        );
+        Minecraft.getInstance().getItemColors().register(
+                new TintedTextures.TintedItem(),
+                MTBlocks.BLINKER.get()
+        );
+
+        ItemBlockRenderTypes.setRenderLayer(
+                MTBlocks.BLINKER.get(),
+                RenderType.translucent()
         );
 
         // Some client setup code

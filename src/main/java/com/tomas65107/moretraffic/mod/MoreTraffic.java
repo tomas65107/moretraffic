@@ -1,11 +1,10 @@
 package com.tomas65107.moretraffic.mod;
 
+import net.neoforged.fml.ModList;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -26,6 +25,8 @@ public class MoreTraffic {
     public static final String MODID = "moretraffic";
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static final boolean createPresent = ModList.get().isLoaded("create");
+
     public MoreTraffic(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
@@ -42,8 +43,7 @@ public class MoreTraffic {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         LOGGER.info("MoreTraffic commonSetup");
-        LOGGER.warn("MORETRAFFIC IS IN ALPHA\nSome things are not finished and things may crash or break.\nPlease PLEASE make sure you backup any important worlds, you are responsible for corruption.\nMod is in early stage of development");
-        TrafficCraftCompat.init();
+        LOGGER.warn("\nMORETRAFFIC IS IN ALPHA\nSome things are not finished and things may crash or break.\nPlease PLEASE make sure you backup any important worlds, you are responsible for corruption.\nMod is in early stage of development");
     }
 
     @SubscribeEvent

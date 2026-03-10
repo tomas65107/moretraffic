@@ -59,7 +59,7 @@ public class PixelButton extends Button {
 
         // Draw overlay if changed
         if (aleradyChangedTsButtonTsHold) {
-            g.fill(getX(), getY(), getX() + width, getY() + height, rgb(mouseAction == 1 ? Color.green : Color.red));
+            g.fill(getX(), getY(), getX() + width, getY() + height, rgb(mouseAction == 1 ? new Color(192, 255, 190) : new Color(255, 193, 193)));
         }
 
         if (mouseAction == 0) {

@@ -185,7 +185,7 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
                 return;
             } else
 
-            //Loop handleing
+            //Loop handling
             if (be.programStep == be.instructions.size()) {
                 if (be.shouldLoop) {
                     be.programStep = 0;

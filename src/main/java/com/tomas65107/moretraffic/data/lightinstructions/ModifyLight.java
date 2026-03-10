@@ -1,8 +1,10 @@
 package com.tomas65107.moretraffic.data.lightinstructions;
 
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
+import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightGroup;
+import com.tomas65107.moretraffic.rendering.BlinkerBlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
@@ -23,8 +25,8 @@ public record ModifyLight(String group, DyeColor light0, DyeColor light1, DyeCol
             for (TrafficLightGroup group : be.groups) if (group.name.equals(modifyLight.group())) {blockPosList = new ArrayList<>(group.lightsPositions); break;}
             if (!blockPosList.isEmpty()) {
 
-                for (BlockPos TrafficLightblockPos : blockPosList) {
-                    if (level.getBlockEntity(TrafficLightblockPos) instanceof AdvancedTrafficLightBlockEntity trafficLightBlock) {
+                for (BlockPos lightPos : blockPosList) {
+                    if (level.getBlockEntity(lightPos) instanceof AdvancedTrafficLightBlockEntity trafficLightBlock) {
                         trafficLightBlock.modifyLightColor(0, light0());
                         trafficLightBlock.modifyLightColor(1, light1());
                         trafficLightBlock.modifyLightColor(2, light2());
