@@ -1,10 +1,8 @@
 package com.tomas65107.moretraffic.block;
 
+import com.tomas65107.moretraffic.data.TrafficDisplayPixels;
 import com.tomas65107.moretraffic.data.TrafficLightGroup;
-import com.tomas65107.moretraffic.data.lightinstructions.AwaitRedstone;
-import com.tomas65107.moretraffic.data.lightinstructions.Delay;
-import com.tomas65107.moretraffic.data.lightinstructions.LightInstructionProperty;
-import com.tomas65107.moretraffic.data.lightinstructions.ModifyLight;
+import com.tomas65107.moretraffic.data.lightinstructions.*;
 import com.tomas65107.moretraffic.gui.containers.LightControlCabinetMenu;
 import com.tomas65107.moretraffic.registration.MTBE;
 import net.minecraft.core.BlockPos;
@@ -92,6 +90,11 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
                             DyeColor.byName(nbtInstruction.getString("LightColor2"), DyeColor.BLACK)
                     );
 
+                    case MODIFY_DISPLAY -> new ModifyDisplay(
+                            nbtInstruction.getString("Group"),
+                            TrafficDisplayPixels.deserialize(nbtInstruction.getString("TrafficDisplayPixels"))
+                    );
+
                     case null, default ->
                             throw new IllegalArgumentException("Error loading BE; Unknown instruction type");
                 };
@@ -147,6 +150,10 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
             else if (instruction instanceof AwaitRedstone(int internalTimestamp)) {
                 entry.putInt("InternalTimestamp", internalTimestamp);
             }
+            else if (instruction instanceof ModifyDisplay(String group, TrafficDisplayPixels trafficDisplayPixels)) {
+                entry.putString("Group", group);
+                entry.putString("TrafficDisplayPixels", trafficDisplayPixels.serialize());
+            }
             else {
                 throw new IllegalArgumentException("Error saving BE; Unknown instruction type");
             }
@@ -179,8 +186,8 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
             be.isRunning = false;
         } else
 
-            //Handle illegal values ui prevents setting
-            if (be.instructions.size() > 64 || be.instructions.size() < be.programStep) {
+            //Handle illegal values ui prevents setting (changed to run only when running)
+            if ((be.instructions.size() > 64 || be.instructions.size() < be.programStep) && be.isRunning) {
                 level.destroyBlock(pos, true);
                 return;
             } else

@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.DyeColor;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -13,8 +14,9 @@ import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
 
 public class PixelButton extends Button {
 
-    private final boolean enabled;
+    private boolean enabled;
     private Consumer<Boolean> flipPixelState;
+    private final DyeColor color;
 
     /// 0 = released; 1 = left; 2 = right
     private final Consumer<Integer> pressAction;
@@ -23,17 +25,24 @@ public class PixelButton extends Button {
 
     public boolean aleradyChangedTsButtonTsHold;
 
-    public PixelButton(int x, int y, int w, int h, boolean enabled, Consumer<Boolean> maskChangedFromLastState, Consumer<Integer> pressAction) {
+    public PixelButton(int x, int y, int w, int h, boolean enabled, Consumer<Boolean> maskChangedFromLastState, Consumer<Integer> pressAction, DyeColor color) {
         super(x, y, w, h, Component.empty(), nie->{}, DEFAULT_NARRATION);
         this.enabled = enabled;
         this.flipPixelState = maskChangedFromLastState;
         this.pressAction = pressAction;
         this.openedAt = System.currentTimeMillis();
+        this.color = color;
+    }
+
+    public PixelButton(int x, int y, int w, int h, boolean enabled, Consumer<Boolean> maskChangedFromLastState, Consumer<Integer> pressAction) {
+        this(x, y, w, h, enabled, maskChangedFromLastState, pressAction, null);
     }
 
     @Override
     public void renderWidget(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         int mouseAction = getMouseStatus();
+
+        if (color != null && color.equals(DyeColor.BLACK)) enabled = false;
 
         if (!aleradyChangedTsButtonTsHold && isHovered) {
             if (System.currentTimeMillis() - openedAt < 200) return;
@@ -44,10 +53,10 @@ public class PixelButton extends Button {
                     flipPixelState.accept(true);
                 }
             }
-            if (mouseAction == 2) { //only change selected -> deselected
+            if (mouseAction == 2) { // right drag = erase
                 if (enabled) {
                     aleradyChangedTsButtonTsHold = true;
-                    flipPixelState.accept(true);
+                    flipPixelState.accept(false);
                 }
             }
         }
@@ -55,6 +64,9 @@ public class PixelButton extends Button {
         int bg = isHovered ?
                 (enabled ? rgb(ColorsManager.SECONDARY) : rgb(ColorsManager.TERTIARY))
                 : (enabled ? rgb(ColorsManager.PRIMARY) : rgb(ColorsManager.BACKGROUND));
+
+        if (color != null && enabled) bg = color.getTextureDiffuseColor();
+
         g.fill(getX(), getY(), getX() + width, getY() + height, bg);
 
         // Draw overlay if changed

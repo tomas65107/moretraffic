@@ -1,35 +1,32 @@
 package com.tomas65107.moretraffic.data.lightinstructions;
 
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
-import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
+import com.tomas65107.moretraffic.block.TrafficDisplayBlockEntity;
+import com.tomas65107.moretraffic.data.TrafficDisplayPixels;
 import com.tomas65107.moretraffic.data.TrafficLightGroup;
-import com.tomas65107.moretraffic.rendering.BlinkerBlockEntityRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record ModifyLight(String group, DyeColor light0, DyeColor light1, DyeColor light2) implements LightInstructionProperty {
+public record ModifyDisplay(String group, TrafficDisplayPixels trafficDisplayPixels) implements LightInstructionProperty {
     @Override
     public PropertyTypes getClassType() {
-        return PropertyTypes.MODIFY_LIGHT;
+        return PropertyTypes.MODIFY_DISPLAY;
     }
 
     @Override
     public boolean executePayload(LightControlCabinetBlockEntity be, LightInstructionProperty instruction, Level level, BlockPos blockPos) {
-        if (instruction instanceof ModifyLight modifyLight) {
+        if (instruction instanceof ModifyDisplay(String igroup, TrafficDisplayPixels displayPixels)) {
             List<BlockPos> blockPosList = new ArrayList<>();
-            for (TrafficLightGroup group : be.groups) if (group.name.equals(modifyLight.group())) {blockPosList = new ArrayList<>(group.lightsPositions); break;}
+            for (TrafficLightGroup group : be.groups) if (group.name.equals(igroup)) {blockPosList = new ArrayList<>(group.lightsPositions); break;}
             if (!blockPosList.isEmpty()) {
 
                 for (BlockPos lightPos : blockPosList) {
-                    if (level.getBlockEntity(lightPos) instanceof AdvancedTrafficLightBlockEntity trafficLightBlock) {
-                        trafficLightBlock.modifyLightColor(0, light0());
-                        trafficLightBlock.modifyLightColor(1, light1());
-                        trafficLightBlock.modifyLightColor(2, light2());
+                    if (level.getBlockEntity(lightPos) instanceof TrafficDisplayBlockEntity trafficDisplayBlockEntity) {
+                        trafficDisplayBlockEntity.modifyDisplayPixels(displayPixels);
                     } else {
                         be.isRunning = false;
                         return false; //cannot find the traffic light at that position

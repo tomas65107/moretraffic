@@ -1,5 +1,6 @@
 package com.tomas65107.moretraffic.registration.basedescription;
 
+import com.tomas65107.moretraffic.data.helpers.TextCutter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,6 +10,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GRAY;
 
 public abstract class BaseDescriptionItem {
 
@@ -29,13 +33,13 @@ public abstract class BaseDescriptionItem {
             String type = stack.getItem() instanceof BlockItem ? "block" : "item";
 
             String key = type + "." + id.getNamespace() + "." + id.getPath() + ".description";
-            tooltip.add(Component.translatable(key));
+            for (var c : TextCutter.cutTextComponent(Component.translatable(key), false)) tooltip.add(c.copy().withStyle(DARK_GRAY));
         }
 
         var flags = Component.empty();
-        if (wrenchable) flags.append(Component.translatable("core.description.wrenchable").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY));
+        if (wrenchable) flags.append(Component.translatable("core.description.wrenchable").withStyle(ChatFormatting.ITALIC).withStyle(GRAY));
         if (wrenchable && colorable) flags.append("  ");
-        if (colorable) flags.append(Component.translatable("core.description.colorable").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY));
+        if (colorable) flags.append(Component.translatable("core.description.colorable").withStyle(ChatFormatting.ITALIC).withStyle(GRAY));
         tooltip.add(flags);
 
     }

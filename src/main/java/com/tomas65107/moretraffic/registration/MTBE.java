@@ -2,6 +2,7 @@ package com.tomas65107.moretraffic.registration;
 
 import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
+import com.tomas65107.moretraffic.block.TrafficDisplayBlockEntity;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,6 +36,13 @@ public class MTBE {
                     () -> BlockEntityType.Builder.of(
                             FlashingBlinkerBlockEntity::new,
                             MTBlocks.BLINKER.get()
+                    ).build(null)
+            );
+    public static final Supplier<BlockEntityType<TrafficDisplayBlockEntity>> TRAFFIC_DISPLAY_BE =
+            BLOCK_ENTITIES.register("traffic_display",
+                    () -> BlockEntityType.Builder.of(
+                            TrafficDisplayBlockEntity::new,
+                            MTBlocks.TRAFFIC_DISPLAY.get()
                     ).build(null)
             );
 

@@ -21,6 +21,7 @@ public class CreativeTab {
                 output.accept(LIGHT_DIODE);
                 output.accept((ItemLike) BLINKER);
                 output.accept((ItemLike) LIGHT_CONTROL_CABINET);
+                output.accept((ItemLike) TRAFFIC_DISPLAY_ITEM);
     }).build());
 
 }

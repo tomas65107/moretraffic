@@ -7,6 +7,7 @@ import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.registration.MTBE;
 import com.tomas65107.moretraffic.registration.MTBlocks;
 import com.tomas65107.moretraffic.rendering.BlinkerBlockEntityRenderer;
+import com.tomas65107.moretraffic.rendering.TrafficDisplayEntityRenderer;
 import com.tomas65107.moretraffic.rendering.TrafficLightBlockEntityRenderer;
 import de.mrjulsen.trafficcraft.client.TintedTextures;
 import net.minecraft.client.Minecraft;
@@ -48,6 +49,11 @@ public class MoreTrafficClient {
         BlockEntityRenderers.register(
                 MTBE.BLINKER_BE.get(),
                 BlinkerBlockEntityRenderer::new
+        );
+
+        BlockEntityRenderers.register(
+                MTBE.TRAFFIC_DISPLAY_BE.get(),
+                TrafficDisplayEntityRenderer::new
         );
 
         //Block Tinting register

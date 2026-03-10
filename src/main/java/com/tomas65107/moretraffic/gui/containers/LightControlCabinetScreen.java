@@ -2,15 +2,11 @@ package com.tomas65107.moretraffic.gui.containers;
 
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
 import com.tomas65107.moretraffic.data.AbstractSheet;
-import com.tomas65107.moretraffic.data.ColorsManager;
 import com.tomas65107.moretraffic.data.SpritesManager;
+import com.tomas65107.moretraffic.data.TrafficDisplayPixels;
 import com.tomas65107.moretraffic.data.TrafficLightGroup;
-import com.tomas65107.moretraffic.data.helpers.TextCutter;
 import com.tomas65107.moretraffic.data.helpers.TextHelper;
-import com.tomas65107.moretraffic.data.lightinstructions.AwaitRedstone;
-import com.tomas65107.moretraffic.data.lightinstructions.Delay;
-import com.tomas65107.moretraffic.data.lightinstructions.LightInstructionProperty;
-import com.tomas65107.moretraffic.data.lightinstructions.ModifyLight;
+import com.tomas65107.moretraffic.data.lightinstructions.*;
 import com.tomas65107.moretraffic.gui.components.BetterEditBox;
 import com.tomas65107.moretraffic.gui.components.CustomRenderAsWidget;
 import com.tomas65107.moretraffic.gui.components.HelpElementWidget;
@@ -18,9 +14,11 @@ import com.tomas65107.moretraffic.gui.components.LabelWidget;
 import com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton;
 import com.tomas65107.moretraffic.gui.components.buttons.ColorButton;
 import com.tomas65107.moretraffic.gui.makers.GridMaker;
+import com.tomas65107.moretraffic.gui.makers.PixelGridMaker;
 import com.tomas65107.moretraffic.gui.tooltip.BodyTooltip;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
+import com.tomas65107.moretraffic.mod.MoreTrafficClient;
 import com.tomas65107.moretraffic.networking.ClientSyncCabinetPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -33,14 +31,15 @@ import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.*;
 import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
@@ -62,6 +61,8 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
     protected boolean queueRefresh;
     private int timer = 0;
+
+    private DyeColor colorPicker = (DyeColor.BLACK);
 
     int guiWidth = 208;
     int guiHeight = 219;
@@ -120,6 +121,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                         case Delay d -> 0;
                         case ModifyLight m -> 1;
                         case AwaitRedstone a -> 2;
+                        case ModifyDisplay m -> 3;
                     };
 
             addBaseWidget(new CustomRenderAsWidget(gfx -> {
@@ -206,6 +208,67 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 textField.onSave(() -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(textField.getValue()))) return;
                     be.instructions.set(finalIndex, new ModifyLight(textField.getValue(), modifyLight.light0(), modifyLight.light1(), modifyLight.light2()));
+                    updateBEAndRefreshBE();
+                });
+
+                textField.onChange(text -> {
+                    if (be.groups.stream().noneMatch(g -> g.name.equals(text))) {
+                        textField.setTextColor(rgb(INVALID));
+                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.literal("Group named '" + text + "' does not exist"), INVALID));
+                    } else {
+                        textField.setTextColor(rgb(PRIMARY));
+                        textField.hideFloatingTooltip();
+                    }
+                });
+
+                textField.active = !be.isRunning;
+                addBaseWidget(textField);
+
+            } else if (instruction instanceof ModifyDisplay modifyDisplay) {
+
+                addBaseWidget(new ColorButton(guiX + 164, currentY + 4, 14, 14, rgb(new Color(255, 77, 0)), b -> {
+
+                    int sheetWidth = 300;
+                    int sheetHeight = 200;
+
+                    int sheetX = guiX + (guiWidth - sheetWidth) / 2;
+                    int sheetY = guiY + (guiHeight - sheetHeight) / 2;
+
+                    this.addElement(
+                            new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display").getString(), true, sheetWidth, sheetHeight) {
+                                //11
+                                @Override
+                                public void init(Consumer<AbstractWidget> adder) {
+
+                                    new GridMaker(10, 25, adder, c -> {
+                                        colorPicker = c; refreshContent();
+                                    }, colorPicker);
+
+                                    new PixelGridMaker(
+                                            10, 60,
+                                            ((ModifyDisplay) be.instructions.get(finalIndex)).trafficDisplayPixels(),
+                                            adder,
+                                            newPixels -> {
+                                                be.instructions.set(finalIndex, new ModifyDisplay(modifyDisplay.group(), newPixels));
+                                                updateBEAndRefreshBE();
+                                                timer = 1;
+                                            },
+                                            colorPicker
+                                    );
+                                }
+                            }
+                    );
+
+                }, false, true));
+
+                BetterEditBox textField = new BetterEditBox(guiX + 89, currentY + 7, 40, 14);
+                textField.setBordered(false);
+                textField.setValue(modifyDisplay.group());
+                textField.setTextColor(rgb(PRIMARY));
+
+                textField.onSave(() -> {
+                    if (be.groups.stream().noneMatch(g -> g.name.equals(textField.getValue()))) return;
+                    be.instructions.set(finalIndex, new ModifyDisplay(textField.getValue(), modifyDisplay.trafficDisplayPixels()));
                     updateBEAndRefreshBE();
                 });
 
@@ -486,7 +549,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
         addBaseWidget(new AdvancedButton(guiX+76+25, guiY+194, 15, 15, SpritesManager.ICON_PLUS, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.plus")), true, b->{
             int sheetWidth = 150;
-            int sheetHeight = 130;
+            int sheetHeight = 150;
 
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
             int sheetY = guiY + (guiHeight - sheetHeight) / 2;
@@ -575,7 +638,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
         int sheetX = guiX + (guiWidth - sheetWidth) / 2;
         int sheetY = guiY + (guiHeight - sheetHeight) / 2;
 
-        addElement(new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.delay.select_color").getString(), true, sheetWidth, sheetHeight) {
+        addElement(new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.modify_light.delay.select_color").getString(), true, sheetWidth, sheetHeight) {
             @Override
             public void init(Consumer<AbstractWidget> adder) {
                 adder.accept(new LabelWidget(10, 20, Component.translatable("core.moretraffic.advanced_traffic_light.light"+(indexOfLight+1)), rgb(PRIMARY), true));

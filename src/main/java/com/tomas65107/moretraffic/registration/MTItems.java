@@ -16,8 +16,9 @@ public class MTItems {
     public static final DeferredItem<BlockItem> ADV_3_TRAFFIC_LIGHT_ITEM = ITEMS.registerSimpleBlockItem(MTBlocks.ADV_3_TRAFFIC_LIGHT);
     public static final DeferredItem<BlockItem> ADV_2_TRAFFIC_LIGHT_ITEM = ITEMS.registerSimpleBlockItem(MTBlocks.ADV_2_TRAFFIC_LIGHT);
     public static final DeferredItem<BlockItem> ADV_1_TRAFFIC_LIGHT_ITEM = ITEMS.registerSimpleBlockItem(MTBlocks.ADV_1_TRAFFIC_LIGHT);
+    public static final DeferredItem<BlockItem> TRAFFIC_DISPLAY_ITEM = ITEMS.register("traffic_display", () -> new SimpleBlockItem(MTBlocks.TRAFFIC_DISPLAY.get(), new Item.Properties(), false, false, true));
 
-    public static final DeferredItem<SimpleBlockItem> BLINKER = ITEMS.register("blinker", () -> new SimpleBlockItem(MTBlocks.BLINKER.get(), new Item.Properties(), true, true, true));
+    public static final DeferredItem<SimpleBlockItem> BLINKER = ITEMS.register("blinker", () -> new SimpleBlockItem(MTBlocks.BLINKER.get(), new Item.Properties(), false, true, true));
 
     public static final DeferredItem<SimpleBlockItem> LIGHT_CONTROL_CABINET = ITEMS.register("control_cabinet", () -> new SimpleBlockItem(MTBlocks.LIGHT_CONTROL_CABINET.get(), new Item.Properties(), true, false, true));
 

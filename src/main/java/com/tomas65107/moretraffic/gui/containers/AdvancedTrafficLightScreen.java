@@ -14,7 +14,6 @@ import com.tomas65107.moretraffic.gui.makers.GridMaker;
 import com.tomas65107.moretraffic.gui.components.LabelWidget;
 import com.tomas65107.moretraffic.gui.makers.MaskGridMaker;
 import com.tomas65107.moretraffic.gui.makers.ModelSliderChangerMaker;
-import com.tomas65107.moretraffic.gui.tooltip.BodyTooltip;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
 import com.tomas65107.moretraffic.networking.ClientSenderPacketTrafficLight;
@@ -35,11 +34,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.SECONDARY;
 import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
@@ -160,7 +157,7 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                                                     shortsToBytes(newMask.getRows())
                                             )
                                     );
-                                    queueRefresh = true;
+                                    timer = 1;
                                 });
 
                                 adder.accept(

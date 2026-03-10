@@ -1,12 +1,13 @@
 package com.tomas65107.moretraffic.data.lightinstructions;
 
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
+import com.tomas65107.moretraffic.data.TrafficDisplayPixels;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 
-public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, ModifyLight {
+public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, ModifyDisplay, ModifyLight {
 
     enum PropertyTypes {
         DELAY {
@@ -26,6 +27,12 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
             public LightInstructionProperty create() {
                 return new AwaitRedstone(0);
             }
+        },
+        MODIFY_DISPLAY {
+            @Override
+            public LightInstructionProperty create() {
+                return new ModifyDisplay("", new TrafficDisplayPixels());
+            }
         };
 
         public abstract LightInstructionProperty create();
@@ -35,6 +42,7 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
                 case AWAIT_REDSTONE -> "AwaitRedstone";
                 case DELAY -> "Delay";
                 case MODIFY_LIGHT -> "ModifyLight";
+                case MODIFY_DISPLAY -> "ModifyDisplay";
             };
         }
 
@@ -43,6 +51,7 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
                 case AWAIT_REDSTONE -> Component.translatable("gui.moretraffic.control_cabinet.instruction.await_redstone" + (getMessage ? ".message" : ""));
                 case DELAY -> Component.translatable("gui.moretraffic.control_cabinet.instruction.delay" + (getMessage ? ".message" : ""));
                 case MODIFY_LIGHT -> Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light" + (getMessage ? ".message" : ""));
+                case MODIFY_DISPLAY -> Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display" + (getMessage ? ".message" : ""));
             };
         }
 
@@ -51,6 +60,7 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
                 case "AwaitRedstone" -> AWAIT_REDSTONE;
                 case "Delay" -> DELAY;
                 case "ModifyLight" -> MODIFY_LIGHT;
+                case "ModifyDisplay" -> MODIFY_DISPLAY;
                 default -> throw new IllegalStateException("Unexpected value: " + name);
             };
         }
@@ -60,6 +70,7 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
                 case AWAIT_REDSTONE -> AwaitRedstone.class;
                 case DELAY -> Delay.class;
                 case MODIFY_LIGHT -> ModifyLight.class;
+                case MODIFY_DISPLAY -> ModifyDisplay.class;
             };
         }
 

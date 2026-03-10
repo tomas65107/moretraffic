@@ -56,11 +56,13 @@
 
   "gui.moretraffic.control_cabinet.instruction.delay": "Timed delay",
   "gui.moretraffic.control_cabinet.instruction.delay.message": "Executes next action after a set amount of seconds (can be a decimal)",
-  "gui.moretraffic.control_cabinet.instruction.delay.select_color": "Select light color",
   "gui.moretraffic.control_cabinet.instruction.await_redstone": "Await redstone pulse",
   "gui.moretraffic.control_cabinet.instruction.await_redstone.message": "Pauses execution until the block receives a redstone signal",
   "gui.moretraffic.control_cabinet.instruction.modify_light": "Modify light",
   "gui.moretraffic.control_cabinet.instruction.modify_light.message": "Modifies the light at the position",
+  "gui.moretraffic.control_cabinet.instruction.modify_light.select_color": "Select light color",
+  "gui.moretraffic.control_cabinet.instruction.modify_display": "Modify display",
+  "gui.moretraffic.control_cabinet.instruction.modify_display.message": "Modifies the display at the position",
   "gui.moretraffic.control_cabinet.instruction.delete": "Delete instruction",
 
   "gui.moretraffic.control_cabinet.import": "Import...",
