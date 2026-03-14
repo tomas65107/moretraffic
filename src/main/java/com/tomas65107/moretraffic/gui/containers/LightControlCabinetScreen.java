@@ -217,7 +217,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 addBaseWidget(textField);
             } else if (instruction instanceof ModifyDisplay modifyDisplay) {
                 addBaseWidget(new ColorButton(guiX + 164, renderY + 4, 14, 14, rgb(new Color(255, 77, 0)), b -> {
-                    int sheetWidth = 300;
+                    int sheetWidth = 250;
                     int sheetHeight = 200;
                     int sheetX = guiX + (guiWidth - sheetWidth) / 2;
                     int sheetY = guiY + (guiHeight - sheetHeight) / 2;
@@ -243,20 +243,20 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
 
                                     adder.accept(
-                                            new AdvancedButton(244, 90, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.clear"), SpritesManager.ICON_CLEAR, a-> {
+                                            new AdvancedButton(150, 90, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.clear"), SpritesManager.ICON_CLEAR, a-> {
                                                 be.instructions.set(finalIndex, new ModifyDisplay(modifyDisplay.group(), new TrafficDisplayPixels()));
                                                 updateBEAndRefreshBE(); timer = 1;
                                             })
                                     );
 
                                     adder.accept(
-                                            new AdvancedButton(244+30+20, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export.message"), null), a->{
+                                            new AdvancedButton(150, 90+28, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export.message"), null), a->{
                                                 updateBEAndRefreshBE(); timer = 1;
                                                 Minecraft.getInstance().keyboardHandler.setClipboard(((ModifyDisplay) be.instructions.get(finalIndex)).trafficDisplayPixels().serialize());
                                                 refreshContent();
                                             })
                                     );
-                                    adder.accept(new AdvancedButton(244+28, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import.message"), null), a->{
+                                    adder.accept(new AdvancedButton(150+28, 90+28, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import.message"), null), a->{
                                                 try {
                                                     be.instructions.set(finalIndex, new ModifyDisplay(modifyDisplay.group(), TrafficDisplayPixels.deserialize(Minecraft.getInstance().keyboardHandler.getClipboard())));
                                                     updateBEAndRefreshBE(); timer = 1;

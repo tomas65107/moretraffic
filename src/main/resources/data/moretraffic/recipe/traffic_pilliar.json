@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "TTT",
+    " A "
+  ],
+  "key": {
+    "T": {
+      "item": "trafficcraft:traffic_sign_post"
+    },
+    "A": {
+      "tag": "c:plates/iron"
+    }
+  },
+  "result": {
+    "id": "moretraffic:traffic_pillar",
+    "count": 1
+  }
+}

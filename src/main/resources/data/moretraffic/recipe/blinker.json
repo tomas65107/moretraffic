@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#G#",
+    " R "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:glass_pane"
+    },
+    "G": {
+      "item": "moretraffic:light"
+    },
+    "R": {
+      "tag": "c:plates/iron"
+    }
+  },
+  "result": {
+    "id": "moretraffic:blinker",
+    "count": 1
+  }
+}
