@@ -1,6 +1,5 @@
 package com.tomas65107.moretraffic.networking;
 
-import com.sun.jdi.request.InvalidRequestStateException;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightLight;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
@@ -33,7 +32,7 @@ public class ServerTrafficLightHandler {
 
                 level.sendBlockUpdated(pos, trafficBE.getBlockState(), trafficBE.getBlockState(), 3);
 
-            } else throw new InvalidRequestStateException();
+            } else throw new RuntimeException();
         });
     }
 }
