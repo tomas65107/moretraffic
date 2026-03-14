@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 
-public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, ModifyDisplay, ModifyLight {
+public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, ModifyDisplay, ModifyLight, SendPulse {
 
     enum PropertyTypes {
         DELAY {
@@ -33,6 +33,12 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
             public LightInstructionProperty create() {
                 return new ModifyDisplay("", new TrafficDisplayPixels());
             }
+        },
+        SEND_PULSE {
+            @Override
+            public LightInstructionProperty create() {
+                return new SendPulse("", false);
+            }
         };
 
         public abstract LightInstructionProperty create();
@@ -43,6 +49,7 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
                 case DELAY -> "Delay";
                 case MODIFY_LIGHT -> "ModifyLight";
                 case MODIFY_DISPLAY -> "ModifyDisplay";
+                case SEND_PULSE -> "SendPulse";
             };
         }
 
@@ -52,6 +59,7 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
                 case DELAY -> Component.translatable("gui.moretraffic.control_cabinet.instruction.delay" + (getMessage ? ".message" : ""));
                 case MODIFY_LIGHT -> Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light" + (getMessage ? ".message" : ""));
                 case MODIFY_DISPLAY -> Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display" + (getMessage ? ".message" : ""));
+                case SEND_PULSE -> Component.translatable("gui.moretraffic.control_cabinet.instruction.send_pulse" + (getMessage ? ".message" : ""));
             };
         }
 
@@ -61,6 +69,7 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
                 case "Delay" -> DELAY;
                 case "ModifyLight" -> MODIFY_LIGHT;
                 case "ModifyDisplay" -> MODIFY_DISPLAY;
+                case "SendPulse" -> SEND_PULSE;
                 default -> throw new IllegalStateException("Unexpected value: " + name);
             };
         }
@@ -71,6 +80,7 @@ public sealed interface LightInstructionProperty permits AwaitRedstone, Delay, M
                 case DELAY -> Delay.class;
                 case MODIFY_LIGHT -> ModifyLight.class;
                 case MODIFY_DISPLAY -> ModifyDisplay.class;
+                case SEND_PULSE -> SendPulse.class;
             };
         }
 

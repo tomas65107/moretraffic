@@ -22,6 +22,9 @@ public class CreativeTab {
                 output.accept((ItemLike) BLINKER);
                 output.accept((ItemLike) LIGHT_CONTROL_CABINET);
                 output.accept((ItemLike) TRAFFIC_DISPLAY_ITEM);
+                output.accept(TRAFFIC_PILLAR);
+                output.accept(TRAFFIC_TRUSS);
+                output.accept(TRAFFIC_TRUSS_WALKWAY);
     }).build());
 
 }

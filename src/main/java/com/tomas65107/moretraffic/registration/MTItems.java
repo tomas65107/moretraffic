@@ -21,6 +21,10 @@ public class MTItems {
     public static final DeferredItem<SimpleBlockItem> BLINKER = ITEMS.register("blinker", () -> new SimpleBlockItem(MTBlocks.BLINKER.get(), new Item.Properties(), false, true, true));
 
     public static final DeferredItem<SimpleBlockItem> LIGHT_CONTROL_CABINET = ITEMS.register("control_cabinet", () -> new SimpleBlockItem(MTBlocks.LIGHT_CONTROL_CABINET.get(), new Item.Properties(), true, false, true));
+    public static final DeferredItem<BlockItem> TRAFFIC_TRUSS = ITEMS.registerSimpleBlockItem(MTBlocks.TRAFFIC_TRUSS);
+    public static final DeferredItem<BlockItem> TRAFFIC_TRUSS_WALKWAY = ITEMS.registerSimpleBlockItem(MTBlocks.TRAFFIC_TRUSS_WALKWAY);
+    public static final DeferredItem<BlockItem> TRAFFIC_PILLAR = ITEMS.registerSimpleBlockItem(MTBlocks.TRAFFIC_PILLAR);
+    public static final DeferredItem<BlockItem> BALLAST_GRAY = ITEMS.registerSimpleBlockItem(MTBlocks.BALLAST_GRAY);
 
     public static final DeferredItem<SimpleItem> LIGHT_DIODE = ITEMS.registerItem("light", (p) -> new SimpleItem(p, true, true, true));
 

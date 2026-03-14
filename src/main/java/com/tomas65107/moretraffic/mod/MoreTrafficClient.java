@@ -40,6 +40,9 @@ public class MoreTrafficClient {
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
+
+        ItemBlockRenderTypes.setRenderLayer(MTBlocks.BALLAST_GRAY.get(), RenderType.cutout());
+
         //BE register
         BlockEntityRenderers.register(
                 MTBE.ADVANCED_TRAFFIC_LIGHT_BE.get(),

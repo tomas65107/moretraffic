@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "moretraffic:block/traffic_truss", "y": 180 },
+    "facing=south": { "model": "moretraffic:block/traffic_truss" },
+    "facing=west":  { "model": "moretraffic:block/traffic_truss", "y": 90 },
+    "facing=east":  { "model": "moretraffic:block/traffic_truss", "y": 270 }
+  }
+}

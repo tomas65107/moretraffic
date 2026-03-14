@@ -95,6 +95,11 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
                             TrafficDisplayPixels.deserialize(nbtInstruction.getString("TrafficDisplayPixels"))
                     );
 
+                    case SEND_PULSE -> new SendPulse(
+                            nbtInstruction.getString("Group"),
+                            nbtInstruction.getBoolean("Enable")
+                    );
+
                     case null, default ->
                             throw new IllegalArgumentException("Error loading BE; Unknown instruction type");
                 };
@@ -153,6 +158,9 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
             else if (instruction instanceof ModifyDisplay(String group, TrafficDisplayPixels trafficDisplayPixels)) {
                 entry.putString("Group", group);
                 entry.putString("TrafficDisplayPixels", trafficDisplayPixels.serialize());
+            } else if (instruction instanceof SendPulse(String group, boolean enable)) {
+                entry.putString("Group", group);
+                entry.putBoolean("Enable", enable);
             }
             else {
                 throw new IllegalArgumentException("Error saving BE; Unknown instruction type");

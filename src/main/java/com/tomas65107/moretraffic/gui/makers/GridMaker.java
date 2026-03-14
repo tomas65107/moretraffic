@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 
 public final class GridMaker {
 
+    public boolean showBlackMaximized = true;
+
     public GridMaker(
             int x, int y,
             Consumer<AbstractWidget> addToRender,
@@ -23,7 +25,8 @@ public final class GridMaker {
                     gridX, gridY,
                     16, 16,
                     color.getTextureDiffuseColor(),
-                    b -> onColorSelected.accept(color), currentlySelectedColor.equals(color)
+                    b -> onColorSelected.accept(color), currentlySelectedColor.equals(color),
+                    showBlackMaximized
             );
             addToRender.accept(button);
 

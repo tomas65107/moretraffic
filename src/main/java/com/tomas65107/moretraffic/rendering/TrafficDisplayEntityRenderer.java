@@ -27,7 +27,7 @@ public class TrafficDisplayEntityRenderer extends RotatableBlockEntityRenderer<T
     @Override
     protected void renderBlock(BERGraphics<TrafficDisplayBlockEntity> berGraphics, float v) {
         float fullPixel = 1.0f; // each block pixel in block units
-        float cubeSize = fullPixel * 0.8f; // scale cube to 50% of the pixel
+        float cubeSize = fullPixel * 0.85f; // scale cube to 50% of the pixel
         float cubeOffset = (fullPixel - cubeSize) / 2f; // center cube in pixel
 
         int index = 0;

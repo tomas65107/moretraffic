@@ -1,10 +1,8 @@
 package com.tomas65107.moretraffic.gui.containers;
 
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
-import com.tomas65107.moretraffic.data.AbstractSheet;
-import com.tomas65107.moretraffic.data.SpritesManager;
-import com.tomas65107.moretraffic.data.TrafficDisplayPixels;
-import com.tomas65107.moretraffic.data.TrafficLightGroup;
+import com.tomas65107.moretraffic.data.*;
+import com.tomas65107.moretraffic.data.helpers.MaskConverter;
 import com.tomas65107.moretraffic.data.helpers.TextHelper;
 import com.tomas65107.moretraffic.data.lightinstructions.*;
 import com.tomas65107.moretraffic.gui.components.BetterEditBox;
@@ -19,12 +17,14 @@ import com.tomas65107.moretraffic.gui.tooltip.BodyTooltip;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
 import com.tomas65107.moretraffic.mod.MoreTrafficClient;
+import com.tomas65107.moretraffic.networking.ClientSenderPacketTrafficLight;
 import com.tomas65107.moretraffic.networking.ClientSyncCabinetPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
@@ -35,11 +35,14 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.*;
 import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
@@ -48,6 +51,7 @@ import static com.tomas65107.moretraffic.data.helpers.TextCutter.cutTextComponen
 import static com.tomas65107.moretraffic.data.helpers.TextHelper.Alignment.CENTER;
 import static com.tomas65107.moretraffic.data.helpers.TextHelper.align;
 import static com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton.NORMAL_HEIGHT;
+import static com.tomas65107.moretraffic.networking.ClientSenderPacketTrafficLight.shortsToBytes;
 import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;
 
 public class LightControlCabinetScreen extends AbstractTomiContainerScreen<LightControlCabinetMenu> {
@@ -65,7 +69,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
     private DyeColor colorPicker = (DyeColor.BLACK);
 
     int guiWidth = 208;
-    int guiHeight = 219;
+    int guiHeight = 249;
 
     private int scrollOffset = 0;
 
@@ -91,12 +95,12 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 new LabelWidget(guiX + 10, guiY +10, Component.translatable("gui.moretraffic.control_cabinet.title").withStyle(ChatFormatting.BOLD), 0xFFFFFF, true)
         );
 
-        int currentY = guiY + 30 - scrollOffset;
+        int currentY = guiY + 41; // initial Y for first instruction (after header)
 
         addBaseWidget(
                 new LabelWidget(guiX+10, guiY + 30, Component.translatable("gui.moretraffic.control_cabinet.instructions").withColor(rgb(SECONDARY)), 0xFFFFFF, true)
         );
-        currentY += 11;
+        // currentY for instructions is handled below
 
         int index = 0;
 
@@ -106,58 +110,57 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 addBaseWidget(new LabelWidget(align(CENTER, component, this.width/2), offset, component, rgb(PRIMARY), true));
                 offset += 10;
             }
-
         }
 
         int viewportTop = guiY + 41;
-        int viewportBottom = guiY + 186;
+        int viewportBottom = guiY + 216;
+        int instructionHeight = 22;
 
+        // Scroll-compatible instruction rendering
         for (LightInstructionProperty instruction : be.instructions) {
             int finalIndex = index++;
-            int finalCurrentY = currentY;
+            int renderY = currentY - scrollOffset;
 
-            int spriteY = (be.isRunning && be.programStep == finalIndex ? 101 : 1) + 23 *
+            int spriteY = (be.isRunning && be.programStep == finalIndex ? 124 : 1) + 23 *
                     switch (instruction) {
                         case Delay d -> 0;
                         case ModifyLight m -> 1;
                         case AwaitRedstone a -> 2;
                         case ModifyDisplay m -> 3;
+                        case SendPulse s -> 4;
                     };
 
+            // Only render if in viewport
+            if (renderY + instructionHeight < viewportTop || renderY > viewportBottom) {
+                currentY += 24;
+                continue;
+            }
+
+            // Scissor must not underflow: clamp right/bottom to guiX+guiWidth and guiY+guiHeight
+            int scissorLeft = guiX + 10;
+            int scissorRight = Math.min(guiX + guiWidth - 10, guiX + 2000);
+
             addBaseWidget(new CustomRenderAsWidget(gfx -> {
-                // clip only inside instruction viewport
-                gfx.enableScissor(guiX + 10, viewportTop, guiX + 2000, viewportBottom);
-
-                // skip if outside viewport
-                if (finalCurrentY + 22 < viewportTop || finalCurrentY > viewportBottom) return;
-
+                gfx.enableScissor(scissorLeft, viewportTop, scissorRight+300, viewportBottom);
                 gfx.blit(
                         ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/control_cabinet_sprites.png"),
-                        guiX + 10, finalCurrentY, 2, spriteY, 188, 22, 256, 256
+                        guiX + 10, renderY, 2, spriteY, 188, 22, 256, 256
                 );
-                TextHelper.renderText(gfx, guiX+25, finalCurrentY+7, instruction.getClassType().getComponentOfProperty(false));
-            }));
-            addBaseWidget(new AdvancedButton(guiX + 183, currentY + 6, 9, 9, SpritesManager.ICON_TRASHCAN,
-                    new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.delete")), true, b->{
-                if (be.isRunning) return;
-                be.instructions.remove(finalIndex);
-                updateBEAndRefreshBE();
+                TextHelper.renderText(gfx, guiX+25, renderY+7, instruction.getClassType().getComponentOfProperty(false));
             }));
 
             if (instruction instanceof Delay delay) {
-                BetterEditBox textField = new BetterEditBox( guiX + 139, currentY + 7, 30, 14);
+                BetterEditBox textField = new BetterEditBox(guiX + 139, renderY + 7, 30, 14);
 
                 textField.onSave(() -> {
                     String text = textField.getValue();
-                    // remove any character except digits and dot
+
                     String filtered = text.replaceAll("[^0-9.]", "");
 
-                    // allow only one dot
                     int dotIndex = filtered.indexOf('.');
                     if (dotIndex != -1) {
                         filtered = filtered.substring(0, dotIndex + 1) + filtered.substring(dotIndex + 1).replace(".", "");
                     }
-
                     if (!filtered.isEmpty() && !filtered.equals(".")) {
                         try {
                             float seconds = Float.parseFloat(filtered);
@@ -166,14 +169,11 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                         } catch (NumberFormatException ignore) {}
                     }
                 });
-
                 textField.setBordered(false);
                 textField.setValue(String.valueOf(delay.delayInTicks() / 20f));
                 textField.setTextColor(rgb(PRIMARY));
-
                 textField.onChange(text -> {
                     String filtered = text.replaceAll("[^0-9.]", "");
-
                     // allow only one dot
                     int dotIndex = filtered.indexOf('.');
                     if (dotIndex != -1) {
@@ -183,34 +183,27 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                         textField.setValue(filtered);
                     }
                 });
-
                 textField.active = !be.isRunning;
                 addBaseWidget(textField);
-
             } else if (instruction instanceof ModifyLight modifyLight) {
-                addBaseWidget(new ColorButton(guiX + 134, currentY + 4, 14, 14, modifyLight.light0().getTextureDiffuseColor(), b -> {
+                addBaseWidget(new ColorButton(guiX + 134, renderY + 4, 14, 14, modifyLight.light0().getTextureDiffuseColor(), b -> {
                     displaySheet(finalIndex, modifyLight, 0);
                 }, false, true));
-
-                addBaseWidget(new ColorButton(guiX + 149, currentY + 4, 14, 14, modifyLight.light1().getTextureDiffuseColor(), b -> {
+                addBaseWidget(new ColorButton(guiX + 149, renderY + 4, 14, 14, modifyLight.light1().getTextureDiffuseColor(), b -> {
                     displaySheet(finalIndex, modifyLight, 1);
                 }, false, true));
-
-                addBaseWidget(new ColorButton(guiX + 164, currentY + 4, 14, 14, modifyLight.light2().getTextureDiffuseColor(), b -> {
+                addBaseWidget(new ColorButton(guiX + 164, renderY + 4, 14, 14, modifyLight.light2().getTextureDiffuseColor(), b -> {
                     displaySheet(finalIndex, modifyLight, 2);
                 }, false, true));
-
-                BetterEditBox textField = new BetterEditBox(guiX + 89, currentY + 7, 40, 14);
+                BetterEditBox textField = new BetterEditBox(guiX + 89, renderY + 7, 40, 14);
                 textField.setBordered(false);
                 textField.setValue(modifyLight.group());
                 textField.setTextColor(rgb(PRIMARY));
-
                 textField.onSave(() -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(textField.getValue()))) return;
                     be.instructions.set(finalIndex, new ModifyLight(textField.getValue(), modifyLight.light0(), modifyLight.light1(), modifyLight.light2()));
                     updateBEAndRefreshBE();
                 });
-
                 textField.onChange(text -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(text))) {
                         textField.setTextColor(rgb(INVALID));
@@ -220,29 +213,22 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                         textField.hideFloatingTooltip();
                     }
                 });
-
                 textField.active = !be.isRunning;
                 addBaseWidget(textField);
-
             } else if (instruction instanceof ModifyDisplay modifyDisplay) {
-
-                addBaseWidget(new ColorButton(guiX + 164, currentY + 4, 14, 14, rgb(new Color(255, 77, 0)), b -> {
-
+                addBaseWidget(new ColorButton(guiX + 164, renderY + 4, 14, 14, rgb(new Color(255, 77, 0)), b -> {
                     int sheetWidth = 300;
                     int sheetHeight = 200;
-
                     int sheetX = guiX + (guiWidth - sheetWidth) / 2;
                     int sheetY = guiY + (guiHeight - sheetHeight) / 2;
-
                     this.addElement(
                             new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display").getString(), true, sheetWidth, sheetHeight) {
-                                //11
                                 @Override
                                 public void init(Consumer<AbstractWidget> adder) {
 
                                     new GridMaker(10, 25, adder, c -> {
                                         colorPicker = c; refreshContent();
-                                    }, colorPicker);
+                                    }, colorPicker).showBlackMaximized = false;
 
                                     new PixelGridMaker(
                                             10, 60,
@@ -250,28 +236,49 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                                             adder,
                                             newPixels -> {
                                                 be.instructions.set(finalIndex, new ModifyDisplay(modifyDisplay.group(), newPixels));
-                                                updateBEAndRefreshBE();
-                                                timer = 1;
+                                                updateBEAndRefreshBE(); timer = 1;
                                             },
                                             colorPicker
                                     );
+
+
+                                    adder.accept(
+                                            new AdvancedButton(244, 90, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.clear"), SpritesManager.ICON_CLEAR, a-> {
+                                                be.instructions.set(finalIndex, new ModifyDisplay(modifyDisplay.group(), new TrafficDisplayPixels()));
+                                                updateBEAndRefreshBE(); timer = 1;
+                                            })
+                                    );
+
+                                    adder.accept(
+                                            new AdvancedButton(244+30+20, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export.message"), null), a->{
+                                                updateBEAndRefreshBE(); timer = 1;
+                                                Minecraft.getInstance().keyboardHandler.setClipboard(((ModifyDisplay) be.instructions.get(finalIndex)).trafficDisplayPixels().serialize());
+                                                refreshContent();
+                                            })
+                                    );
+                                    adder.accept(new AdvancedButton(244+28, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import.message"), null), a->{
+                                                try {
+                                                    be.instructions.set(finalIndex, new ModifyDisplay(modifyDisplay.group(), TrafficDisplayPixels.deserialize(Minecraft.getInstance().keyboardHandler.getClipboard())));
+                                                    updateBEAndRefreshBE(); timer = 1;
+                                                } catch (Exception ex) {
+                                                    a.setTooltip(Tooltip.create(Component.translatable("gui.moretraffic.import_invalid_data")));
+                                                }
+                                            })
+                                    );
+
                                 }
                             }
                     );
-
                 }, false, true));
-
-                BetterEditBox textField = new BetterEditBox(guiX + 89, currentY + 7, 40, 14);
+                BetterEditBox textField = new BetterEditBox(guiX + 120, renderY + 7, 40, 14);
                 textField.setBordered(false);
                 textField.setValue(modifyDisplay.group());
                 textField.setTextColor(rgb(PRIMARY));
-
                 textField.onSave(() -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(textField.getValue()))) return;
                     be.instructions.set(finalIndex, new ModifyDisplay(textField.getValue(), modifyDisplay.trafficDisplayPixels()));
                     updateBEAndRefreshBE();
                 });
-
                 textField.onChange(text -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(text))) {
                         textField.setTextColor(rgb(INVALID));
@@ -281,22 +288,57 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                         textField.hideFloatingTooltip();
                     }
                 });
-
                 textField.active = !be.isRunning;
                 addBaseWidget(textField);
+            } else if (instruction instanceof SendPulse(String group, boolean enable)) {
+                addBaseWidget(Checkbox.builder(Component.literal(""), Minecraft.getInstance().font).pos(guiX + 164, renderY + 4) .maxWidth(1) .selected(enable) .onValueChange((b, a)-> {
+                    be.instructions.set(finalIndex, new SendPulse(group, a)); updateBEAndRefreshBE();
+                }) .build());
 
+                BetterEditBox textField = new BetterEditBox(guiX + 120, renderY + 7, 40, 14);
+                textField.setBordered(false);
+                textField.setValue(group);
+                textField.setTextColor(rgb(PRIMARY));
+                textField.onSave(() -> {
+                    if (be.groups.stream().noneMatch(g -> g.name.equals(textField.getValue()))) return;
+                    be.instructions.set(finalIndex, new SendPulse(textField.getValue(), enable));
+                    updateBEAndRefreshBE();
+                });
+                textField.onChange(text -> {
+                    if (be.groups.stream().noneMatch(g -> g.name.equals(text))) {
+                        textField.setTextColor(rgb(INVALID));
+                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.literal("Group named '" + text + "' does not exist"), INVALID));
+                    } else {
+                        textField.setTextColor(rgb(PRIMARY));
+                        textField.hideFloatingTooltip();
+                    }
+                });
+                textField.active = !be.isRunning;
+                addBaseWidget(textField);
             }
 
-            currentY += 24;
+            addBaseWidget(new AdvancedButton(guiX + 183, renderY + 6, 9, 9, SpritesManager.ICON_TRASHCAN,
+                    new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.delete")), true, b->{
+                if (be.isRunning) return;
+                be.instructions.remove(finalIndex);
+                updateBEAndRefreshBE();
+            }));
+
+            addBaseWidget(
+                    new AdvancedButton(guiX+201, renderY, NORMAL_HEIGHT, NORMAL_HEIGHT, Component.literal("↑"), null, null, b -> {
+                        if (finalIndex > 0) {
+                            Collections.swap(be.instructions, finalIndex, finalIndex - 1);
+                            updateBEAndRefreshBE();
+                        }})
+            );
+
             addBaseWidget(new CustomRenderAsWidget(gfx -> {
                 gfx.disableScissor();
-
                 double mouseX = Minecraft.getInstance().mouseHandler.xpos() * this.width / Minecraft.getInstance().getWindow().getScreenWidth();
                 double mouseY = Minecraft.getInstance().mouseHandler.ypos() * this.height / Minecraft.getInstance().getWindow().getScreenHeight();
                 int textWidth = Minecraft.getInstance().font.width(instruction.getClassType().getComponentOfProperty(false).getString());
-
                 if (mouseX >= guiX + 13 &&
-                            mouseX <= guiX + 25 + textWidth + 2 && mouseY >= finalCurrentY + 7 && mouseY <= finalCurrentY + 7 + Minecraft.getInstance().font.lineHeight && shouldRenderTooltips()) {
+                            mouseX <= guiX + 25 + textWidth + 2 && mouseY >= renderY + 7 && mouseY <= renderY + 7 + Minecraft.getInstance().font.lineHeight && shouldRenderTooltips()) {
                     gfx.renderTooltip(
                             Minecraft.getInstance().font, List.of(Component.empty()),
                             Optional.of(new NoticeBoxTooltip(instruction.getClassType().getComponentOfProperty(false), instruction.getClassType().getComponentOfProperty(true), Component.literal("instructionIndex: " + finalIndex))),
@@ -304,9 +346,11 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                     );
                 }
             }));
+
+            currentY += 24;
         }
 
-        addBaseWidget(new AdvancedButton(guiX+10, guiY+194, 15, 15, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.import")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+10, guiY+224, 15, 15, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.import")), true, b->{
 
             int sheetWidth = 180;
             int sheetHeight = 90;
@@ -369,7 +413,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                     });
 
         }));
-        addBaseWidget(new AdvancedButton(guiX+26, guiY+194, 15, 15, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.export")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+26, guiY+224, 15, 15, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.export")), true, b->{
 
             int sheetWidth = 180;
             int sheetHeight = 130;
@@ -421,11 +465,11 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
 
         }));
-        addBaseWidget(new AdvancedButton(guiX+51, guiY+194, 15, 15, be.shouldLoop ? SpritesManager.ICON_REPEAT : SpritesManager.ICON_ONETIME, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.repeat"), Component.translatable("gui.moretraffic.control_cabinet.repeat.message."+(be.shouldLoop ? "yes":"no")), Component.translatable("gui.moretraffic.change")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+51, guiY+224, 15, 15, be.shouldLoop ? SpritesManager.ICON_REPEAT : SpritesManager.ICON_ONETIME, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.repeat"), Component.translatable("gui.moretraffic.control_cabinet.repeat.message."+(be.shouldLoop ? "yes":"no")), Component.translatable("gui.moretraffic.change")), true, b->{
             be.shouldLoop = !be.shouldLoop;
             updateBEAndRefreshBE();
         }));
-        addBaseWidget(new AdvancedButton(guiX+76, guiY+194, 15, 15, SpritesManager.ICON_GROUP, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.groups")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+76, guiY+224, 15, 15, SpritesManager.ICON_GROUP, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.groups")), true, b->{
             int sheetWidth = 410;
             int sheetHeight = 200;
 
@@ -547,9 +591,9 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
             );
         }));
 
-        addBaseWidget(new AdvancedButton(guiX+76+25, guiY+194, 15, 15, SpritesManager.ICON_PLUS, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.plus")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+76+25, guiY+224, 15, 15, SpritesManager.ICON_PLUS, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.plus")), true, b->{
             int sheetWidth = 150;
-            int sheetHeight = 150;
+            int sheetHeight = 170;
 
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
             int sheetY = guiY + (guiHeight - sheetHeight) / 2;
@@ -575,7 +619,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
         }));
 
 
-        addBaseWidget(new AdvancedButton(guiX+167, guiY+194, 15, 15, be.isRunning ? SpritesManager.ICON_PLAY_ENGAGED : SpritesManager.ICON_PLAY, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.play"), null, Component.translatable("gui.moretraffic.change")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+167, guiY+224, 15, 15, be.isRunning ? SpritesManager.ICON_PLAY_ENGAGED : SpritesManager.ICON_PLAY, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.play"), null, Component.translatable("gui.moretraffic.change")), true, b->{
             if (be.isRunning) {
                 be.isRunning = false;
             } else {
@@ -585,13 +629,13 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
             updateBEAndRefreshBE();
         }));
 
-        addBaseWidget(new LabelWidget(guiX+183, guiY+194 + 5, Component.literal(be.ticksSinceStart/20+"s"), be.isRunning ? rgb(SELECTED) : rgb(PRIMARY), true, 0.5f));
+        addBaseWidget(new LabelWidget(guiX+183, guiY+224 + 5, Component.literal(be.ticksSinceStart/20+"s"), be.isRunning ? rgb(SELECTED) : rgb(PRIMARY), true, 0.5f));
         addBaseWidget(new CustomRenderAsWidget(gfx -> {
             double mouseX = Minecraft.getInstance().mouseHandler.xpos() * this.width / Minecraft.getInstance().getWindow().getScreenWidth();
             double mouseY = Minecraft.getInstance().mouseHandler.ypos() * this.height / Minecraft.getInstance().getWindow().getScreenHeight();
 
             if (mouseX >= guiX + 182 && mouseX <=  guiX + 195 &&
-                mouseY >= guiY + 191 + 5 && mouseY <= guiY + 191 + 17 &&
+                mouseY >= guiY + 221 + 5 && mouseY <= guiY + 221 + 17 &&
                 shouldRenderTooltips()) {
                 gfx.renderTooltip(
                         Minecraft.getInstance().font, List.of(Component.empty()),
@@ -674,7 +718,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
         int scrollSpeed = 10;
 
         scrollOffset -= scrollY * scrollSpeed;
-        scrollOffset = Math.max(0, Math.min(scrollOffset, ((be.instructions.size() - 6)*26)+10));
+        scrollOffset = Math.max(0, Math.min(scrollOffset, ((be.instructions.size() - 7)*26)+10));
 
         refreshContent();
 
