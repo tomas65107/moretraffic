@@ -1,17 +1,14 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
-import com.sun.jdi.request.InvalidRequestStateException;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightOrientation;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightPosition;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightScale;
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
 import com.tomas65107.moretraffic.registration.MTBlocks;
 import com.tomas65107.moretraffic.registration.MTItems;
-import com.tomas65107.moretraffic.rendering.BlockBoundingBoxes;
 import de.mrjulsen.trafficcraft.block.data.ColorableBlock;
 import de.mrjulsen.trafficcraft.block.data.ITrafficPostLike;
-import de.mrjulsen.trafficcraft.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -80,7 +77,7 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
                 .setValue(POSITION, TrafficLightPosition.TOP);
     }
 
-    private VoxelShape boundingBoxGetter(BlockState state) throws InvalidRequestStateException {
+    private VoxelShape boundingBoxGetter(BlockState state) throws IllegalArgumentException {
         if (state.getBlock() == MTBlocks.ADV_1_TRAFFIC_LIGHT.get()) {
             return rotateShape(state.getValue(FACING), advancedTraffic1Light);
         } else if (state.getBlock() == MTBlocks.ADV_2_TRAFFIC_LIGHT.get()) {
@@ -88,7 +85,7 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
         } else if (state.getBlock() == MTBlocks.ADV_3_TRAFFIC_LIGHT.get()) {
             return rotateShape(state.getValue(FACING), advancedTraffic3Light);
         }
-        throw new InvalidRequestStateException();
+        throw new IllegalArgumentException();
     }
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
