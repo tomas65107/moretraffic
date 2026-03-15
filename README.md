@@ -1,7 +1,5 @@
 # MoreTraffic
-
-*Addon for [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) by MrJulsen.*\
-**Enhances TrafficCraft with quality-of-life improvements and useful features: light mask editor, more light colors, full customization, automation, grouping, and more.**
+**A [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) addon adding advanced traffic lights, displays, LEDs, control systems and decorations.**
 
 <p align="left">
   <a href="https://discord.gg/XaGFT5dAbh">
@@ -24,31 +22,41 @@
 > - Make sure you have downloaded trafficcraft alongside this mod (modrinth does this automatically)
 
 ## Content
-Learn more on the content currently present and planned in the future.
+Learn more on the content currently present in the mod and planned in the future. This functions like a Wiki, too
 
 ### ✅ Features in the mod
 
 - **Traffic Lights Overhaul**
     - You can now control a variety of things on traffic lights: Orientation, Position, Scale
     - Precise custom color control for each light
-    - In-game editing of fully custom traffic light masks and you can import masks from images
+    - In-game editing of fully custom traffic light masks and you can import masks from images\
       <img width="216" height="145" src="https://github.com/user-attachments/assets/87bee6ef-020b-4fd4-8dd4-2b6e0e685262" alt="Traffic Light Screenshot" />
       <img width="216" height="145" src="https://github.com/user-attachments/assets/7b03f51a-b1d9-44cf-8b2c-bc4cf82be2b9" alt="Traffic Light Screenshot" />
 
 - **Traffic Light Control Cabinet**
     - Program your fully custom traffic light loops
     - You have a fine control over traffic lights and have a redstone trigger
-    - You also have grouping of light available to create big networks in seconds
+    - You also have grouping of light available to create big networks in seconds\
       <img width="216" height="145" src="https://github.com/user-attachments/assets/99f23fbb-5d47-4e6b-a0b3-1739d9ed8baf" alt="Control Cabinet Screenshot" />
       <img width="216" height="145" src="https://github.com/user-attachments/assets/f5e065d3-2adb-4f50-b7c7-6512bb7c411d" alt="Control Cabinet Screenshot" />
 
+- **Blinker**
+    - Programable LED that can be placed anywhere and blink with any color with any interval
+    - Activable with redstone or control cabinet and can be painted
+    - Great for any road project, high buildings, decoration,...
+ 
+- **Traffic Display**
+    - Highway-like diode display that can be programmed to show latest info about highways.
+    - Full control over the display via control cabinet.
+ 
+- **Traffic Truss**
+    - Decorate highways with traffic pilliars and trusses
+
 - **New Commands**
     - `/copypos [optional argument]` — copy the position of the block you are looking at. Helpful when making groups quickly
+      
 - **Bug Fixes for TrafficCraft**
     - Fixed TrafficCraft's traffic pole not having a tool assigned and thus breaking speed is slow.
-- **Survival Support and Optimalizations**
-    - Recipes added and optimized for survival gameplay
-    - Optimalizations also have been made to not lag servers
 
 ---
 
