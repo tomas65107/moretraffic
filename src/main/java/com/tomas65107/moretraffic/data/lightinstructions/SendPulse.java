@@ -25,6 +25,7 @@ public record SendPulse(String group, boolean enable) implements LightInstructio
 
             if (!blockPosList.isEmpty()) {
                 for (BlockPos lightPos : blockPosList) {
+                    if (!level.isLoaded(lightPos)) continue;
                     if (level.getBlockEntity(lightPos) instanceof FlashingBlinkerBlockEntity flashingBlinkerBlockEntity) {
                         flashingBlinkerBlockEntity.lightStatus = enable;
                         flashingBlinkerBlockEntity.setChanged();

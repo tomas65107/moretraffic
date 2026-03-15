@@ -9,8 +9,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
+import java.awt.*;
 import java.util.List;
 
+import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GRAY;
 
@@ -37,10 +39,11 @@ public abstract class BaseDescriptionItem {
         }
 
         var flags = Component.empty();
-        if (wrenchable) flags.append(Component.translatable("core.description.wrenchable").withStyle(ChatFormatting.ITALIC).withStyle(GRAY));
+        if (wrenchable) flags.append(Component.translatable("core.description.wrenchable").withStyle(ChatFormatting.ITALIC).withColor(rgb(new Color(116, 155, 182))));
         if (wrenchable && colorable) flags.append("  ");
-        if (colorable) flags.append(Component.translatable("core.description.colorable").withStyle(ChatFormatting.ITALIC).withStyle(GRAY));
-        tooltip.add(flags);
+        if (colorable) flags.append(Component.translatable("core.description.colorable").withStyle(ChatFormatting.ITALIC).withColor(rgb(new Color(165, 188, 96))));
+
+        if (!flags.equals(Component.empty())) tooltip.add(flags);
 
     }
 }

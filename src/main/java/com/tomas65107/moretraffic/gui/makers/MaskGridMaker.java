@@ -2,6 +2,7 @@ package com.tomas65107.moretraffic.gui.makers;
 
 import com.tomas65107.moretraffic.data.TrafficLightLight;
 import com.tomas65107.moretraffic.gui.components.buttons.PixelButton;
+import com.tomas65107.moretraffic.mod.MoreTraffic;
 import net.minecraft.client.gui.components.AbstractWidget;
 
 import java.util.Arrays;
@@ -34,11 +35,7 @@ public final class MaskGridMaker {
                         px, py,
                         8, 8,
                         enabled,
-                        flipIt -> {
-                            if (!flipIt) return;
-
-                            newRows[finalRow] ^= (short) (1 << finalCol);
-                        },
+                        ignore -> newRows[finalRow] ^= (short) (1 << finalCol),
                         v -> {
                             pressAction = v;
                             if (pressAction ==0 && !Arrays.equals(newRows, MaskData.getRows().clone())) {

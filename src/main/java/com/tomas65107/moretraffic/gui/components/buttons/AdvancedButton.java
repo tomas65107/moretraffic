@@ -2,6 +2,7 @@ package com.tomas65107.moretraffic.gui.components.buttons;
 
 import com.tomas65107.moretraffic.data.SpritesManager;
 import com.tomas65107.moretraffic.data.helpers.TextHelper;
+import com.tomas65107.moretraffic.mod.MoreTraffic;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;

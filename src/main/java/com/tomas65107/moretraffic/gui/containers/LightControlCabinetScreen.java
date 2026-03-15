@@ -216,19 +216,19 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 textField.active = !be.isRunning;
                 addBaseWidget(textField);
             } else if (instruction instanceof ModifyDisplay modifyDisplay) {
-                addBaseWidget(new ColorButton(guiX + 164, renderY + 4, 14, 14, rgb(new Color(255, 77, 0)), b -> {
+                addBaseWidget(new AdvancedButton(guiX + 164, renderY + 4, 14, 14, SpritesManager.EDIT_DISPLAY, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.modify")), true, b->{
                     int sheetWidth = 250;
                     int sheetHeight = 200;
                     int sheetX = guiX + (guiWidth - sheetWidth) / 2;
                     int sheetY = guiY + (guiHeight - sheetHeight) / 2;
                     this.addElement(
-                            new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display").getString(), true, sheetWidth, sheetHeight) {
+                            new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.modify").getString(), true, sheetWidth, sheetHeight) {
                                 @Override
                                 public void init(Consumer<AbstractWidget> adder) {
 
                                     new GridMaker(10, 25, adder, c -> {
                                         colorPicker = c; refreshContent();
-                                    }, colorPicker).showBlackMaximized = false;
+                                    }, colorPicker, true);
 
                                     new PixelGridMaker(
                                             10, 60,
@@ -240,6 +240,13 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                                             },
                                             colorPicker
                                     );
+
+
+                                    NoticeBoxTooltip tooltip3 = new NoticeBoxTooltip(
+                                            Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.controls"),
+                                            Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.controls.message"),
+                                            null, ColorsManager.HEADER, false);
+                                    adder.accept(new HelpElementWidget(148, 70, ICON_INFO, tooltip3));
 
 
                                     adder.accept(
@@ -269,7 +276,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                                 }
                             }
                     );
-                }, false, true));
+                }));
                 BetterEditBox textField = new BetterEditBox(guiX + 120, renderY + 7, 40, 14);
                 textField.setBordered(false);
                 textField.setValue(modifyDisplay.group());
@@ -291,7 +298,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 textField.active = !be.isRunning;
                 addBaseWidget(textField);
             } else if (instruction instanceof SendPulse(String group, boolean enable)) {
-                addBaseWidget(Checkbox.builder(Component.literal(""), Minecraft.getInstance().font).pos(guiX + 164, renderY + 4) .maxWidth(1) .selected(enable) .onValueChange((b, a)-> {
+                addBaseWidget(Checkbox.builder(Component.literal(""), Minecraft.getInstance().font).pos(guiX + 164, renderY + 4) .selected(enable) .onValueChange((b, a)-> {
                     be.instructions.set(finalIndex, new SendPulse(group, a)); updateBEAndRefreshBE();
                 }) .build());
 
@@ -341,7 +348,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                             mouseX <= guiX + 25 + textWidth + 2 && mouseY >= renderY + 7 && mouseY <= renderY + 7 + Minecraft.getInstance().font.lineHeight && shouldRenderTooltips()) {
                     gfx.renderTooltip(
                             Minecraft.getInstance().font, List.of(Component.empty()),
-                            Optional.of(new NoticeBoxTooltip(instruction.getClassType().getComponentOfProperty(false), instruction.getClassType().getComponentOfProperty(true), Component.literal("instructionIndex: " + finalIndex))),
+                            Optional.of(new NoticeBoxTooltip(instruction.getClassType().getComponentOfProperty(false), instruction.getClassType().getComponentOfProperty(true), Component.literal("id: " + instruction.getClassType().getNameOfProperty() + "  instructionIndex: " + finalIndex))),
                             ItemStack.EMPTY, (int) mouseX, (int) mouseY
                     );
                 }

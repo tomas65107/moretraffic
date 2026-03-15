@@ -26,6 +26,7 @@ public record ModifyLight(String group, DyeColor light0, DyeColor light1, DyeCol
             if (!blockPosList.isEmpty()) {
 
                 for (BlockPos lightPos : blockPosList) {
+                    if (!level.isLoaded(lightPos)) continue;
                     if (level.getBlockEntity(lightPos) instanceof AdvancedTrafficLightBlockEntity trafficLightBlock) {
                         trafficLightBlock.modifyLightColor(0, light0());
                         trafficLightBlock.modifyLightColor(1, light1());

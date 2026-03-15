@@ -25,6 +25,7 @@ public record ModifyDisplay(String group, TrafficDisplayPixels trafficDisplayPix
             if (!blockPosList.isEmpty()) {
 
                 for (BlockPos lightPos : blockPosList) {
+                    if (!level.isLoaded(lightPos)) continue;
                     if (level.getBlockEntity(lightPos) instanceof TrafficDisplayBlockEntity trafficDisplayBlockEntity) {
                         trafficDisplayBlockEntity.modifyDisplayPixels(displayPixels);
                     } else {

@@ -9,10 +9,11 @@
   "block.moretraffic.traffic_truss": "Traffic Truss",
   "block.moretraffic.traffic_truss_walkway": "Traffic Truss with Walkway",
   "block.moretraffic.ballast_gray": "Gray Ballast",
+  "block.moretraffic.traffic_pillar": "Traffic Pillar",
   "block.moretraffic.traffic_display": "Traffic Display",
-  "block.moretraffic.control_cabinet.description": "Can be used to make automations and to program lights in one block",
-  "block.moretraffic.blinker.description": "When powered with redstone, it lights up. Paint to change colors",
-  "item.moretraffic.light.description": "When used on a traffic pole, makes advanced traffic light. Click again to add more lights to traffic light. Sneak-click with wrench to remove one light",
+  "block.moretraffic.control_cabinet.description": "Can be used to make automations that control other blocks",
+  "block.moretraffic.blinker.description": "Turn on with redstone or with Control Cabinet. Paint to change colors",
+  "item.moretraffic.light.description": "Right-click a traffic pole to create an advanced traffic light. Click again to add lights. Sneak & right-click with Wrench to remove one",
 
 
   "core.description.wrenchable": "Wrenchable",
@@ -23,7 +24,7 @@
   "core.moretraffic.advanced_traffic_light.light3": "Third light",
   "core.moretraffic.advanced_traffic_light.property.orientation": "Orientation of traffic light",
   "core.moretraffic.advanced_traffic_light.property.position": "Position of traffic light",
-  "core.moretraffic.advanced_traffic_light.property.scale": "Scale of traffic light (TO BE IMPLEMENTED IN FUTURE)",
+  "core.moretraffic.advanced_traffic_light.property.scale": "Scale of traffic light (doesent work yet)",
 
   "gui.moretraffic.configure": "Configure...",
   "gui.moretraffic.close": "Close",
@@ -67,6 +68,7 @@
   "gui.moretraffic.control_cabinet.instruction.modify_light.select_color": "Select light color",
   "gui.moretraffic.control_cabinet.instruction.modify_display": "Modify display",
   "gui.moretraffic.control_cabinet.instruction.modify_display.message": "Modifies the displays added in the group with an colored image",
+  "gui.moretraffic.control_cabinet.instruction.modify_display.modify": "Edit image",
   "gui.moretraffic.control_cabinet.instruction.modify_display.import": "Import pixel data from clipboard",
   "gui.moretraffic.control_cabinet.instruction.modify_display.import.message": "Load pixel data from your clipboard",
   "gui.moretraffic.control_cabinet.instruction.modify_display.export": "Export pixel data",
