@@ -1,15 +1,12 @@
 package com.tomas65107.moretraffic.rendering;
 
 import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
-import com.tomas65107.moretraffic.mod.MoreTraffic;
-import de.mrjulsen.mcdragonlib.client.ber.BERCube;
+import com.tomas65107.moretraffic.rendering.helpers.LegacyCube;
 import de.mrjulsen.mcdragonlib.client.ber.BERGraphics;
 import de.mrjulsen.mcdragonlib.client.ber.RotatableBlockEntityRenderer;
-import de.mrjulsen.mcdragonlib.data.Pair;
+import de.mrjulsen.mcdragonlib.util.Pair;
 import de.mrjulsen.trafficcraft.data.PaintColor;
-import jdk.nio.mapmode.ExtendedMapMode;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.phys.Vec2;
@@ -40,7 +37,7 @@ public class BlinkerBlockEntityRenderer extends RotatableBlockEntityRenderer<Fla
         float glassHeight = (6f / 16f)+0.005f;
         float glassDepth = (4f / 16f)+0.005f;
 
-        BERCube glass = BERCube.cube(
+        LegacyCube glass = LegacyCube.cube(
                 LIGHT_TEXTURE,
                 glassWidth, glassHeight, glassDepth,
                 dir -> true,
@@ -49,7 +46,7 @@ public class BlinkerBlockEntityRenderer extends RotatableBlockEntityRenderer<Fla
         graphics.poseStack().pushPose();
         graphics.poseStack().translate(
                 0.31f,
-                2f / 16f + glassHeight - 0.008 ,
+                4f / 16f + glassHeight - 0.008 ,
                 0.373f
         );
         glass.setLight(EMISSIVE);
@@ -61,7 +58,7 @@ public class BlinkerBlockEntityRenderer extends RotatableBlockEntityRenderer<Fla
 
         // Bulb cube
         float bulbSize = (2f/16f)+0.001f;
-        BERCube bulb = BERCube.cube(
+        LegacyCube bulb = LegacyCube.cube(
                 ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/block/bulb.png"),
                 bulbSize, bulbSize, bulbSize,
                 dir -> true,
@@ -70,7 +67,7 @@ public class BlinkerBlockEntityRenderer extends RotatableBlockEntityRenderer<Fla
         graphics.poseStack().pushPose();
         graphics.poseStack().translate(
                 0.5f-(bulbSize/2),
-                0.65,
+                0.75,
                 0.437f
         );
         bulb.setLight(be.lightStatus ? EMISSIVE : MASKED_EMISSIVE);

@@ -3,19 +3,20 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.126'
     id 'idea'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 tasks.named('wrapper', Wrapper).configure {
-    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
-    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
-    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
-    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
-    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
     distributionType = Wrapper.DistributionType.BIN
 }
 
 version = mod_version
 group = mod_group_id
+
+def mod_changelog = """
+    Finally getting into beta territory and escaping alpha!
+    Changed rendering pipeline to use the new trafficcraft and DragonLib 3 approach. Should now work with the newest version and not crash.
+"""
 
 repositories {
     // Add here additional repositories if required by some of the dependencies below.
@@ -28,6 +29,34 @@ repositories {
 base {
     archivesName = mod_id
 }
+
+publishMods {
+    file = tasks.named("jar").flatMap { it.archiveFile }
+    changelog = mod_changelog
+    type = "BETA"
+    modLoaders.add("neoforge")
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_PAT")
+        projectId = "ehd4WTU1"
+        minecraftVersions.add("1.21.1")
+    }
+
+    curseforge {
+        accessToken = providers.environmentVariable("CURSEFORGE_PAT")
+        projectId = "1487775"
+        minecraftVersions.add("1.21.1")
+    }
+
+    github {
+        accessToken = providers.environmentVariable("GITHUB_TOKEN")
+        repository = "tomas65107/moretraffic"
+        commitish = "neoforge-1.21.1"
+
+        tagName = "v${project.version}"
+    }
+}
+
 
 // Mojang ships Java 21 to end users in 1.21.1, so mods should target Java 21.
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -118,8 +147,8 @@ configurations {
 dependencies {
 
     // TrafficCraft dependency (required)
-    implementation "curse.maven:trafficcraft-852322:6053718"
-    implementation "curse.maven:dragonlib-946163:6053760"
+    implementation "curse.maven:trafficcraft-852322:7754967"
+    implementation "curse.maven:dragonlib-946163:7763966"
 
     localRuntime "curse.maven:jei-238222:7420587"
 

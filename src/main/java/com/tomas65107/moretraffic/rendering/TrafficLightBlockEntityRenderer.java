@@ -4,10 +4,10 @@ import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlock;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightLight;
 import com.tomas65107.moretraffic.registration.MTBlocks;
-import de.mrjulsen.mcdragonlib.client.ber.BERCube;
+import com.tomas65107.moretraffic.rendering.helpers.LegacyCube;
 import de.mrjulsen.mcdragonlib.client.ber.BERGraphics;
 import de.mrjulsen.mcdragonlib.client.ber.RotatableBlockEntityRenderer;
-import de.mrjulsen.mcdragonlib.data.Pair;
+import de.mrjulsen.mcdragonlib.util.Pair;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +29,7 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
     private static final float BIG_LIGHT = 0.25f; // BL
     private static final float PIXEL = BIG_LIGHT / 16f; // P = BL/16
 
-    private static final BERCube LIGHT = createLight();
+    private static final LegacyCube LIGHT = createLight();
 
 
     public TrafficLightBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -128,8 +128,6 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
     private void renderMask(BERGraphics<AdvancedTrafficLightBlockEntity> graphics,
                             TrafficLightLight.TrafficLightMask mask) {
 
-        final float zOffset = -0.001f; // slightly in front of big light
-
         for (int y = 0; y < 16; y++) {
             short row = mask.getRows()[y];
 
@@ -142,7 +140,7 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
                 float u1 = (x + 1) / 16f;
                 float v1 = (y + 1) / 16f;
 
-                BERCube pixelCube = BERCube.cube(
+                LegacyCube pixelCube = LegacyCube.cube(
                         LIGHT_TEXTURE,
                         PIXEL + 0.002f,
                         PIXEL + 0.002f,
@@ -156,9 +154,9 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
 
                 graphics.poseStack().pushPose();
                 graphics.poseStack().translate(
-                        x * PIXEL - 0.001f,
-                        y * PIXEL - 0.001f,
-                        -zOffset
+                        x * PIXEL - 0.0001f,
+                        (y * PIXEL - 0.0001f) -0.234f,
+                        0.001f
                 );
 
                 pixelCube.render(graphics);
@@ -167,8 +165,8 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
         }
     }
 
-    private static BERCube createLight() {
-        return BERCube.cube(LIGHT_TEXTURE, 0.25F, 0.25F, 0.0625F,
+    private static LegacyCube createLight() {
+        return LegacyCube.cube(LIGHT_TEXTURE, 0.25F, 0.25F, 0.0625F,
                 dir -> dir != Direction.NORTH && dir != Direction.UP,
                 dir -> {
                     switch (dir) {
