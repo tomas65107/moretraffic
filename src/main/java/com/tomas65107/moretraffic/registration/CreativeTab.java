@@ -16,12 +16,15 @@ public class CreativeTab {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TRAFFICCRAFT_TAB = CREATIVE_MODE_TABS.register("trafficcraft_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.moretraffic"))
-            .icon(() -> ADV_3_TRAFFIC_LIGHT_ITEM.asItem().getDefaultInstance())
+            .icon(() -> LIGHT_CONTROL_CABINET.asItem().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(LIGHT_DIODE);
-                output.accept((ItemLike) BLINKER);
-                output.accept((ItemLike) LIGHT_CONTROL_CABINET);
-                output.accept((ItemLike) TRAFFIC_DISPLAY_ITEM);
+                output.accept(BLINKER);
+                output.accept(LIGHT_CONTROL_CABINET);
+                output.accept(TRAFFIC_DISPLAY_ITEM);
+                output.accept(LEDSTRIP);
+
+                output.accept(BALLAST_GRAY);
                 output.accept(TRAFFIC_PILLAR);
                 output.accept(TRAFFIC_TRUSS);
                 output.accept(TRAFFIC_TRUSS_WALKWAY);

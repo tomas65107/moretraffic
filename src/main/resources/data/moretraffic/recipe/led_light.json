@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R#R",
+    "III"
+  ],
+  "key": {
+    "#": {
+      "item": "moretraffic:light"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "id": "moretraffic:led_light",
+    "count": 1
+  }
+}

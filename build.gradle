@@ -10,13 +10,17 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = mod_version
-group = mod_group_id
+def mod_version = "0.1.4-beta"
 
 def mod_changelog = """
-    Finally getting into beta territory and escaping alpha!
-    Changed rendering pipeline to use the new trafficcraft and DragonLib 3 approach. Should now work with the newest version and not crash.
+- New block added, LED light: model can be customized and can be controlled via Control Cabinet
+- Ballast was added officially, has 4 unique textures randomly picked.
+- Internal code changes and texture adjustments
+*Make sure to backup your worlds and thanks for using More Traffic! Cheers*
 """
+
+version = mod_version
+group = mod_group_id
 
 repositories {
     // Add here additional repositories if required by some of the dependencies below.

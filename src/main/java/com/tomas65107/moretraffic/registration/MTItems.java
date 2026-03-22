@@ -24,7 +24,10 @@ public class MTItems {
     public static final DeferredItem<BlockItem> TRAFFIC_TRUSS = ITEMS.registerSimpleBlockItem(MTBlocks.TRAFFIC_TRUSS);
     public static final DeferredItem<BlockItem> TRAFFIC_TRUSS_WALKWAY = ITEMS.registerSimpleBlockItem(MTBlocks.TRAFFIC_TRUSS_WALKWAY);
     public static final DeferredItem<BlockItem> TRAFFIC_PILLAR = ITEMS.registerSimpleBlockItem(MTBlocks.TRAFFIC_PILLAR);
-    public static final DeferredItem<BlockItem> BALLAST_GRAY = ITEMS.registerSimpleBlockItem(MTBlocks.BALLAST_GRAY);
+
+    public static final DeferredItem<BlockItem> BALLAST_GRAY = ITEMS.register("ballast_gray", () -> new SimpleBlockItem(MTBlocks.BALLAST_GRAY.get(), new Item.Properties(), true, false, false));
+
+    public static final DeferredItem<BlockItem> LEDSTRIP = ITEMS.register("led_light", () -> new SimpleBlockItem(MTBlocks.LEDSTRIP.get(), new Item.Properties(), true, false, true));
 
     public static final DeferredItem<SimpleItem> LIGHT_DIODE = ITEMS.registerItem("light", (p) -> new SimpleItem(p, true, true, true));
 

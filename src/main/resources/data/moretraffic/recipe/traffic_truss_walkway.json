@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "moretraffic:traffic_truss_walkway",
+    "count": 4
+  }
+}

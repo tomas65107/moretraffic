@@ -22,7 +22,8 @@ public class SpritesManager {
     public static final ResourceLocation ICON_GROUP = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_group.png");
     public static final ResourceLocation ICON_ADD_POSITION = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_add_position.png");
     public static final ResourceLocation ICON_EXPORT_FROM_IMAGE = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_import_img.png");
-    public static final ResourceLocation EDIT_DISPLAY = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/edit_display.png");
+    public static final ResourceLocation EDIT_DISPLAY = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_edit_display.png");
+    public static final ResourceLocation EDIT_CENTER = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_center.png");
 
     public static void renderSprite(
             GuiGraphics gfx,

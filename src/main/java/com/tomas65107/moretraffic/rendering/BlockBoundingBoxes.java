@@ -38,8 +38,16 @@ public class BlockBoundingBoxes {
     /// pillar
     public static final VoxelShape TRAFFIC_PILLAR;
 
+    /// traffic display
+    public static final VoxelShape LEDSTRIP = Shapes.or(
+            Block.box(0, 0, 13, 16, 16, 16)
+    );
+
+    public static final VoxelShape BALLAST;
+
 
     static {
+        BALLAST = Shapes.or(Block.box(0, 0, 0, 16, 16, 16), Block.box(0, 16, 0, 16, 17, 16));
         TRUSS_BASE = Block.box(0, 0, 0, 16, 10, 16);
         RAIL_LEFT = Block.box(0.5, -0.75, -0.5, 1.5, 19.75, 16.5);
         RAIL_RIGHT = Block.box(14.5, -0.75, -0.5, 15.5, 19.75, 16.5);

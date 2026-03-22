@@ -33,5 +33,10 @@ public class MTNetworking {
                 ClientSyncCabinetPacket.STREAM_CODEC,
                 ServerCabinetHandle::handle
         );
+        registrar.playToServer(
+                ClientSyncLightPacket.TYPE,
+                ClientSyncLightPacket.STREAM_CODEC,
+                ServerLightHandle::handle
+        );
     }
 }

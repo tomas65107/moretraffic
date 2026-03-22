@@ -689,7 +689,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
         int sheetX = guiX + (guiWidth - sheetWidth) / 2;
         int sheetY = guiY + (guiHeight - sheetHeight) / 2;
 
-        addElement(new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.modify_light.delay.select_color").getString(), true, sheetWidth, sheetHeight) {
+        addElement(new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light.select_color").getString(), true, sheetWidth, sheetHeight) {
             @Override
             public void init(Consumer<AbstractWidget> adder) {
                 adder.accept(new LabelWidget(10, 20, Component.translatable("core.moretraffic.advanced_traffic_light.light"+(indexOfLight+1)), rgb(PRIMARY), true));

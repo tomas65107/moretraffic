@@ -1,10 +1,7 @@
 package com.tomas65107.moretraffic.registration;
 
-import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
-import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
-import com.tomas65107.moretraffic.block.TrafficDisplayBlockEntity;
+import com.tomas65107.moretraffic.block.*;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
-import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -43,6 +40,13 @@ public class MTBE {
                     () -> BlockEntityType.Builder.of(
                             TrafficDisplayBlockEntity::new,
                             MTBlocks.TRAFFIC_DISPLAY.get()
+                    ).build(null)
+            );
+    public static final Supplier<BlockEntityType<LEDStripBlockEntity>> LEDSTRIP =
+            BLOCK_ENTITIES.register("led_light",
+                    () -> BlockEntityType.Builder.of(
+                            LEDStripBlockEntity::new,
+                            MTBlocks.LEDSTRIP.get()
                     ).build(null)
             );
 

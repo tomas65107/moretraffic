@@ -38,7 +38,7 @@ public class BlinkerBlockEntityRenderer extends RotatableBlockEntityRenderer<Fla
         float glassDepth = (4f / 16f)+0.005f;
 
         LegacyCube glass = LegacyCube.cube(
-                LIGHT_TEXTURE,
+                ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/block/light_on_solid.png"),
                 glassWidth, glassHeight, glassDepth,
                 dir -> true,
                 dir -> Pair.of(new Vec2(0f,0f), new Vec2(1f,1f))
@@ -67,10 +67,10 @@ public class BlinkerBlockEntityRenderer extends RotatableBlockEntityRenderer<Fla
         graphics.poseStack().pushPose();
         graphics.poseStack().translate(
                 0.5f-(bulbSize/2),
-                0.75,
+                0.55,
                 0.437f
         );
-        bulb.setLight(be.lightStatus ? EMISSIVE : MASKED_EMISSIVE);
+        bulb.setLight(be.lightStatus ? EMISSIVE : NOT_EMISSIVE);
         int offColor = (130 << 24) | (getBoostedTint(toDyeColor(be.getColor())) & 0x00FFFFFF);
         bulb.setTint(be.lightStatus ? getBoostedTint(toDyeColor(be.getColor())) : offColor);
         bulb.render(graphics);

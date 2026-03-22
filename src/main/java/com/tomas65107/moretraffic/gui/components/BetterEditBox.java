@@ -6,6 +6,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,10 +57,17 @@ public class BetterEditBox extends EditBox {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean inside = this.isMouseOver(mouseX, mouseY);
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+            if (isFocused()) setFocused(false);
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
 
-        if (!inside && isFocused()) {
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (!this.isMouseOver(mouseX, mouseY) && isFocused()) {
             setFocused(false);
         }
 

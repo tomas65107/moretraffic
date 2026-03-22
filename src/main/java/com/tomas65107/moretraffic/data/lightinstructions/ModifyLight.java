@@ -2,6 +2,7 @@ package com.tomas65107.moretraffic.data.lightinstructions;
 
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
+import com.tomas65107.moretraffic.block.LEDStripBlockEntity;
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightGroup;
 import com.tomas65107.moretraffic.rendering.BlinkerBlockEntityRenderer;
@@ -31,6 +32,10 @@ public record ModifyLight(String group, DyeColor light0, DyeColor light1, DyeCol
                         trafficLightBlock.modifyLightColor(0, light0());
                         trafficLightBlock.modifyLightColor(1, light1());
                         trafficLightBlock.modifyLightColor(2, light2());
+                    } else if (level.getBlockEntity(lightPos) instanceof LEDStripBlockEntity led) {
+                        led.color = light0();
+                        led.setChanged();
+                        level.sendBlockUpdated(led.getBlockPos(), led.getBlockState(), led.getBlockState(), 3);
                     } else {
                         be.isRunning = false;
                         return false; //cannot find the traffic light at that position

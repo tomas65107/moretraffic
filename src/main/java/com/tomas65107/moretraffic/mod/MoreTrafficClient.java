@@ -1,12 +1,14 @@
 package com.tomas65107.moretraffic.mod;
 
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightScreen;
+import com.tomas65107.moretraffic.gui.containers.LEDStripScreen;
 import com.tomas65107.moretraffic.gui.containers.LightControlCabinetScreen;
 import com.tomas65107.moretraffic.gui.tooltip.BodyTooltip;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.registration.MTBE;
 import com.tomas65107.moretraffic.registration.MTBlocks;
 import com.tomas65107.moretraffic.rendering.BlinkerBlockEntityRenderer;
+import com.tomas65107.moretraffic.rendering.LedStripBlockEntityRenderer;
 import com.tomas65107.moretraffic.rendering.TrafficDisplayEntityRenderer;
 import com.tomas65107.moretraffic.rendering.TrafficLightBlockEntityRenderer;
 import de.mrjulsen.trafficcraft.client.TintedTextures;
@@ -27,8 +29,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
-import static com.tomas65107.moretraffic.registration.MTMenus.CONTROL_CABINET_MENU;
-import static com.tomas65107.moretraffic.registration.MTMenus.TRAFFIC_LIGHT_SETUP;
+import static com.tomas65107.moretraffic.registration.MTMenus.*;
 
 @Mod(value = MoreTraffic.MODID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = MoreTraffic.MODID, value = Dist.CLIENT)
@@ -42,6 +43,7 @@ public class MoreTrafficClient {
     static void onClientSetup(FMLClientSetupEvent event) {
 
         ItemBlockRenderTypes.setRenderLayer(MTBlocks.BALLAST_GRAY.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(MTBlocks.LEDSTRIP.get(), RenderType.translucent());
 
         //BE register
         BlockEntityRenderers.register(
@@ -57,6 +59,11 @@ public class MoreTrafficClient {
         BlockEntityRenderers.register(
                 MTBE.TRAFFIC_DISPLAY_BE.get(),
                 TrafficDisplayEntityRenderer::new
+        );
+
+        BlockEntityRenderers.register(
+                MTBE.LEDSTRIP.get(),
+                LedStripBlockEntityRenderer::new
         );
 
         //Block Tinting register
@@ -106,5 +113,6 @@ public class MoreTrafficClient {
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(TRAFFIC_LIGHT_SETUP.get(), AdvancedTrafficLightScreen::new);
         event.register(CONTROL_CABINET_MENU.get(), LightControlCabinetScreen::new);
+        event.register(LED_STRIP_MENU.get(), LEDStripScreen::new);
     }
 }

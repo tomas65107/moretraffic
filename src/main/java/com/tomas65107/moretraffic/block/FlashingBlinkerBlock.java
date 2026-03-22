@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -36,14 +37,16 @@ public class FlashingBlinkerBlock extends ColorableBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public FlashingBlinkerBlock(Properties properties) {
-        super(properties);
+        super(properties
+                .mapColor(MapColor.METAL)
+                .strength(2.0f, 12.0f)
+                .sound(SoundType.METAL));
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
-
 
 
     @Override
