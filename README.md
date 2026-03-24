@@ -3,13 +3,13 @@
 
 <p align="left">
   <a href="https://discord.gg/XaGFT5dAbh">
-    <img src="https://imgur.com/FDxn61c.png" alt="Discord server" width="242"/>
+    <img src="https://api.tomas65107.dev/cdn/platformdecals/discord.png" alt="Discord server" width="242"/>
   </a>
     <a href="https://modrinth.com/mod/moretraffic">
-    <img src="https://imgur.com/uH4qxdK.png" alt="Modrinth" width="242"/>
+    <img src="https://api.tomas65107.dev/cdn/platformdecals/modrinth.png" alt="Modrinth" width="242"/>
   </a>
       <a href="https://github.com/tomas65107/moretraffic">
-    <img src="https://imgur.com/kBhMKkL.png" alt="Github" width="242"/>
+    <img src="https://api.tomas65107.dev/cdn/platformdecals/github.png" alt="Github" width="242"/>
   </a>
 </p>
 
@@ -26,31 +26,30 @@ Learn more on the content currently present in the mod and planned in the future
 
 ### ✅ Features in the mod
 
-- **Traffic Lights Overhaul**
-    - You can now control a variety of things on traffic lights: Orientation, Position, Scale
+- **Advanced Traffic Lights**
+    - You can customize Orientation, Position and Scale
     - Precise custom color control for each light
-    - In-game editing of fully custom traffic light masks and you can import masks from images\
-      <img width="216" height="145" src="https://github.com/user-attachments/assets/87bee6ef-020b-4fd4-8dd4-2b6e0e685262" alt="Traffic Light Screenshot" />
-      <img width="216" height="145" src="https://github.com/user-attachments/assets/7b03f51a-b1d9-44cf-8b2c-bc4cf82be2b9" alt="Traffic Light Screenshot" />
+    - In-game editing of fully custom traffic light masks and you can import masks from images
 
-- **Traffic Light Control Cabinet**
-    - Program your fully custom traffic light loops
-    - You have a fine control over traffic lights and have a redstone trigger
-    - You also have grouping of light available to create big networks in seconds\
-      <img width="216" height="145" src="https://github.com/user-attachments/assets/99f23fbb-5d47-4e6b-a0b3-1739d9ed8baf" alt="Control Cabinet Screenshot" />
-      <img width="216" height="145" src="https://github.com/user-attachments/assets/f5e065d3-2adb-4f50-b7c7-6512bb7c411d" alt="Control Cabinet Screenshot" />
+- **Light Control Cabinet**
+    - Program your fully custom light loops
+    - This block can control each block in MoreTraffic
+    - You also have grouping of lights available to create big networks
 
 - **Blinker**
-    - Programable LED that can be placed anywhere and blink with any color with any interval
+    - Programmable LED that can be placed anywhere and blink with any color with any interval
     - Activable with redstone or control cabinet and can be painted
-    - Great for any road project, high buildings, decoration,...
  
 - **Traffic Display**
     - Highway-like diode display that can be programmed to show latest info about highways.
     - Full control over the display via control cabinet.
  
-- **Traffic Truss**
-    - Decorate highways with traffic pilliars and trusses
+- **LED Light**
+    - Model of the light is customizable so you can create any shape of light in-game.
+    - Full control over the color via control cabinet.
+ 
+- **Traffic Trusses and pillars**
+    - Decorate highways with traffic pillars and trusses
 
 - **New Commands**
     - `/copypos [optional argument]` — copy the position of the block you are looking at. Helpful when making groups quickly
@@ -70,4 +69,4 @@ These are the things i want to add along with notes:
 - Improved documentation and images
 - Make group GUI more pretty
 - Add more light types that can be customized _(not really for traffic but cool nontheless)_
-- **And more ofc…**
+- **And more things planned…**
