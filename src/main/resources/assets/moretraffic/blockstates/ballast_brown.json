@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "type=1": { "model": "moretraffic:block/ballast_brown_1"},
+    "type=2": { "model": "moretraffic:block/ballast_brown_2"},
+    "type=3":  { "model": "moretraffic:block/ballast_brown_3"},
+    "type=4":  { "model": "moretraffic:block/ballast_brown_4"}
+  }
+}

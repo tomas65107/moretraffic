@@ -18,7 +18,7 @@ public class MTItems {
     public static final DeferredItem<BlockItem> ADV_1_TRAFFIC_LIGHT_ITEM = ITEMS.registerSimpleBlockItem(MTBlocks.ADV_1_TRAFFIC_LIGHT);
     public static final DeferredItem<BlockItem> TRAFFIC_DISPLAY_ITEM = ITEMS.register("traffic_display", () -> new SimpleBlockItem(MTBlocks.TRAFFIC_DISPLAY.get(), new Item.Properties(), false, false, true));
 
-    public static final DeferredItem<SimpleBlockItem> BLINKER = ITEMS.register("blinker", () -> new SimpleBlockItem(MTBlocks.BLINKER.get(), new Item.Properties(), false, true, true));
+    public static final DeferredItem<SimpleBlockItem> BLINKER = ITEMS.register("blinker", () -> new SimpleBlockItem(MTBlocks.BLINKER.get(), new Item.Properties(), true, true, true));
 
     public static final DeferredItem<SimpleBlockItem> LIGHT_CONTROL_CABINET = ITEMS.register("control_cabinet", () -> new SimpleBlockItem(MTBlocks.LIGHT_CONTROL_CABINET.get(), new Item.Properties(), true, false, true));
     public static final DeferredItem<BlockItem> TRAFFIC_TRUSS = ITEMS.registerSimpleBlockItem(MTBlocks.TRAFFIC_TRUSS);
@@ -26,6 +26,7 @@ public class MTItems {
     public static final DeferredItem<BlockItem> TRAFFIC_PILLAR = ITEMS.registerSimpleBlockItem(MTBlocks.TRAFFIC_PILLAR);
 
     public static final DeferredItem<BlockItem> BALLAST_GRAY = ITEMS.register("ballast_gray", () -> new SimpleBlockItem(MTBlocks.BALLAST_GRAY.get(), new Item.Properties(), true, false, false));
+    public static final DeferredItem<BlockItem> BALLAST_BROWN = ITEMS.register("ballast_brown", () -> new SimpleBlockItem(MTBlocks.BALLAST_BROWN.get(), new Item.Properties(), true, false, false));
 
     public static final DeferredItem<BlockItem> LEDSTRIP = ITEMS.register("led_light", () -> new SimpleBlockItem(MTBlocks.LEDSTRIP.get(), new Item.Properties(), true, false, true));
 

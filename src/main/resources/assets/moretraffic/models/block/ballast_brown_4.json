@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/cube",
 	"textures": {
-		"particle": "moretraffic:block/ballast_gray_3"
+		"particle": "moretraffic:block/ballast_brown_4"
 	},
 	"elements": [
 		{

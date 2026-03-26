@@ -10,13 +10,17 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def mod_version = "0.1.4-beta"
+def mod_version = "0.2.0-beta"
 
 def mod_changelog = """
-- New block added, LED light: model can be customized and can be controlled via Control Cabinet
-- Ballast was added officially, has 4 unique textures randomly picked.
-- Internal code changes and texture adjustments
-*Make sure to backup your worlds and thanks for using More Traffic! Cheers*
+- New ballast type: brown ballast!
+- Fixed a bug where you could not type "E" in any menu
+- Fixed a bug where wrenching ballast would not work
+- Fixed a crash where falling ballast could crash the game
+- Fixed a bug where ballast could not be inserted into some Create mod machines
+- Made ballast model a normal 16x16 cube
+- Made led strip be placeable Vertically
+*Make sure to backup your worlds and thanks for using More Traffic! Thanks!*
 """
 
 version = mod_version

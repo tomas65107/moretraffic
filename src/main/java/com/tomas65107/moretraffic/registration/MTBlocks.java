@@ -22,6 +22,7 @@ public class MTBlocks {
     public static final DeferredBlock<Block> TRAFFIC_TRUSS_WALKWAY = BLOCKS.registerBlock("traffic_truss_walkway", TrafficTrussBlock::new);
     public static final DeferredBlock<Block> TRAFFIC_PILLAR = BLOCKS.registerBlock("traffic_pillar", TrafficPillarBlock::new);
     public static final DeferredBlock<Block> BALLAST_GRAY = BLOCKS.registerBlock("ballast_gray", BallastBlock::new);
+    public static final DeferredBlock<Block> BALLAST_BROWN = BLOCKS.registerBlock("ballast_brown", BallastBlock::new);
 
     public static final DeferredBlock<Block> LEDSTRIP = BLOCKS.registerBlock("led_light", LEDStripBlock::new);
 

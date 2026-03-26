@@ -2,8 +2,8 @@ package com.tomas65107.moretraffic.rendering;
 
 import com.tomas65107.moretraffic.block.LEDStripBlockEntity;
 import com.tomas65107.moretraffic.rendering.helpers.LegacyCube;
+import com.tomas65107.moretraffic.rendering.helpers.RotatableAllBlockEntityRenderer;
 import de.mrjulsen.mcdragonlib.client.ber.BERGraphics;
-import de.mrjulsen.mcdragonlib.client.ber.RotatableBlockEntityRenderer;
 import de.mrjulsen.mcdragonlib.util.Pair;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +14,7 @@ import static com.tomas65107.moretraffic.rendering.MaterialValues.EMISSIVE;
 import static com.tomas65107.moretraffic.rendering.MaterialValues.NOT_EMISSIVE;
 import static com.tomas65107.moretraffic.rendering.TrafficLightBlockEntityRenderer.getBoostedTint;
 
-public class LedStripBlockEntityRenderer extends RotatableBlockEntityRenderer<LEDStripBlockEntity> {
+public class LedStripBlockEntityRenderer extends RotatableAllBlockEntityRenderer<LEDStripBlockEntity> {
 
     public LedStripBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         super(context);

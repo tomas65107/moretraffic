@@ -62,6 +62,7 @@ public class BetterEditBox extends EditBox {
             if (isFocused()) setFocused(false);
             return true;
         }
+        if (keyCode == GLFW.GLFW_KEY_E) return true;
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 

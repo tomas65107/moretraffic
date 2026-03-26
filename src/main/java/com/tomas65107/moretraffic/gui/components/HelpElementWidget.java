@@ -17,7 +17,7 @@ import static com.tomas65107.moretraffic.data.SpritesManager.renderSprite;
 public class HelpElementWidget extends AbstractWidget {
 
     private final ResourceLocation sprite;
-    private final NoticeBoxTooltip tooltip;
+    public NoticeBoxTooltip tooltip;
 
     public HelpElementWidget(int x, int y, ResourceLocation sprite, NoticeBoxTooltip tooltip) {
         super(x, y, 16, 16, Component.empty());

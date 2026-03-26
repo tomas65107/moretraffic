@@ -40,7 +40,8 @@ public class BlockBoundingBoxes {
 
     /// traffic display
     public static final VoxelShape LEDSTRIP = Shapes.or(
-            Block.box(0, 0, 13, 16, 16, 16)
+//            Block.box(0, 0, 13, 16, 16, 16)
+            Block.box(0, 0, 0,                16, 2.6, 16)
     );
 
     public static final VoxelShape BALLAST;

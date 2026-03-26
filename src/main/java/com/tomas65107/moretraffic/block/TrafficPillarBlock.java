@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -31,7 +32,7 @@ public class TrafficPillarBlock extends Block {
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
     public TrafficPillarBlock(Properties properties) {
-        super(properties);
+        super(properties.strength(10.0f, 40.0f).mapColor(MapColor.TERRACOTTA_WHITE));
     }
 
     @Override

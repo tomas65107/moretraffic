@@ -1,5 +1,6 @@
 package com.tomas65107.moretraffic.gui.components.overriderenders;
 
+import com.tomas65107.moretraffic.gui.components.HelpElementWidget;
 import com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -15,6 +16,11 @@ public class NonInteractableWidget<T extends AbstractWidget> extends AbstractWid
         if (original instanceof AdvancedButton) {
             ((AdvancedButton) original).tooltipComponent = null;
         }
+
+        if (original instanceof HelpElementWidget) {
+            ((HelpElementWidget) original).tooltip = null;
+        }
+
     }
 
     @Override

@@ -2,8 +2,6 @@ package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
 import com.tomas65107.moretraffic.gui.containers.LEDStripMenu;
-import com.tomas65107.moretraffic.gui.containers.LEDStripScreen;
-import com.tomas65107.moretraffic.gui.containers.LightControlCabinetMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -34,13 +32,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShape;
+import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShapeSpecial;
 import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.LEDSTRIP;
 
 public class LEDStripBlock extends Block implements EntityBlock {
 
     public static final MapCodec<LEDStripBlock> CODEC = simpleCodec(LEDStripBlock::new);
 
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
     public LEDStripBlock(Properties properties) {
         super(properties
@@ -52,7 +51,7 @@ public class LEDStripBlock extends Block implements EntityBlock {
 
     @Override
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return Shapes.empty(); // THIS disables face culling
+        return Shapes.empty();
     }
 
     @Override
@@ -91,13 +90,13 @@ public class LEDStripBlock extends Block implements EntityBlock {
         return super.getDestroyProgress(state, player, world, pos);
     }
 
-    @Override public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShape(state.getValue(FACING), LEDSTRIP);}
-    @Override public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShape(state.getValue(FACING), LEDSTRIP);}
+    @Override public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShapeSpecial(state.getValue(FACING), LEDSTRIP);}
+    @Override public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShapeSpecial(state.getValue(FACING), LEDSTRIP);}
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState()
-                .setValue(FACING, context.getHorizontalDirection().getOpposite());
+                .setValue(FACING, context.getNearestLookingDirection().getOpposite());
     }
 
     @Override

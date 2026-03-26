@@ -25,6 +25,7 @@ public class CreativeTab {
                 output.accept(LEDSTRIP);
 
                 output.accept(BALLAST_GRAY);
+                output.accept(BALLAST_BROWN);
                 output.accept(TRAFFIC_PILLAR);
                 output.accept(TRAFFIC_TRUSS);
                 output.accept(TRAFFIC_TRUSS_WALKWAY);

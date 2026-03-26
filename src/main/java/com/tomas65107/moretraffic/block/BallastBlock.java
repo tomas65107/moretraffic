@@ -14,7 +14,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
@@ -35,6 +37,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.List;
@@ -61,7 +64,9 @@ public class BallastBlock extends FallingBlock {
     }
 
     public BallastBlock(BlockBehaviour.Properties properties) {
-        super(properties.sound(SoundType.SUSPICIOUS_GRAVEL));
+        super(properties.sound(SoundType.SUSPICIOUS_GRAVEL)
+                .strength(10.0f, 40.0f)
+                .mapColor(DyeColor.GRAY));
     }
 
     @Override
@@ -70,22 +75,25 @@ public class BallastBlock extends FallingBlock {
     }
 
     @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+
+        if (level.getBlockState(pos).getBlock() instanceof BallastBlock) level.setBlock(pos, state.setValue(TYPE, WEIGHTS[level.random.nextInt(WEIGHTS.length)]), 3);
+    }
+
+    @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         super.onPlace(state, level, pos, oldState, isMoving);
         if (level.isClientSide()) return;
 
-        if (level.getBlockState(pos).getBlock() instanceof BallastBlock) level.setBlock(pos, state.setValue(TYPE, WEIGHTS[level.random.nextInt(WEIGHTS.length)]), 3);
-
         ((ServerLevel) level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state),
                 pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,
-                40, 0.4, 0.4, 0.4, 1);
+                50, 0.4, 0.4, 0.4, 1);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(TYPE);
     }
-
-    @Override public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShape(Direction.NORTH, BALLAST);}
 
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
