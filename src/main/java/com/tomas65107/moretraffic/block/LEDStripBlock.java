@@ -2,6 +2,7 @@ package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
 import com.tomas65107.moretraffic.gui.containers.LEDStripMenu;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -64,7 +65,7 @@ public class LEDStripBlock extends Block implements EntityBlock {
             InteractionHand hand,
             BlockHitResult hit
     ) {
-        if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem) {
+        if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem) {
             if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.openMenu(new SimpleMenuProvider(
                         (id, inventory, p) -> new LEDStripMenu(id, inventory, pos), Component.empty()
@@ -115,7 +116,7 @@ public class LEDStripBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new LEDStripBlockEntity(blockPos, blockState);
+        return new LEDStripBlockEntity(MTRegistrate.LED_STRIP_BE.get(), blockPos, blockState);
     }
 
 

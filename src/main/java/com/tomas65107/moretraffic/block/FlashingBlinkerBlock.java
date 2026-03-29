@@ -1,6 +1,8 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
+import com.tomas65107.moretraffic.data.lightinstructions.ICabinetPulsable;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import com.tomas65107.moretraffic.rendering.BlockBoundingBoxes;
 import de.mrjulsen.trafficcraft.block.data.ColorableBlock;
 import de.mrjulsen.trafficcraft.data.PaintColor;
@@ -96,7 +98,7 @@ public class FlashingBlinkerBlock extends ColorableBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new FlashingBlinkerBlockEntity(blockPos, blockState);
+        return new FlashingBlinkerBlockEntity(MTRegistrate.BLINKER_BE.get(), blockPos, blockState);
     }
 
     public @NotNull BlockState rotate(BlockState pState, Rotation pRotation) {
@@ -106,5 +108,4 @@ public class FlashingBlinkerBlock extends ColorableBlock {
     public @NotNull BlockState mirror(BlockState pState, Mirror pMirror) {
         return pState.rotate(pMirror.getRotation((Direction)pState.getValue(FACING)));
     }
-
 }

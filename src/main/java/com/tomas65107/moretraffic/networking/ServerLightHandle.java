@@ -1,7 +1,7 @@
 package com.tomas65107.moretraffic.networking;
 
 import com.tomas65107.moretraffic.block.LEDStripBlockEntity;
-import com.tomas65107.moretraffic.registration.MTBlocks;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -13,7 +13,7 @@ public class ServerLightHandle {
             Level level = ctx.player().level();
             BlockEntity be = level.getBlockEntity(payload.pos());
 
-            if (be instanceof LEDStripBlockEntity cabinet && level.getBlockState(payload.pos()).is(MTBlocks.LEDSTRIP.get())) {
+            if (be instanceof LEDStripBlockEntity cabinet && level.getBlockState(payload.pos()).is(MTRegistrate.LEDSTRIP.get())) {
                 cabinet.loadAdditional(payload.tag(), level.registryAccess());
                 cabinet.setChanged();
 

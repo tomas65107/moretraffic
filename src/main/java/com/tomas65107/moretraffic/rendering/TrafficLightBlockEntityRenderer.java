@@ -3,7 +3,7 @@ package com.tomas65107.moretraffic.rendering;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlock;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightLight;
-import com.tomas65107.moretraffic.registration.MTBlocks;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import com.tomas65107.moretraffic.rendering.helpers.LegacyCube;
 import de.mrjulsen.mcdragonlib.client.ber.BERGraphics;
 import de.mrjulsen.mcdragonlib.client.ber.RotatableBlockEntityRenderer;
@@ -52,8 +52,8 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
 
         int lightOffset = 0;
         if (be.getBlockState().getValue(AdvancedTrafficLightBlock.POSITION).equals(BOTTOM)) {
-            if (be.getBlockState().getBlock().equals(MTBlocks.ADV_2_TRAFFIC_LIGHT.get())) {lightOffset = 1;}
-            if (be.getBlockState().getBlock().equals(MTBlocks.ADV_1_TRAFFIC_LIGHT.get())) {lightOffset = 2;}
+            if (be.getBlockState().getBlock().equals(MTRegistrate.ADV_2_TRAFFIC_LIGHT.get())) {lightOffset = 1;}
+            if (be.getBlockState().getBlock().equals(MTRegistrate.ADV_1_TRAFFIC_LIGHT.get())) {lightOffset = 2;}
         }
 
 //        for (float y : lightBottomY) {

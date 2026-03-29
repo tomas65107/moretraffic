@@ -189,22 +189,13 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
 
                                 adder.accept(new AdvancedButton(144+28, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import.message"), null), a->{
                                     try {
-                                        Pattern pattern = Pattern.compile("(?<=^|,)\\d+(?=,|$)");
-                                        Matcher matcher = pattern.matcher(Minecraft.getInstance().keyboardHandler.getClipboard());
-                                        short[] newRows = new short[16];
-                                        int countOfRows = 0;
-                                        while (matcher.find()) {
-                                            if (countOfRows > 16) throw new Exception();
-                                            short number = Short.parseShort(matcher.group());
-                                            newRows[countOfRows] = number;
-                                            countOfRows++;
-                                        }
-                                        if (countOfRows < 16) throw new Exception();
+                                        TrafficLightLight.TrafficLightMask importedContents = TrafficLightLight.TrafficLightMask.deserialize(Minecraft.getInstance().keyboardHandler.getClipboard());
+                                        assert importedContents != null;
                                         sendToServer(new ClientSenderPacketTrafficLight(
                                                         pos,
                                                         finalIndex,
                                                         be.lights.get(finalIndex).color.getId(),
-                                                        shortsToBytes(newRows)
+                                                        shortsToBytes(importedContents.getRows())
                                                 )
                                         ); queueRefresh = true;
                                     } catch (Exception ex) {
@@ -214,10 +205,7 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                                 );
                                 adder.accept(
                                         new AdvancedButton(144+30+20, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.export"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.export.message"), null), a->{
-                                            short[] rows = be.lights.get(finalIndex).mask.getRows();
-                                            StringBuilder sb = new StringBuilder();
-                                            for (short s : rows) sb.append(s).append(",");
-                                            Minecraft.getInstance().keyboardHandler.setClipboard(sb.toString());
+                                            Minecraft.getInstance().keyboardHandler.setClipboard(be.lights.get(finalIndex).mask.serialize());
                                         })
                                 );
                                 adder.accept(

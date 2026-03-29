@@ -9,7 +9,7 @@ import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightProper
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightScale;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.networking.UpdateTrafficLightStatePacket;
-import com.tomas65107.moretraffic.registration.MTBlocks;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -54,16 +54,16 @@ public class ModelButton extends Button {
         newState = newState.setValue(AdvancedTrafficLightBlock.FACING, Direction.SOUTH);
 
         isCompatible = true;
-        if (be.getBlockState().getBlock() == MTBlocks.ADV_3_TRAFFIC_LIGHT.get()) {
+        if (be.getBlockState().getBlock() == MTRegistrate.ADV_3_TRAFFIC_LIGHT.get()) {
             if (value.getClassType().getClassOfProperty().equals(TrafficLightPosition.class) && value.equals(TrafficLightPosition.BOTTOM)) {isCompatible = false;}
             if (value.getClassType().getClassOfProperty().equals(TrafficLightScale.class) && !value.equals(TrafficLightScale.S1_0X)) {isCompatible = false;}
         }
 
-        if (be.getBlockState().getBlock() == MTBlocks.ADV_2_TRAFFIC_LIGHT.get()) {
+        if (be.getBlockState().getBlock() == MTRegistrate.ADV_2_TRAFFIC_LIGHT.get()) {
             if (value.getClassType().getClassOfProperty().equals(TrafficLightScale.class) && (value.equals(TrafficLightScale.S2_0X) || value.equals(TrafficLightScale.FULLBLOCK))) {isCompatible = false;}
         }
 
-        if (be.getBlockState().getBlock() == MTBlocks.ADV_1_TRAFFIC_LIGHT.get()) {
+        if (be.getBlockState().getBlock() == MTRegistrate.ADV_1_TRAFFIC_LIGHT.get()) {
             if (value.getClassType().getClassOfProperty().equals(TrafficLightScale.class) && value.equals(TrafficLightScale.FULLBLOCK) && be.getBlockState().getValue(AdvancedTrafficLightBlock.ORIENTATION).equals(TrafficLightOrientation.VERTICAL)) {isCompatible = false;}
             if (value.getClassType().getClassOfProperty().equals(TrafficLightScale.class) && value.equals(TrafficLightScale.FULLBLOCK) && be.getBlockState().getValue(AdvancedTrafficLightBlock.POSITION).equals(TrafficLightPosition.BOTTOM)) {isCompatible = false;}
         }

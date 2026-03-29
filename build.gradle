@@ -10,17 +10,23 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def mod_version = "0.2.0-beta"
+def mod_version = "0.2.1-beta"
 
 def mod_changelog = """
-- New ballast type: brown ballast!
-- Fixed a bug where you could not type "E" in any menu
-- Fixed a bug where wrenching ballast would not work
-- Fixed a crash where falling ballast could crash the game
-- Fixed a bug where ballast could not be inserted into some Create mod machines
-- Made ballast model a normal 16x16 cube
-- Made led strip be placeable Vertically
-*Make sure to backup your worlds and thanks for using More Traffic! Thanks!*
+🎉 From now on, MoreTraffic is an addon to the Create Mod! Please install create alongside it (Modrinth does this automatically)
+⚠️ **WARNING:** Traffic Light Masks from old versions will get DELETED due to new saving standard! Only Traffic Light masks are affected.
+
+- Changed how Adv. Traffic Lights serializes NBT to be more efficient
+- Added Derailer: Derails Trains when powered with redstone
+- Added missing crafting recipe for Brown Ballast
+- Adapted recipes to create materials
+- Added create-style summaries and ponders (more coming...)
+- Both Create and TrafficCraft work now for all MoreTraffic blocks!
+- Rewritten codebase to use Create style Registrate for blocks and items
+- Rewritten rendering, should lag less!
+- Fixed a bug related to ballast block not randomizing textures when placed not by player
+- Fixed a bug related to copying Traffic light's mask would not work
+*Make sure to backup your worlds and thanks for using More Traffic! More create functionality in the works! Have a great rest of the weekend!*
 """
 
 version = mod_version
@@ -32,6 +38,9 @@ repositories {
         name = "CurseMaven"
         url = "https://cursemaven.com"
     }
+
+    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
 }
 
 base {
@@ -157,6 +166,12 @@ dependencies {
     // TrafficCraft dependency (required)
     implementation "curse.maven:trafficcraft-852322:7754967"
     implementation "curse.maven:dragonlib-946163:7763966"
+
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
     localRuntime "curse.maven:jei-238222:7420587"
 

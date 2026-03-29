@@ -5,8 +5,7 @@ import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightOrient
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightPosition;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightScale;
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
-import com.tomas65107.moretraffic.registration.MTBlocks;
-import com.tomas65107.moretraffic.registration.MTItems;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import de.mrjulsen.trafficcraft.block.data.ColorableBlock;
 import de.mrjulsen.trafficcraft.block.data.ITrafficPostLike;
 import net.minecraft.core.BlockPos;
@@ -65,7 +64,7 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return new ItemStack(MTItems.LIGHT_DIODE.asItem());
+        return new ItemStack(MTRegistrate.LIGHT_DIODE.asItem());
     }
 
     @Override
@@ -74,15 +73,16 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
                 .setValue(FACING, context.getHorizontalDirection().getOpposite())
                 .setValue(SCALE, TrafficLightScale.S1_0X)
                 .setValue(ORIENTATION, TrafficLightOrientation.VERTICAL)
-                .setValue(POSITION, TrafficLightPosition.TOP);
+                .setValue(POSITION, TrafficLightPosition.TOP)
+                .setValue(WATERLOGGED, false);
     }
 
     private VoxelShape boundingBoxGetter(BlockState state) throws IllegalArgumentException {
-        if (state.getBlock() == MTBlocks.ADV_1_TRAFFIC_LIGHT.get()) {
+        if (state.getBlock() == MTRegistrate.ADV_1_TRAFFIC_LIGHT.get()) {
             return rotateShape(state.getValue(FACING), advancedTraffic1Light);
-        } else if (state.getBlock() == MTBlocks.ADV_2_TRAFFIC_LIGHT.get()) {
+        } else if (state.getBlock() == MTRegistrate.ADV_2_TRAFFIC_LIGHT.get()) {
             return rotateShape(state.getValue(FACING), advancedTraffic2Light);
-        } else if (state.getBlock() == MTBlocks.ADV_3_TRAFFIC_LIGHT.get()) {
+        } else if (state.getBlock() == MTRegistrate.ADV_3_TRAFFIC_LIGHT.get()) {
             return rotateShape(state.getValue(FACING), advancedTraffic3Light);
         }
         throw new IllegalArgumentException();
@@ -92,6 +92,7 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
     public static final EnumProperty<TrafficLightScale> SCALE = EnumProperty.create("scale", TrafficLightScale.class);
     public static final EnumProperty<TrafficLightOrientation> ORIENTATION = EnumProperty.create("orientation", TrafficLightOrientation.class);
     public static final EnumProperty<TrafficLightPosition> POSITION = EnumProperty.create("position", TrafficLightPosition.class);
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static final MapCodec<AdvancedTrafficLightBlock> CODEC = simpleCodec(AdvancedTrafficLightBlock::new);
 
@@ -108,7 +109,7 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
             InteractionHand hand,
             BlockHitResult hit
     ) {
-        if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem) {
+        if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem) {
             if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.openMenu(new SimpleMenuProvider(
                         (id, inventory, p) -> new AdvancedTrafficLightMenu(id, inventory, pos),
@@ -128,12 +129,12 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FACING, SCALE, ORIENTATION, POSITION);
+        builder.add(FACING, SCALE, ORIENTATION, POSITION, WATERLOGGED);
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity(blockPos, blockState);
+        return new com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity(MTRegistrate.ADV_TRAFFIC_LIGHT_BE.get(), blockPos, blockState);
     }
 
     public @NotNull BlockState rotate(BlockState pState, Rotation pRotation) {

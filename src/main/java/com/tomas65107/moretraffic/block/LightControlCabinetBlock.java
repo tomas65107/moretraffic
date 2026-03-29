@@ -1,15 +1,10 @@
 package com.tomas65107.moretraffic.block;
 
-import com.tomas65107.moretraffic.data.lightinstructions.LightInstructionProperty;
 import com.tomas65107.moretraffic.gui.containers.LightControlCabinetMenu;
-import com.tomas65107.moretraffic.mod.MoreTraffic;
-import com.tomas65107.moretraffic.registration.MTBE;
-import com.tomas65107.moretraffic.registration.MTBlocks;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -84,7 +79,7 @@ public class LightControlCabinetBlock extends Block implements EntityBlock {
         if (level.isClientSide) return null;
 
         // Use reference from your registration
-        if (type == MTBE.CONTROL_CABINET_BE.get()) {
+        if (type == MTRegistrate.LIGHT_CONTROL_CABINET_BE.get()) {
             return (lvl, pos, st, be) -> {
                 if (be instanceof LightControlCabinetBlockEntity cabinetBE) {
                     LightControlCabinetBlockEntity.serverTick(lvl, pos, st, cabinetBE);
@@ -105,7 +100,7 @@ public class LightControlCabinetBlock extends Block implements EntityBlock {
             InteractionHand hand,
             BlockHitResult hit
     ) {
-        if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem) {
+        if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem) {
             if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.openMenu(new SimpleMenuProvider(
                         (id, inventory, p) -> new LightControlCabinetMenu(id, inventory, pos), Component.empty()
@@ -118,6 +113,6 @@ public class LightControlCabinetBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new LightControlCabinetBlockEntity(blockPos, blockState);
+        return new LightControlCabinetBlockEntity(MTRegistrate.LIGHT_CONTROL_CABINET_BE.get(), blockPos, blockState);
     }
 }

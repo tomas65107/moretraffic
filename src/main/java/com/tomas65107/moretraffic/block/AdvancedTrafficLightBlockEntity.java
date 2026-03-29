@@ -2,8 +2,7 @@ package com.tomas65107.moretraffic.block;
 
 import com.tomas65107.moretraffic.data.TrafficLightLight;
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
-import com.tomas65107.moretraffic.registration.MTBE;
-import com.tomas65107.moretraffic.registration.MTBlocks;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import de.mrjulsen.trafficcraft.block.entity.ColoredBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,8 +27,8 @@ public class AdvancedTrafficLightBlockEntity extends ColoredBlockEntity implemen
 
     public List<TrafficLightLight> lights = new ArrayList<>();
 
-    public AdvancedTrafficLightBlockEntity(BlockPos pos, BlockState state) {
-        super(MTBE.ADVANCED_TRAFFIC_LIGHT_BE.get(), pos, state);
+    public AdvancedTrafficLightBlockEntity(BlockEntityType type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
 
         for (int i = 0; i < getTheLightNumberVariant(); i++) {
             lights.add(new TrafficLightLight(DyeColor.BLACK, new TrafficLightLight.TrafficLightMask()));
@@ -38,11 +38,11 @@ public class AdvancedTrafficLightBlockEntity extends ColoredBlockEntity implemen
     private int getTheLightNumberVariant() {
         Block block = getBlockState().getBlock();
 
-        if (block == MTBlocks.ADV_1_TRAFFIC_LIGHT.get()) {
+        if (block == MTRegistrate.ADV_1_TRAFFIC_LIGHT.get()) {
             return 1;
-        } else if (block == MTBlocks.ADV_2_TRAFFIC_LIGHT.get()) {
+        } else if (block == MTRegistrate.ADV_2_TRAFFIC_LIGHT.get()) {
             return 2;
-        } else if (block == MTBlocks.ADV_3_TRAFFIC_LIGHT.get()) {
+        } else if (block == MTRegistrate.ADV_3_TRAFFIC_LIGHT.get()) {
             return 3;
         } else throw new IllegalArgumentException("Invalid value passed into method");
     }
@@ -69,18 +69,11 @@ public class AdvancedTrafficLightBlockEntity extends ColoredBlockEntity implemen
         super.loadAdditional(tag, lookup);
 
         for (int i = 0; i < this.lights.size(); i++) {
-            // Only overwrite color if the tag actually contains it
             if (tag.contains("LightColor_" + i)) {
                 lights.get(i).color = DyeColor.byName(tag.getString("LightColor_" + i), lights.get(i).color);
             }
-            // Then load mask
             if (tag.contains("LightMask_" + i)) {
-                CompoundTag maskTag = tag.getCompound("LightMask_" + i);
-                TrafficLightLight.TrafficLightMask mask = new TrafficLightLight.TrafficLightMask();
-                for (int y = 0; y < 16; y++) {
-                    mask.setRow(y, maskTag.getShort("row_" + y));
-                }
-                lights.get(i).mask = mask;
+                lights.get(i).mask = TrafficLightLight.TrafficLightMask.deserialize(tag.getString("LightMask_" + i));
             }
         }
     }
@@ -93,12 +86,7 @@ public class AdvancedTrafficLightBlockEntity extends ColoredBlockEntity implemen
             tag.putString("LightColor_" + i, lights.get(i).color.getName());
         }
         for (int i = 0; i < lights.size(); i++) {
-            CompoundTag maskTag = new CompoundTag();
-            short[] rows = lights.get(i).mask.getRows();
-            for (int y = 0; y < 16; y++) {
-                maskTag.putShort("row_" + y, rows[y]);
-            }
-            tag.put("LightMask_" + i, maskTag);
+            tag.putString("LightMask_"+i, lights.get(i).mask.serialize());
         }
     }
 

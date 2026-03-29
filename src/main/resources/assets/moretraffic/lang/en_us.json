@@ -13,11 +13,43 @@
   "block.moretraffic.traffic_pillar": "Traffic Pillar",
   "block.moretraffic.traffic_display": "Traffic Display",
   "block.moretraffic.led_light": "LED Light",
-  "block.moretraffic.control_cabinet.description": "Can be used to make complex systems and automations that control other TrafficCraft blocks",
-  "block.moretraffic.blinker.description": "Turn on with redstone or with Control Cabinet. Paint to change colors, wrench to turn on quickly.",
-  "item.moretraffic.light.description": "Right-click a traffic pole to create an advanced traffic light. Click again to add lights. Sneak & right-click with Wrench to remove one",
-  "block.moretraffic.traffic_display.description": "Used as overhead traffic displays to show current information. Can be controlled via Control Cabinet.",
-  "block.moretraffic.led_light.description": "Model shape and size can be customized. Can be controlled via Control Cabinet.",
+  "block.moretraffic.derailer": "Train Derailer",
+
+  "item.moretraffic.light.tooltip.summary": "Colored light diode allows you to _create Advanced Traffic Lights_! Also used as a _crafting component_",
+  "item.moretraffic.light.tooltip.condition1": "When R-Clicked on a Traffic Post",
+  "item.moretraffic.light.tooltip.behaviour1": "Creates an _Advanced traffic light_. Click again to add more lights.",
+  "item.moretraffic.light.tooltip.condition2": "When Sneak-R-Clicked with Wrench",
+  "item.moretraffic.light.tooltip.behaviour2": "Removes one light",
+  "item.moretraffic.light.tooltip.condition3": "When targeted with Modify Light in Control Cabinet",
+  "item.moretraffic.light.tooltip.behaviour3": "Can be configured to change _individual light_ colors",
+  "item.moretraffic.light.tooltip.condition4": "When Traffic Light R-Clicked with Wrench",
+  "item.moretraffic.light.tooltip.behaviour4": "Opens the _model and color customization_ page",
+
+  "block.moretraffic.blinker.tooltip.summary": "Simple light that can be _colored_ and _placed_",
+  "block.moretraffic.blinker.tooltip.condition1": "When Redstone-powered or pulsed with Control Cabinet",
+  "block.moretraffic.blinker.tooltip.behaviour1": "_Lights up_ with the painted color",
+  "block.moretraffic.blinker.tooltip.condition2": "When painted with Paint Brush",
+  "block.moretraffic.blinker.tooltip.behaviour2": "_Changes the color_ of the light",
+
+  "block.moretraffic.traffic_display.tooltip.summary": "Used as _overhead traffic displays_ to show current information on the road.",
+  "block.moretraffic.traffic_display.tooltip.condition1": "When targeted with Modify Display in Control Cabinet",
+  "block.moretraffic.traffic_display.tooltip.behaviour1": "_Changes the displays_ content",
+
+  "block.moretraffic.led_light.tooltip.summary": "Placeable light with _shape_ and the _size_ customizable.",
+  "block.moretraffic.led_light.tooltip.condition1": "When targeted with Modify Light in Control Cabinet",
+  "block.moretraffic.led_light.tooltip.behaviour1": "_Changes the lights_ color",
+  "block.moretraffic.led_light.tooltip.condition2": "When R-Clicked with Wrench",
+  "block.moretraffic.led_light.tooltip.behaviour2": "Opens the _model and color customization_ page",
+
+  "moretraffic.ponder.cabinet_1.text_1": "Can be used to make complex systems and automations that _control_ other MoreTraffic blocks",
+  "moretraffic.ponder.cabinet_1.text_2": "It has 2 main categories: Groups and Instructions",
+  "moretraffic.ponder.cabinet_1.text_3": "Groups allow you to group different MoreTraffic Blocks and modify them together",
+  "moretraffic.ponder.cabinet_1.text_4": "You can modify them with instructions",
+  "moretraffic.ponder.cabinet_1.text_5": "Open the GUI and explore! There are tips included",
+
+  "block.moretraffic.derailer.tooltip.summary": "Can _derail trains_ and prevent them from riding through gates, etc...",
+  "block.moretraffic.derailer.tooltip.condition1": "While Redstone-powered or pulsed with Control Cabinet",
+  "block.moretraffic.derailer.tooltip.behaviour1": "_Derails any train_ that passes over derailer.",
 
 
   "core.description.wrenchable": "Wrenchable",
@@ -78,7 +110,7 @@
   "gui.moretraffic.control_cabinet.instruction.modify_display.export": "Export pixel data",
   "gui.moretraffic.control_cabinet.instruction.modify_display.export.message": "Copy pixel data to your clipboard. This is a string of letters, so you can paste it outside of the game too",
   "gui.moretraffic.control_cabinet.instruction.send_pulse": "Send pulse",
-  "gui.moretraffic.control_cabinet.instruction.send_pulse.message": "Toggles redstone for positions in the group. Only works for MoreTraffic blocks.",
+  "gui.moretraffic.control_cabinet.instruction.send_pulse.message": "Toggles redstone for positions in the group. Only works for some MoreTraffic blocks.",
   "gui.moretraffic.control_cabinet.instruction.delete": "Delete instruction",
 
   "gui.moretraffic.control_cabinet.import": "Import...",
@@ -113,6 +145,7 @@
   "moretraffic.commands.copypos.error": "Failed to get coordinates",
 
   "interaction.moretraffic.type": "Current block type: %s",
+  "interaction.moretraffic.derailment": "Train derailed from tracks",
 
   "moretraffic.configuration.title": "MoreTraffic Configs",
   "moretraffic.configuration.section.moretraffic.common.toml": "MoreTraffic Configs",

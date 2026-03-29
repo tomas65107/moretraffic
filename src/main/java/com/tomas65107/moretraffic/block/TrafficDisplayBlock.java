@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -79,7 +80,7 @@ public class TrafficDisplayBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new TrafficDisplayBlockEntity(blockPos, blockState);
+        return new TrafficDisplayBlockEntity(MTRegistrate.TRAFFIC_DISPLAY_BE.get(), blockPos, blockState);
     }
 
 

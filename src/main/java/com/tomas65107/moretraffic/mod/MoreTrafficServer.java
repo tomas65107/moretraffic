@@ -1,11 +1,9 @@
 package com.tomas65107.moretraffic.mod;
 
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlock;
-import com.tomas65107.moretraffic.registration.MTBlocks;
-import com.tomas65107.moretraffic.registration.MTItems;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import de.mrjulsen.trafficcraft.block.TrafficSignPostBlock;
 import de.mrjulsen.trafficcraft.item.WrenchItem;
-import de.mrjulsen.trafficcraft.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -52,29 +50,30 @@ public class MoreTrafficServer {
 
                 if (player.isShiftKeyDown()) {
                     if (!(player.getMainHandItem().getItem() instanceof WrenchItem)) return;
+                    if (!(player.getMainHandItem().getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem)) return;
 
-                    if (state.getBlock() == MTBlocks.ADV_1_TRAFFIC_LIGHT.get()) {
+                    if (state.getBlock() == MTRegistrate.ADV_1_TRAFFIC_LIGHT.get()) {
                         newState = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("trafficcraft", "traffic_sign_post")).defaultBlockState();
                         shouldApplyBe = true;
-                    } else if (state.getBlock() == MTBlocks.ADV_2_TRAFFIC_LIGHT.get()) {
-                        newState = MTBlocks.ADV_1_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, oldFacing);;
+                    } else if (state.getBlock() == MTRegistrate.ADV_2_TRAFFIC_LIGHT.get()) {
+                        newState = MTRegistrate.ADV_1_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, oldFacing);;
                         shouldApplyBe = true;
-                    } else if (state.getBlock() == MTBlocks.ADV_3_TRAFFIC_LIGHT.get()) {
-                        newState = MTBlocks.ADV_2_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, oldFacing);;
+                    } else if (state.getBlock() == MTRegistrate.ADV_3_TRAFFIC_LIGHT.get()) {
+                        newState = MTRegistrate.ADV_2_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, oldFacing);;
                         shouldApplyBe = true;
                     } else return;
-                    if (!player.getAbilities().instabuild) player.addItem(MTItems.LIGHT_DIODE.toStack());
+                    if (!player.getAbilities().instabuild) player.addItem(MTRegistrate.LIGHT_DIODE.asStack());
 
                 } else {
-                    if (!(player.getMainHandItem().is(MTItems.LIGHT_DIODE))) return;
+                    if (!(player.getMainHandItem().is(MTRegistrate.LIGHT_DIODE))) return;
 
                     if (state.getBlock() instanceof TrafficSignPostBlock) {
-                        newState = MTBlocks.ADV_1_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, player.getDirection().getOpposite());
-                    } else if (state.getBlock() == MTBlocks.ADV_1_TRAFFIC_LIGHT.get()) {
-                        newState = MTBlocks.ADV_2_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, oldFacing);;
+                        newState = MTRegistrate.ADV_1_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, player.getDirection().getOpposite());
+                    } else if (state.getBlock() == MTRegistrate.ADV_1_TRAFFIC_LIGHT.get()) {
+                        newState = MTRegistrate.ADV_2_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, oldFacing);;
                         shouldApplyBe = true;
-                    } else if (state.getBlock() == MTBlocks.ADV_2_TRAFFIC_LIGHT.get()) {
-                        newState = MTBlocks.ADV_3_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, oldFacing);;
+                    } else if (state.getBlock() == MTRegistrate.ADV_2_TRAFFIC_LIGHT.get()) {
+                        newState = MTRegistrate.ADV_3_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, oldFacing);;
                         shouldApplyBe = true;
                     } else return;
                     if (!player.getAbilities().instabuild) player.getMainHandItem().shrink(1);

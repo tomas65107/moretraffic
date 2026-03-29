@@ -1,14 +1,13 @@
 package com.tomas65107.moretraffic.block;
 
 import com.tomas65107.moretraffic.data.TrafficDisplayPixels;
-import com.tomas65107.moretraffic.data.TrafficLightLight;
-import com.tomas65107.moretraffic.registration.MTBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import static com.tomas65107.moretraffic.data.TrafficDisplayPixels.deserialize;
@@ -17,8 +16,8 @@ public class TrafficDisplayBlockEntity extends BlockEntity {
 
     public TrafficDisplayPixels pixelMask = new TrafficDisplayPixels();
 
-    public TrafficDisplayBlockEntity(BlockPos pos, BlockState blockState) {
-        super(MTBE.TRAFFIC_DISPLAY_BE.get(), pos, blockState);
+    public TrafficDisplayBlockEntity(BlockEntityType type, BlockPos pos, BlockState blockState) {
+        super(type, pos, blockState);
     }
 
     public void modifyDisplayPixels(TrafficDisplayPixels newMask) {

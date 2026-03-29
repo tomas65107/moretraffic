@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,powered=false": { "model": "moretraffic:block/derailer_base", "y": 180 },
+    "facing=south,powered=false": { "model": "moretraffic:block/derailer_base" },
+    "facing=west,powered=false":  { "model": "moretraffic:block/derailer_base", "y": 90 },
+    "facing=east,powered=false":  { "model": "moretraffic:block/derailer_base", "y": 270 },
+    "facing=north,powered=true": { "model": "moretraffic:block/derailer_base", "y": 180 },
+    "facing=south,powered=true": { "model": "moretraffic:block/derailer_base" },
+    "facing=west,powered=true":  { "model": "moretraffic:block/derailer_base", "y": 90 },
+    "facing=east,powered=true":  { "model": "moretraffic:block/derailer_base", "y": 270 }
+  }
+}

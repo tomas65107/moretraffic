@@ -16,8 +16,6 @@ import com.tomas65107.moretraffic.gui.makers.PixelGridMaker;
 import com.tomas65107.moretraffic.gui.tooltip.BodyTooltip;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
-import com.tomas65107.moretraffic.mod.MoreTrafficClient;
-import com.tomas65107.moretraffic.networking.ClientSenderPacketTrafficLight;
 import com.tomas65107.moretraffic.networking.ClientSyncCabinetPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

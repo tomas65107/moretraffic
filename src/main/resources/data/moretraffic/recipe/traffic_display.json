@@ -1,26 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "  S",
-    " #R",
-    " CS"
+    "   ",
+    "PAP",
+    "R#R"
   ],
   "key": {
     "#": {
       "item": "minecraft:redstone_lamp"
     },
-    "C": {
-      "item": "minecraft:comparator"
-    },
     "R": {
       "tag": "c:plates/iron"
     },
-    "S": {
-      "item": "minecraft:stone_slab"
+    "A": {
+      "item": "create:electron_tube"
+    },
+    "P": {
+      "item": "create:andesite_alloy"
     }
   },
   "result": {
     "id": "moretraffic:traffic_display",
-    "count": 1
+    "count": 2
   }
 }

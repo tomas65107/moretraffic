@@ -1,6 +1,6 @@
 package com.tomas65107.moretraffic.mod;
 
-import net.neoforged.fml.ModList;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -15,26 +15,23 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 import static com.tomas65107.moretraffic.registration.CreativeTab.CREATIVE_MODE_TABS;
-import static com.tomas65107.moretraffic.registration.MTBE.BLOCK_ENTITIES;
-import static com.tomas65107.moretraffic.registration.MTBlocks.BLOCKS;
-import static com.tomas65107.moretraffic.registration.MTItems.ITEMS;
 import static com.tomas65107.moretraffic.registration.MTMenus.MENUS;
+import static com.tomas65107.moretraffic.registration.MTRegistrate.REGISTRATE;
 
 @Mod(MoreTraffic.MODID)
 public class MoreTraffic {
     public static final String MODID = "moretraffic";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final boolean createPresent = ModList.get().isLoaded("create");
 
     public MoreTraffic(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
-        BLOCKS.register(modEventBus);
-        ITEMS.register(modEventBus);
-        BLOCK_ENTITIES.register(modEventBus);
+        REGISTRATE.registerEventListeners(modEventBus);
+        MTRegistrate.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
         MENUS.register(modEventBus);
+        MoreTrafficCompat.init();
 
         NeoForge.EVENT_BUS.register(this);
 

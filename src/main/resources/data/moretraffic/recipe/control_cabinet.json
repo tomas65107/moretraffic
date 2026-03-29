@@ -1,16 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#C#",
+    " C ",
     "SIS",
-    "RcR"
+    " c "
   ],
   "key": {
-    "#": {
-      "item": "minecraft:redstone_torch"
-    },
     "C": {
-      "item": "minecraft:comparator"
+      "item": "create:precision_mechanism"
     },
     "S": {
       "item": "minecraft:stone"
@@ -18,11 +15,8 @@
     "I": {
       "item": "minecraft:iron_block"
     },
-    "R": {
-      "item": "minecraft:redstone"
-    },
     "c": {
-      "item": "minecraft:copper_ingot"
+      "item": "create:electron_tube"
     }
   },
   "result": {

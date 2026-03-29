@@ -1,6 +1,5 @@
 package com.tomas65107.moretraffic.block;
 
-import com.tomas65107.moretraffic.registration.MTBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +24,8 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
     public int sizeY;
     public DyeColor color;
 
-    public LEDStripBlockEntity(BlockPos pos, BlockState blockState) {
-        super(MTBE.LEDSTRIP.get(), pos, blockState);
+    public LEDStripBlockEntity(BlockEntityType type, BlockPos pos, BlockState blockState) {
+        super(type, pos, blockState);
 
         startPosX = (16 - 2) / 2;
         startPosY = (16 - 2) / 2;

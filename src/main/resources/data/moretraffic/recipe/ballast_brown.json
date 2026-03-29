@@ -8,11 +8,11 @@
       "item": "minecraft:gravel"
     },
     "2": {
-      "item": "minecraft:cobblestone"
+      "item": "create:scoria"
     }
   },
   "result": {
-    "id": "moretraffic:ballast_gray",
+    "id": "moretraffic:ballast_brown",
     "count": 4
   }
 }

@@ -46,6 +46,8 @@ public class BlockBoundingBoxes {
 
     public static final VoxelShape BALLAST;
 
+    public static final VoxelShape DERAILER;
+
 
     static {
         BALLAST = Shapes.or(Block.box(0, 0, 0, 16, 16, 16), Block.box(0, 16, 0, 16, 17, 16));
@@ -54,5 +56,7 @@ public class BlockBoundingBoxes {
         RAIL_RIGHT = Block.box(14.5, -0.75, -0.5, 15.5, 19.75, 16.5);
 
         TRAFFIC_PILLAR = Block.box(5, 0, 5, 11, 16, 11);
+
+        DERAILER = Block.box(2, 2, 0, 14, 14, 12);
     }
 }

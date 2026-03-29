@@ -2,22 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "   ",
-    "#G#",
-    " R "
+    "#R#",
+    "cGc"
   ],
   "key": {
     "#": {
       "tag": "c:plates/iron"
     },
     "G": {
-      "item": "minecraft:glowstone_dust"
+      "item": "create:electron_tube"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "item": "minecraft:glowstone_dust"
+    },
+    "c": {
+      "item": "create:copper_sheet"
     }
   },
   "result": {
     "id": "moretraffic:light",
-    "count": 1
+    "count": 2
   }
 }

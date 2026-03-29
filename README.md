@@ -1,5 +1,5 @@
 # MoreTraffic
-**A [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) addon adding advanced traffic lights, displays, LEDs, control systems and decorations.**
+**A [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) & [Create](https://github.com/Creators-of-Create/Create) addon adding advanced traffic lights, displays, LEDs, control systems and decorations.**
 
 <p align="left">
   <a href="https://discord.gg/XaGFT5dAbh">
@@ -47,6 +47,10 @@ Learn more on the content currently present in the mod and planned in the future
 - **LED Light**
     - Model of the light is customizable so you can create any shape of light in-game.
     - Full control over the color via control cabinet.
+
+- **Track Derailer**
+    - Derails any Create mod train that drives over it when turned on
+    - Activable with redstone or control cabinet
  
 - **Traffic Trusses and pillars**
     - Decorate highways with traffic pillars and trusses

@@ -6,6 +6,8 @@ import com.tomas65107.moretraffic.block.TrafficDisplayBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightGroup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +28,13 @@ public record SendPulse(String group, boolean enable) implements LightInstructio
             if (!blockPosList.isEmpty()) {
                 for (BlockPos lightPos : blockPosList) {
                     if (!level.isLoaded(lightPos)) continue;
-                    if (level.getBlockEntity(lightPos) instanceof FlashingBlinkerBlockEntity flashingBlinkerBlockEntity) {
-                        flashingBlinkerBlockEntity.lightStatus = enable;
-                        flashingBlinkerBlockEntity.setChanged();
-                        level.sendBlockUpdated(flashingBlinkerBlockEntity.getBlockPos(), flashingBlinkerBlockEntity.getBlockState(), flashingBlinkerBlockEntity.getBlockState(), 3);
+                    if (level.getBlockEntity(lightPos) instanceof ICabinetPulsable pulsable) {
+                        pulsable.handlePulseLight(enable);
+                        ((BlockEntity)pulsable).setChanged();
+                        level.sendBlockUpdated(((BlockEntity)pulsable).getBlockPos(), ((BlockEntity)pulsable).getBlockState(), ((BlockEntity)pulsable).getBlockState(), 3);
                     } else {
                         be.isRunning = false;
-                        return false; //cannot find supported blocks there
+                        return false; //cannot find supported block there
                     }
                 }
                 return true;

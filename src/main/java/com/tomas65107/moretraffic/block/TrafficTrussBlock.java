@@ -1,11 +1,10 @@
 package com.tomas65107.moretraffic.block;
 
-import com.tomas65107.moretraffic.registration.MTBlocks;
+import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -50,7 +49,7 @@ public class TrafficTrussBlock extends Block {
     }
 
     public static VoxelShape getVoxelShape(BlockState block) {
-        if (block.is(MTBlocks.TRAFFIC_TRUSS_WALKWAY)) {
+        if (block.is(MTRegistrate.TRAFFIC_TRUSS_WALKWAY)) {
             return Shapes.or(TRUSS_BASE, Shapes.or(RAIL_LEFT, RAIL_RIGHT));
         } else {
             return TRUSS_BASE;

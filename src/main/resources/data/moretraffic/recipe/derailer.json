@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "12"
+  ],
+  "key": {
+    "1": {
+      "item": "create:railway_casing"
+    },
+    "2": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "result": {
+    "id": "moretraffic:derailer",
+    "count": 2
+  }
+}
