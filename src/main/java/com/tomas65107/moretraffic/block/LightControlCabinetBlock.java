@@ -1,5 +1,6 @@
 package com.tomas65107.moretraffic.block;
 
+import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.gui.containers.LightControlCabinetMenu;
 import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
@@ -37,11 +38,7 @@ import java.util.List;
 
 public class LightControlCabinetBlock extends Block implements EntityBlock {
     public LightControlCabinetBlock(Properties properties) {
-        super(properties
-                .mapColor(MapColor.METAL)
-                .strength(10.0f, 40.0f)
-                .sound(SoundType.NETHERITE_BLOCK)
-        );
+        super(ISimpleBlockProperties.set(properties, SoundType.NETHERITE_BLOCK, MapColor.METAL, ISimpleBlockProperties.Material.FULLBLOCK_TOUGH));
     }
 
     @Override

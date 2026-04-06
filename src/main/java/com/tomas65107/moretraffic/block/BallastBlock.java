@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
+import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -40,9 +41,6 @@ import java.awt.*;
 import java.util.List;
 
 import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
-import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShape;
-import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.BALLAST;
-import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.LEDSTRIP;
 
 public class BallastBlock extends FallingBlock {
 
@@ -61,9 +59,7 @@ public class BallastBlock extends FallingBlock {
     }
 
     public BallastBlock(BlockBehaviour.Properties properties) {
-        super(properties.sound(SoundType.SUSPICIOUS_GRAVEL)
-                .strength(10.0f, 40.0f)
-                .mapColor(DyeColor.GRAY));
+        super(ISimpleBlockProperties.set(properties, SoundType.SUSPICIOUS_GRAVEL, DyeColor.GRAY.getMapColor(), ISimpleBlockProperties.Material.FULLBLOCK_NORMAL));
     }
 
     @Override

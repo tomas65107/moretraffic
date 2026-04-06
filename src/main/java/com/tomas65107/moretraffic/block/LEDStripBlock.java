@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
+import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.gui.containers.LEDStripMenu;
 import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
@@ -34,7 +35,7 @@ import java.util.List;
 
 import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShape;
 import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShapeSpecial;
-import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.LEDSTRIP;
+import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.*;
 
 public class LEDStripBlock extends Block implements EntityBlock {
 
@@ -43,11 +44,7 @@ public class LEDStripBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
     public LEDStripBlock(Properties properties) {
-        super(properties
-                .mapColor(MapColor.METAL)
-                .strength(2.0f, 12.0f)
-                .sound(SoundType.METAL)
-        );
+        super(ISimpleBlockProperties.set(properties, SoundType.METAL, MapColor.NONE, ISimpleBlockProperties.Material.MODEL_NORMAL));
     }
 
     @Override
@@ -91,8 +88,24 @@ public class LEDStripBlock extends Block implements EntityBlock {
         return super.getDestroyProgress(state, player, world, pos);
     }
 
-    @Override public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShapeSpecial(state.getValue(FACING), LEDSTRIP);}
-    @Override public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShapeSpecial(state.getValue(FACING), LEDSTRIP);}
+    public static VoxelShape getVoxelShape(BlockState state, BlockGetter level, BlockPos pos) {
+        if (level.getBlockEntity(pos) instanceof LEDStripBlockEntity be) {
+            float depth  = 2.6f;
+            return Block.box(
+                    be.startPosX,
+                    0,
+                    16 - (be.startPosY + be.sizeY),
+                    be.startPosX + be.sizeX,
+                    depth,
+                    16 - be.startPosY
+            );
+        } else {
+            return LEDSTRIP; //block placement check
+        }
+    }
+
+    @Override public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShapeSpecial(state.getValue(FACING), getVoxelShape(state, level, pos));}
+    @Override public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return rotateShapeSpecial(state.getValue(FACING), getVoxelShape(state, level, pos));}
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {

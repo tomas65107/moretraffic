@@ -1,6 +1,8 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
+import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
+import com.tomas65107.moretraffic.data.lightinstructions.ICabinetPulsable;
 import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,11 +35,7 @@ public class TrafficDisplayBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public TrafficDisplayBlock(Properties properties) {
-        super(properties
-                .mapColor(MapColor.METAL)
-                .strength(10.0f, 40.0f)
-                .sound(SoundType.METAL)
-        );
+        super(ISimpleBlockProperties.set(properties, SoundType.METAL, MapColor.TERRACOTTA_BLACK, ISimpleBlockProperties.Material.MODEL_TOUGH));
     }
 
 

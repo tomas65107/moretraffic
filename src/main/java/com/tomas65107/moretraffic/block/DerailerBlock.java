@@ -2,6 +2,7 @@ package com.tomas65107.moretraffic.block;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
+import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -34,11 +35,7 @@ import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.DERAILER;
 
 public class DerailerBlock extends Block implements IBE<DerailerBlockEntity>, IWrenchable {
     public DerailerBlock(Properties properties) {
-        super(properties
-                .mapColor(MapColor.METAL)
-                .strength(10.0f, 40.0f)
-                .sound(SoundType.NETHERITE_BLOCK)
-        );
+        super(ISimpleBlockProperties.set(properties, SoundType.NETHERITE_BLOCK, MapColor.METAL, ISimpleBlockProperties.Material.MODEL_TOUGH));
     }
 
     @Override

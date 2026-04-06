@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
+import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.data.lightinstructions.ICabinetPulsable;
 import com.tomas65107.moretraffic.registration.MTRegistrate;
 import com.tomas65107.moretraffic.rendering.BlockBoundingBoxes;
@@ -39,10 +40,7 @@ public class FlashingBlinkerBlock extends ColorableBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public FlashingBlinkerBlock(Properties properties) {
-        super(properties
-                .mapColor(MapColor.METAL)
-                .strength(2.0f, 12.0f)
-                .sound(SoundType.METAL));
+        super(ISimpleBlockProperties.set(properties, SoundType.METAL, MapColor.METAL, ISimpleBlockProperties.Material.MODEL_NORMAL));
     }
 
     @Override

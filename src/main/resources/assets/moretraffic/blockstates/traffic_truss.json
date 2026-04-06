@@ -1,8 +1,13 @@
 {
   "variants": {
-    "facing=north": { "model": "moretraffic:block/traffic_truss", "y": 180 },
-    "facing=south": { "model": "moretraffic:block/traffic_truss" },
-    "facing=west":  { "model": "moretraffic:block/traffic_truss", "y": 90 },
-    "facing=east":  { "model": "moretraffic:block/traffic_truss", "y": 270 }
+    "facing=north,walkway=false": { "model": "moretraffic:block/traffic_truss" },
+    "facing=south,walkway=false": { "model": "moretraffic:block/traffic_truss", "y": 180 },
+    "facing=west,walkway=false":  { "model": "moretraffic:block/traffic_truss", "y": 270 },
+    "facing=east,walkway=false":  { "model": "moretraffic:block/traffic_truss", "y": 90 },
+
+    "facing=north,walkway=true": { "model": "moretraffic:block/traffic_truss_walkway" },
+    "facing=south,walkway=true": { "model": "moretraffic:block/traffic_truss_walkway", "y": 180 },
+    "facing=west,walkway=true":  { "model": "moretraffic:block/traffic_truss_walkway", "y": 270 },
+    "facing=east,walkway=true":  { "model": "moretraffic:block/traffic_truss_walkway", "y": 90 }
   }
 }

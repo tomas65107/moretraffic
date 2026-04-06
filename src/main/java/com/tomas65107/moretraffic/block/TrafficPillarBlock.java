@@ -1,5 +1,6 @@
 package com.tomas65107.moretraffic.block;
 
+import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +11,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -29,7 +31,7 @@ public class TrafficPillarBlock extends Block {
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
     public TrafficPillarBlock(Properties properties) {
-        super(properties.strength(10.0f, 40.0f).mapColor(MapColor.TERRACOTTA_WHITE));
+        super(ISimpleBlockProperties.set(properties, SoundType.STONE, MapColor.COLOR_LIGHT_GRAY, ISimpleBlockProperties.Material.MODEL_TOUGH));
     }
 
     @Override

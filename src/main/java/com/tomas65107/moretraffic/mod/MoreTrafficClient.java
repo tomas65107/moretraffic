@@ -84,22 +84,17 @@ public class MoreTrafficClient {
                 new TintedTextures.TintedBlock(),
                 ADV_1_TRAFFIC_LIGHT.get(),
                 ADV_2_TRAFFIC_LIGHT.get(),
-                ADV_3_TRAFFIC_LIGHT.get()
+                ADV_3_TRAFFIC_LIGHT.get(),
+                BLINKER.get(),
+                GIRDED_TRUSS.get()
         );
         Minecraft.getInstance().getItemColors().register(
                 new TintedTextures.TintedItem(),
                 ADV_1_TRAFFIC_LIGHT.get(),
                 ADV_2_TRAFFIC_LIGHT.get(),
-                ADV_3_TRAFFIC_LIGHT.get()
-        );
-
-        Minecraft.getInstance().getBlockColors().register(
-                new TintedTextures.TintedBlock(),
-                BLINKER.get()
-        );
-        Minecraft.getInstance().getItemColors().register(
-                new TintedTextures.TintedItem(),
-                BLINKER.get()
+                ADV_3_TRAFFIC_LIGHT.get(),
+                BLINKER.get(),
+                GIRDED_TRUSS.get()
         );
 
         ItemBlockRenderTypes.setRenderLayer(

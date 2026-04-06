@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.gui.containers;
 
+import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlock;
+import com.tomas65107.moretraffic.block.LEDStripBlock;
 import com.tomas65107.moretraffic.block.LEDStripBlockEntity;
 import com.tomas65107.moretraffic.data.AbstractSheet;
 import com.tomas65107.moretraffic.data.ColorsManager;
@@ -19,10 +21,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.swing.text.StyledEditorKit;
 import java.util.Arrays;
@@ -213,9 +217,15 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu>{
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(guiX +10, guiY +156.5, 10);
 
+        BlockState model = be.getBlockState().setValue(LEDStripBlock.FACING, Direction.SOUTH);
+
         float scale = 127f;
         guiGraphics.pose().scale(scale, -scale, scale);
+
+        BlockState originalBeBs = be.getBlockState();
+        be.setBlockState(model);
         beDispatcher.render(be, 0f, guiGraphics.pose(), Minecraft.getInstance().renderBuffers().bufferSource());
+        be.setBlockState(originalBeBs);
 
         guiGraphics.pose().popPose();
 

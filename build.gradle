@@ -10,23 +10,17 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def mod_version = "0.2.1-beta"
+def mod_version = "0.2.2-beta"
 
 def mod_changelog = """
-🎉 From now on, MoreTraffic is an addon to the Create Mod! Please install create alongside it (Modrinth does this automatically)
-⚠️ **WARNING:** Traffic Light Masks from old versions will get DELETED due to new saving standard! Only Traffic Light masks are affected.
-
-- Changed how Adv. Traffic Lights serializes NBT to be more efficient
-- Added Derailer: Derails Trains when powered with redstone
-- Added missing crafting recipe for Brown Ballast
-- Adapted recipes to create materials
-- Added create-style summaries and ponders (more coming...)
-- Both Create and TrafficCraft work now for all MoreTraffic blocks!
-- Rewritten codebase to use Create style Registrate for blocks and items
-- Rewritten rendering, should lag less!
-- Fixed a bug related to ballast block not randomizing textures when placed not by player
-- Fixed a bug related to copying Traffic light's mask would not work
-*Make sure to backup your worlds and thanks for using More Traffic! More create functionality in the works! Have a great rest of the weekend!*
+- Added new Girdered Truss block!
+- Changed models for Traffic Truss
+- Merged Traffic Truss /w Walkway into Traffic Truss (now they are one block), Traffic Truss /w Walkway may be deleted in worlds when updated.
+- LED Light UI and VoxelShape fixes.
+- Fixed multiple bugs with Ballast-like blocks
+- Changed block breaking API to be integrated, should fix and unify block breaking speeds.
+- Backend and recipe changes.
+*Make sure to backup your worlds and thanks for using More Traffic! Happy Easter!*
 """
 
 version = mod_version

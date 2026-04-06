@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
+import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightOrientation;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightPosition;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightScale;
@@ -41,11 +42,7 @@ import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.*;
 
 public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleWaterloggedBlock, EntityBlock, ITrafficPostLike {
     public AdvancedTrafficLightBlock(Properties properties) {
-        super(properties
-                .mapColor(MapColor.METAL)
-                .strength(4.0f, 12.0f)
-                .sound(SoundType.ANVIL)
-        );
+        super(ISimpleBlockProperties.set(properties, SoundType.ANVIL, MapColor.METAL, ISimpleBlockProperties.Material.MODEL_NORMAL));
     }
 
     @Override

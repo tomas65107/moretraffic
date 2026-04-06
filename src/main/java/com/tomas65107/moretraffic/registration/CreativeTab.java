@@ -28,8 +28,8 @@ public class CreativeTab {
                         output.accept(BALLAST_GRAY.get().asItem().getDefaultInstance());
                         output.accept(BALLAST_BROWN.get().asItem().getDefaultInstance());
                         output.accept(TRAFFIC_PILLAR.get().asItem().getDefaultInstance());
+                        output.accept(GIRDED_TRUSS.get().asItem().getDefaultInstance());
                         output.accept(TRAFFIC_TRUSS.get().asItem().getDefaultInstance());
-                        output.accept(TRAFFIC_TRUSS_WALKWAY.get().asItem().getDefaultInstance());
                     }).build());
 
 }

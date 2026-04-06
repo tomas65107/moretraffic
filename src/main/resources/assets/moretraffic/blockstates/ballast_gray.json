@@ -1,5 +1,6 @@
 {
   "variants": {
+    "type=0": { "model": "moretraffic:block/ballast_gray_1"},
     "type=1": { "model": "moretraffic:block/ballast_gray_1"},
     "type=2": { "model": "moretraffic:block/ballast_gray_2"},
     "type=3":  { "model": "moretraffic:block/ballast_gray_3"},

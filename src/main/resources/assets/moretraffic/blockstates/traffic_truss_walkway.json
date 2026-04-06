@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "moretraffic:block/traffic_truss_walkway", "y": 180 },
-    "facing=south": { "model": "moretraffic:block/traffic_truss_walkway" },
-    "facing=west":  { "model": "moretraffic:block/traffic_truss_walkway", "y": 90 },
-    "facing=east":  { "model": "moretraffic:block/traffic_truss_walkway", "y": 270 }
-  }
-}

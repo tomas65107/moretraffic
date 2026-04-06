@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "facing=north": { "model": "moretraffic:block/girded_truss"     , "x": 90, "y": 0 },
+    "facing=south": { "model": "moretraffic:block/girded_truss_roll", "x": 90, "y": 0 },
+    "facing=west":  { "model": "moretraffic:block/girded_truss",      "x": 90, "y": 90 },
+    "facing=east":  { "model": "moretraffic:block/girded_truss_roll", "x": 90, "y": 90 },
+
+    "facing=up":    { "model": "moretraffic:block/girded_truss" },
+    "facing=down":  { "model": "moretraffic:block/girded_truss_roll" }
+  }
+}

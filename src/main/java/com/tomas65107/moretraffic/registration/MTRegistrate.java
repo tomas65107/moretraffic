@@ -1,7 +1,5 @@
 package com.tomas65107.moretraffic.registration;
 
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.content.trains.graph.EdgePointType;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -9,9 +7,6 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tomas65107.moretraffic.block.*;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
-import com.tomas65107.moretraffic.mod.MoreTrafficCompat;
-import com.tomas65107.moretraffic.registration.basedescription.SimpleItem;
-import com.tomas65107.moretraffic.rendering.DerailerRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -21,7 +16,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 
-import static com.simibubi.create.AllBlocks.CUCKOO_CLOCK;
+import static com.tomas65107.moretraffic.block.MTBaseColoredBlockEntity.getValidHookedBlocks;
 
 public class MTRegistrate {
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MoreTraffic.MODID);
@@ -89,13 +84,8 @@ public class MTRegistrate {
     public static final BlockEntry<TrafficTrussBlock> TRAFFIC_TRUSS = REGISTRATE
             .block("traffic_truss", TrafficTrussBlock::new)
             .item()
-            .removeTab(CreativeModeTabs.SEARCH)
-            .build()
-            .register();
-
-    public static final BlockEntry<TrafficTrussBlock> TRAFFIC_TRUSS_WALKWAY = REGISTRATE
-            .block("traffic_truss_walkway", TrafficTrussBlock::new)
-            .item()
+            .onRegisterAfter(Registries.ITEM, item ->
+                    TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)))
             .removeTab(CreativeModeTabs.SEARCH)
             .build()
             .register();
@@ -110,6 +100,15 @@ public class MTRegistrate {
     public static final BlockEntry<BallastBlock> BALLAST_GRAY = REGISTRATE
             .block("ballast_gray", BallastBlock::new)
             .item()
+            .removeTab(CreativeModeTabs.SEARCH)
+            .build()
+            .register();
+
+    public static final BlockEntry<MultiblockTrussBlock> GIRDED_TRUSS = REGISTRATE
+            .block("girded_truss", MultiblockTrussBlock::new)
+            .item()
+            .onRegisterAfter(Registries.ITEM, item ->
+                    TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)))
             .removeTab(CreativeModeTabs.SEARCH)
             .build()
             .register();
@@ -139,6 +138,11 @@ public class MTRegistrate {
             .onRegisterAfter(Registries.ITEM, item ->
                     TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)))
             .removeTab(CreativeModeTabs.SEARCH)
+            .register();
+
+    public static final BlockEntityEntry<MTBaseColoredBlockEntity> BASE_COLORED_BE = REGISTRATE
+            .blockEntity("base_colored_block_hook", MTBaseColoredBlockEntity::new)
+            .validBlocks(getValidHookedBlocks())
             .register();
 
     public static void register(IEventBus modEventBus) {

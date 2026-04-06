@@ -27,16 +27,12 @@ public class HelperFunctions {
     }
 
     public static VoxelShape rotateShapeSpecial(Direction to, VoxelShape shape) {
-        if (to == Direction.UP || to == Direction.DOWN) return shape; // vertical stays vertical
+        if (to == Direction.UP || to == Direction.DOWN) return shape;
 
         AtomicReference<VoxelShape> result = new AtomicReference<>(Shapes.empty());
 
         // iterate all boxes in the shape
         shape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
-            double width = maxX - minX;
-            double height = maxY - minY;
-            double depth = maxZ - minZ;
-
             double newMinX = 0, newMinY = 0, newMinZ = 0;
             double newMaxX = 0, newMaxY = 0, newMaxZ = 0;
 
@@ -59,7 +55,7 @@ public class HelperFunctions {
                     newMaxY = maxZ;
                     newMaxZ = maxY;
                 }
-                case WEST -> {
+                case EAST -> {
                     newMinX = minY;
                     newMinY = minZ;
                     newMinZ = minX;
@@ -68,7 +64,7 @@ public class HelperFunctions {
                     newMaxY = maxZ;
                     newMaxZ = maxX;
                 }
-                case EAST -> {
+                case WEST -> {
                     newMinX = 1 - maxY;
                     newMinY = minZ;
                     newMinZ = 1 - maxX;
