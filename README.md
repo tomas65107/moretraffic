@@ -1,5 +1,6 @@
 # MoreTraffic
-**A [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) & [Create](https://github.com/Creators-of-Create/Create) addon adding advanced traffic lights, displays, LEDs, control systems and decorations.**
+**A [TrafficCraft](https://github.com/MisterJulsen/TrafficCraft) & [Create](https://github.com/Creators-of-Create/Create) addon adding realistic, programmable infrastructure and decorations to your world.**\
+You can design, customize, and automate many things and elements from reality with a minecraft twist.
 
 <p align="left">
   <a href="https://discord.gg/XaGFT5dAbh">
@@ -8,18 +9,21 @@
     <a href="https://modrinth.com/mod/moretraffic">
     <img src="https://api.tomas65107.dev/cdn/platformdecals/modrinth.png" alt="Modrinth" width="242"/>
   </a>
+      <a href="https://www.curseforge.com/minecraft/mc-mods/moretraffic">
+    <img src="https://api.tomas65107.dev/cdn/platformdecals/curseforge.png" alt="Modrinth" width="242"/>
+  </a>
       <a href="https://github.com/tomas65107/moretraffic">
     <img src="https://api.tomas65107.dev/cdn/platformdecals/github.png" alt="Github" width="242"/>
   </a>
 </p>
 
 > [!IMPORTANT]
-> The mod is a work in progress and is in **alpha**. Expect bugs, crashes. Always make world backups.\
+> The mod is still in **beta**. Expect bugs. Always make world backups.\
 > You can [**report any bugs or crashes here**](https://github.com/tomas65107/moretraffic/issues), and try to [attach the log](https://minecraft.wiki/w/Tutorial:Obtaining_a_crash_report) and describe what you did
 
-> - You can find list of planned features below
 > - Documentation can be found in-game by hovering on the (i) icons
-> - Make sure you have downloaded trafficcraft alongside this mod (modrinth does this automatically)
+> - Up-to-date mod video showcase can [be found here](https://tomas65107.dev/moretraffic/newestTutorial)
+> - Make sure you have installed TrafficCraft and Create alongside (Modrinth handles this automatically).
 
 ## Content
 Learn more on the content currently present in the mod and planned in the future. This functions like a Wiki, too
@@ -63,14 +67,19 @@ Learn more on the content currently present in the mod and planned in the future
 
 ---
 
-### ⚡ Planned Features
+### ⚡ Planned Features (quick notes)
 This mod is new, so i could not fit all of my ideas and bugfixes into one release.\
 These are the things i want to add along with notes:
 
-- Add correct traffic light bounding box _(ive given up on adding all of them for now)_
+- Add correct traffic light bounding box _(currently deprioritized)_
 - Add In-game size presets for traffic lights _(now just dont work)_
 - Add traffic countdown clock for traffic light _(dont really know how the player should change the timer)_
 - Improved documentation and images
 - Make group GUI more pretty
-- Add more light types that can be customized _(not really for traffic but cool nontheless)_
-- **And more things planned…**
+- Add more light types that can be customized _(not really for traffic but cool nontheless)_\
+**More things planned…**\
+**Suggest more on [discord](https://discord.gg/XaGFT5dAbh)**
+
+## Contribute
+I am developing this mod in my free time as a hobby so sometimes, updates can take a while.\
+If you are a Java developer, artist, or want to localise this mod to other languages, you can by submiting a PR on github or reach out to me via [discord](https://discord.gg/XaGFT5dAbh) or [other methods](https://tomas65107.dev).
