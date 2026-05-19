@@ -2,8 +2,7 @@ package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
-import com.tomas65107.moretraffic.data.lightinstructions.ICabinetPulsable;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShape;
+import static com.tomas65107.moretraffic.helpers.HelperFunctions.rotateShape;
 import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.traffic_display;
 
 public class TrafficDisplayBlock extends Block implements EntityBlock {

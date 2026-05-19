@@ -1,14 +1,14 @@
 package com.tomas65107.moretraffic.gui.components.buttons;
 
 import com.tomas65107.moretraffic.data.ColorsManager;
-import com.tomas65107.moretraffic.data.helpers.TextHelper;
+import com.tomas65107.moretraffic.helpers.TextHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
 
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 
 public class ColorButton extends Button {
 

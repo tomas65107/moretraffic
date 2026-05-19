@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.registration;
+package com.tomas65107.moretraffic.mod.registration;
 
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
 import com.tomas65107.moretraffic.gui.containers.LEDStripMenu;

@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.data.helpers;
+package com.tomas65107.moretraffic.helpers;
 
 import com.google.common.base.Strings;
 import net.minecraft.client.Minecraft;

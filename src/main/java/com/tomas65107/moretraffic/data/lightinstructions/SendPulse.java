@@ -1,12 +1,10 @@
 package com.tomas65107.moretraffic.data.lightinstructions;
 
-import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
-import com.tomas65107.moretraffic.block.TrafficDisplayBlockEntity;
+import com.tomas65107.moretraffic.data.ICabinetPulsable;
 import com.tomas65107.moretraffic.data.TrafficLightGroup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.ArrayList;

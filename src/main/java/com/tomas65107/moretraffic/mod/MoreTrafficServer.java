@@ -1,7 +1,7 @@
 package com.tomas65107.moretraffic.mod;
 
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlock;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import de.mrjulsen.trafficcraft.block.TrafficSignPostBlock;
 import de.mrjulsen.trafficcraft.item.WrenchItem;
 import net.minecraft.core.BlockPos;

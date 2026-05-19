@@ -1,20 +1,18 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
-import com.sun.jna.platform.win32.COM.TypeInfoUtil;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
-import com.tomas65107.moretraffic.mod.MoreTraffic;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.data.blocktypes.MTBaseColoredBlockEntity;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import de.mrjulsen.trafficcraft.block.data.ColorableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -33,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MultiblockTrussBlock extends ColorableBlock implements EntityBlock, ISimpleBlockProperties {
+public class MultiblockTrussBlock extends ColorableBlock implements EntityBlock, ISimpleBlockProperties, IWrenchable {
 
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
@@ -92,12 +90,9 @@ public class MultiblockTrussBlock extends ColorableBlock implements EntityBlock,
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Direction newFacing = context.getNearestLookingDirection().getOpposite();
-        BlockPos clickedBlockPos = context.getClickedPos().relative(context.getNearestLookingDirection(), 1);
+        Direction newFacing = context.getClickedFace().getOpposite();
+        BlockPos clickedBlockPos = context.getClickedPos().relative(context.getClickedFace(), -1);
         BlockState clickedBlockState = context.getLevel().getBlockState(clickedBlockPos);
-
-        assert context.getPlayer() != null;
-        if (context.getPlayer().isShiftKeyDown()) return this.defaultBlockState().setValue(FACING, newFacing);
 
         if (clickedBlockState.getBlock() instanceof MultiblockTrussBlock) {
             if (newFacing.equals(clickedBlockState.getValue(FACING)) || newFacing.equals(clickedBlockState.getValue(FACING).getOpposite())) {
@@ -120,7 +115,7 @@ public class MultiblockTrussBlock extends ColorableBlock implements EntityBlock,
     }
 
     @Override
-    public @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
-        return ISimpleBlockProperties.super.getDrops(state, params);
+    protected @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LootParams.@NotNull Builder params) {
+        return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 }

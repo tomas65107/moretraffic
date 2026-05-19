@@ -1,6 +1,6 @@
 package com.tomas65107.moretraffic.mod;
 
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -14,9 +14,9 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-import static com.tomas65107.moretraffic.registration.CreativeTab.CREATIVE_MODE_TABS;
-import static com.tomas65107.moretraffic.registration.MTMenus.MENUS;
-import static com.tomas65107.moretraffic.registration.MTRegistrate.REGISTRATE;
+import static com.tomas65107.moretraffic.mod.registration.CreativeTab.CREATIVE_MODE_TABS;
+import static com.tomas65107.moretraffic.mod.registration.MTMenus.MENUS;
+import static com.tomas65107.moretraffic.mod.registration.MTRegistrate.REGISTRATE;
 
 @Mod(MoreTraffic.MODID)
 public class MoreTraffic {

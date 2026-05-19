@@ -3,7 +3,7 @@ package com.tomas65107.moretraffic.rendering;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlock;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightLight;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import com.tomas65107.moretraffic.rendering.helpers.LegacyCube;
 import de.mrjulsen.mcdragonlib.client.ber.BERGraphics;
 import de.mrjulsen.mcdragonlib.client.ber.RotatableBlockEntityRenderer;
@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec2;
 
 import java.awt.*;
 
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightPosition.BOTTOM;
 import static com.tomas65107.moretraffic.rendering.MaterialValues.*;
 
@@ -81,6 +81,8 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
 
     static int getBoostedTint(DyeColor dyeColor) {
         if (dyeColor == DyeColor.BLACK) {return DyeColor.BLACK.getTextureDiffuseColor();}
+        if (dyeColor == DyeColor.GRAY || dyeColor == DyeColor.LIGHT_GRAY) {return dyeColor.getTextureDiffuseColor();}
+
         int color = dyeColor.getTextureDiffuseColor();
 
         // extract RGB in 0..1

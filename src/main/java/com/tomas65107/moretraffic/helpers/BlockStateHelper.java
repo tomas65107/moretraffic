@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.data.helpers;
+package com.tomas65107.moretraffic.helpers;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;

@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.tomas65107.moretraffic.data.helpers.BlockStateHelper.getProperty;
+import static com.tomas65107.moretraffic.helpers.BlockStateHelper.getProperty;
 
 public final class ModelSliderChangerMaker<T extends Enum<T> & TrafficLightProperty> {
 

@@ -15,7 +15,6 @@ public class ServerTrafficLightHandler {
 
     public static void handle(ClientSenderPacketTrafficLight payload, IPayloadContext context) {
         context.enqueueWork(() -> {
-            MoreTraffic.LOGGER.debug("Server received traffic light update for pos: {} lightIndex: {}", payload.pos(), payload.lightIndex());
 
             Level level = context.player().level();
             BlockPos pos = payload.pos();

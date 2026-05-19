@@ -9,7 +9,7 @@ import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightProper
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightScale;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.networking.UpdateTrafficLightStatePacket;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static com.tomas65107.moretraffic.data.helpers.BlockStateHelper.setValueFromString;
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.BlockStateHelper.setValueFromString;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 
 public class ModelButton extends Button {
 

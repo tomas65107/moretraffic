@@ -62,9 +62,14 @@
   "block.moretraffic.traffic_truss.tooltip.condition1": "When R-Clicked with Iron Bars",
   "block.moretraffic.traffic_truss.tooltip.behaviour1": "Adds _railing and walkway_. Remove with wrench.",
 
+  "block.moretraffic.traffic_pillar.tooltip.summary": "_Thicker version_ for the Traffic Craft's Traffic sign post!",
+  "block.moretraffic.traffic_pillar.tooltip.condition1": "When R-Clicked with Wrench",
+  "block.moretraffic.traffic_pillar.tooltip.behaviour1": "_Changes_ the truss pillar's appearance!",
+  "block.moretraffic.traffic_pillar.tooltip.condition2": "When R-Clicked with Hand",
+  "block.moretraffic.traffic_pillar.tooltip.behaviour2": "_Changes_ the truss pillar's facing in some modes!",
+  "block.moretraffic.traffic_pillar.tooltip.condition3": "When painted with Paint Brush",
+  "block.moretraffic.traffic_pillar.tooltip.behaviour3": "_Changes the color_ of the pillar",
 
-  "core.description.wrenchable": "Wrenchable",
-  "core.description.colorable": "Colorable",
 
   "core.moretraffic.advanced_traffic_light.light1": "First light",
   "core.moretraffic.advanced_traffic_light.light2": "Second light",

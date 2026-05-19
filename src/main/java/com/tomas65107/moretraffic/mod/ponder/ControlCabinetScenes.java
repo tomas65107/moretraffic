@@ -1,16 +1,9 @@
 package com.tomas65107.moretraffic.mod.ponder;
 
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
-import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
-import com.simibubi.create.content.redstone.nixieTube.NixieTubeBlockEntity;
-import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import com.tomas65107.moretraffic.block.FlashingBlinkerBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightLight;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
-import com.tomas65107.moretraffic.rendering.BlinkerBlockEntityRenderer;
 import de.mrjulsen.trafficcraft.data.PaintColor;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.PonderPalette;
@@ -23,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class ControlCabinetScenes {
 

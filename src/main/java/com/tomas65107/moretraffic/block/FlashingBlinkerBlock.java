@@ -1,10 +1,9 @@
 package com.tomas65107.moretraffic.block;
 
 import com.mojang.serialization.MapCodec;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
-import com.tomas65107.moretraffic.data.lightinstructions.ICabinetPulsable;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
-import com.tomas65107.moretraffic.rendering.BlockBoundingBoxes;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import de.mrjulsen.trafficcraft.block.data.ColorableBlock;
 import de.mrjulsen.trafficcraft.data.PaintColor;
 import net.minecraft.core.BlockPos;
@@ -30,10 +29,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShape;
+import static com.tomas65107.moretraffic.helpers.HelperFunctions.rotateShape;
 import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.blinker;
 
-public class FlashingBlinkerBlock extends ColorableBlock {
+public class FlashingBlinkerBlock extends ColorableBlock implements IWrenchable {
 
     public static final MapCodec<FlashingBlinkerBlock> CODEC = simpleCodec(FlashingBlinkerBlock::new);
 

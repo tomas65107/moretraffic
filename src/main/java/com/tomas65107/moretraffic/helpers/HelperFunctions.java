@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.data.helpers;
+package com.tomas65107.moretraffic.helpers;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -27,7 +27,19 @@ public class HelperFunctions {
     }
 
     public static VoxelShape rotateShapeSpecial(Direction to, VoxelShape shape) {
-        if (to == Direction.UP || to == Direction.DOWN) return shape;
+        if (to != Direction.UP && to != Direction.DOWN) {
+            AtomicReference<VoxelShape> mirrored = new AtomicReference<>(Shapes.empty());
+
+            shape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
+                mirrored.set(Shapes.or(mirrored.get(),
+                        Shapes.box(
+                                1 - maxX, minY, 1 - maxZ,
+                                1 - minX, maxY, 1 - minZ
+                        )));
+            });
+
+            shape = mirrored.get();
+        }
 
         AtomicReference<VoxelShape> result = new AtomicReference<>(Shapes.empty());
 
@@ -72,6 +84,24 @@ public class HelperFunctions {
                     newMaxX = 1 - minY;
                     newMaxY = maxZ;
                     newMaxZ = 1 - minX;
+                }
+                case UP -> {
+                    newMinX = minX;
+                    newMinY = minY;
+                    newMinZ = minZ;
+
+                    newMaxX = maxX;
+                    newMaxY = maxY;
+                    newMaxZ = maxZ;
+                }
+                case DOWN -> {
+                    newMinX = minX;
+                    newMinY = 1 - maxY;
+                    newMinZ = 1 - maxZ;
+
+                    newMaxX = maxX;
+                    newMaxY = 1 - minY;
+                    newMaxZ = 1 - minZ;
                 }
             }
 

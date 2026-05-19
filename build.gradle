@@ -10,17 +10,19 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def mod_version = "0.2.2-beta"
+def mod_version = "0.2.3-beta"
 
 def mod_changelog = """
-- Added new Girdered Truss block!
-- Changed models for Traffic Truss
-- Merged Traffic Truss /w Walkway into Traffic Truss (now they are one block), Traffic Truss /w Walkway may be deleted in worlds when updated.
-- LED Light UI and VoxelShape fixes.
-- Fixed multiple bugs with Ballast-like blocks
-- Changed block breaking API to be integrated, should fix and unify block breaking speeds.
-- Backend and recipe changes.
-*Make sure to backup your worlds and thanks for using More Traffic! Happy Easter!*
+0.2.3-beta
+- Added new models for Traffic Pillar
+- Added more create compat features
+- Traffic Pilliar can be painted
+- Fixed girded truss placement and flicker bugs
+- Fixed UI bug caused by clicking buttons when another one was selected causing flickering sometimes
+- Fixed Bug that rendered wrong colors in BE
+- Added some item/block descriptions
+- Fixed multiple LED light hitbox and rendering bugs
+- Several codebase rebases and new helper files
 """
 
 version = mod_version

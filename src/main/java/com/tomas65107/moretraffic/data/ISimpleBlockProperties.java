@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.data;
 
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
@@ -34,10 +35,6 @@ public interface ISimpleBlockProperties {
         base.mapColor(color);
         base.strength(material.destroyTime, material.explosionResistance);
         return base;
-    }
-
-    public default @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
-        return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 
 }

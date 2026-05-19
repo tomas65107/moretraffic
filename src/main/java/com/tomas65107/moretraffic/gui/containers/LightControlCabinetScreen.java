@@ -2,8 +2,8 @@ package com.tomas65107.moretraffic.gui.containers;
 
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
 import com.tomas65107.moretraffic.data.*;
-import com.tomas65107.moretraffic.data.helpers.MaskConverter;
-import com.tomas65107.moretraffic.data.helpers.TextHelper;
+import com.tomas65107.moretraffic.gui.AbstractTomiContainerScreen;
+import com.tomas65107.moretraffic.helpers.TextHelper;
 import com.tomas65107.moretraffic.data.lightinstructions.*;
 import com.tomas65107.moretraffic.gui.components.BetterEditBox;
 import com.tomas65107.moretraffic.gui.components.CustomRenderAsWidget;
@@ -32,24 +32,19 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 
-import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.*;
 import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
-import static com.tomas65107.moretraffic.data.helpers.TextCutter.cutTextComponent;
-import static com.tomas65107.moretraffic.data.helpers.TextHelper.Alignment.CENTER;
-import static com.tomas65107.moretraffic.data.helpers.TextHelper.align;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.TextCutter.cutTextComponent;
+import static com.tomas65107.moretraffic.helpers.TextHelper.Alignment.CENTER;
+import static com.tomas65107.moretraffic.helpers.TextHelper.align;
 import static com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton.NORMAL_HEIGHT;
-import static com.tomas65107.moretraffic.networking.ClientSenderPacketTrafficLight.shortsToBytes;
 import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;
 
 public class LightControlCabinetScreen extends AbstractTomiContainerScreen<LightControlCabinetMenu> {
