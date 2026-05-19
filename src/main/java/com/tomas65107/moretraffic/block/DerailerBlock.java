@@ -3,7 +3,7 @@ package com.tomas65107.moretraffic.block;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShapeSpecial;
+import static com.tomas65107.moretraffic.helpers.HelperFunctions.rotateShapeSpecial;
 import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.DERAILER;
 
 public class DerailerBlock extends Block implements IBE<DerailerBlockEntity>, IWrenchable {

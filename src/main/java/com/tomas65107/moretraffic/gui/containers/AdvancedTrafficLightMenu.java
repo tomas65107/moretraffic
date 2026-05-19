@@ -1,7 +1,7 @@
 package com.tomas65107.moretraffic.gui.containers;
 
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
-import com.tomas65107.moretraffic.registration.MTMenus;
+import com.tomas65107.moretraffic.mod.registration.MTMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

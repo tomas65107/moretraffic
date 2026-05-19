@@ -11,11 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.phys.Vec2;
 
-import java.awt.*;
-
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.rendering.MaterialValues.*;
-import static com.tomas65107.moretraffic.rendering.TrafficLightBlockEntityRenderer.LIGHT_TEXTURE;
 import static com.tomas65107.moretraffic.rendering.TrafficLightBlockEntityRenderer.getBoostedTint;
 
 public class BlinkerBlockEntityRenderer extends RotatableBlockEntityRenderer<FlashingBlinkerBlockEntity> {

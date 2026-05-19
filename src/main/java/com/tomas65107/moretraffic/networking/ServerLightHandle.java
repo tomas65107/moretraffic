@@ -1,7 +1,7 @@
 package com.tomas65107.moretraffic.networking;
 
 import com.tomas65107.moretraffic.block.LEDStripBlockEntity;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;

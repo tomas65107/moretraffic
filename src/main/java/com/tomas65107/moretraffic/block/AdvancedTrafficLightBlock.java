@@ -6,7 +6,7 @@ import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightOrient
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightPosition;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightScale;
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import de.mrjulsen.trafficcraft.block.data.ColorableBlock;
 import de.mrjulsen.trafficcraft.block.data.ITrafficPostLike;
 import net.minecraft.core.BlockPos;
@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.tomas65107.moretraffic.data.helpers.HelperFunctions.rotateShape;
+import static com.tomas65107.moretraffic.helpers.HelperFunctions.rotateShape;
 import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.*;
 
 public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleWaterloggedBlock, EntityBlock, ITrafficPostLike {

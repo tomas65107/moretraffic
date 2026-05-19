@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.registration.basedescription;
+package com.tomas65107.moretraffic.mod.registration.basedescription;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;

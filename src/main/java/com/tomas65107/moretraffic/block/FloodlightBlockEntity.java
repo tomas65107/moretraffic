@@ -1,21 +1,18 @@
 package com.tomas65107.moretraffic.block;
 
-import com.tomas65107.moretraffic.data.ICabinetPulsable;
-import de.mrjulsen.trafficcraft.block.entity.ColoredBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class FlashingBlinkerBlockEntity extends ColoredBlockEntity implements ICabinetPulsable {
+public class FloodlightBlockEntity extends BlockEntity {
 
-    public boolean lightStatus;
-
-    public FlashingBlinkerBlockEntity(BlockEntityType type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
+    public FloodlightBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
+        super(type, pos, blockState);
     }
 
     @Override
@@ -23,25 +20,6 @@ public class FlashingBlinkerBlockEntity extends ColoredBlockEntity implements IC
         CompoundTag tag = new CompoundTag();
         saveAdditional(tag, lookup);
         return tag;
-    }
-
-    @Override
-    public void handlePulseLight(Boolean newStatus) {
-        lightStatus = newStatus;
-    }
-
-    @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-
-        lightStatus = tag.getBoolean("light_status");
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-
-        tag.putBoolean("light_status", lightStatus);
     }
 
     @Override

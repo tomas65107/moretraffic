@@ -10,7 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.util.function.Consumer;
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 
 public class PixelButton extends Button {
 

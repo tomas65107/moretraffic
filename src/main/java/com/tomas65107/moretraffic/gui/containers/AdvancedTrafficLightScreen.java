@@ -6,7 +6,8 @@ import com.tomas65107.moretraffic.data.AbstractSheet;
 import com.tomas65107.moretraffic.data.ColorsManager;
 import com.tomas65107.moretraffic.data.SpritesManager;
 import com.tomas65107.moretraffic.data.TrafficLightLight;
-import com.tomas65107.moretraffic.data.helpers.MaskConverter;
+import com.tomas65107.moretraffic.gui.AbstractTomiContainerScreen;
+import com.tomas65107.moretraffic.helpers.MaskConverter;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightProperty;
 import com.tomas65107.moretraffic.gui.components.HelpElementWidget;
 import com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton;
@@ -35,12 +36,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.SECONDARY;
 import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton.NORMAL_HEIGHT;
 import static com.tomas65107.moretraffic.networking.ClientSenderPacketTrafficLight.shortsToBytes;
 import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;

@@ -1,24 +1,24 @@
 package com.tomas65107.moretraffic.mod;
 
 import com.tomas65107.moretraffic.block.DerailerVisual;
+import com.tomas65107.moretraffic.helpers.ClientScheduler;
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightScreen;
 import com.tomas65107.moretraffic.gui.containers.LEDStripScreen;
 import com.tomas65107.moretraffic.gui.containers.LightControlCabinetScreen;
 import com.tomas65107.moretraffic.gui.tooltip.BodyTooltip;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.mod.ponder.ModPonderPlugin;
-import com.tomas65107.moretraffic.registration.MTPartials;
+import com.tomas65107.moretraffic.mod.registration.MTPartials;
 import com.tomas65107.moretraffic.rendering.*;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import de.mrjulsen.trafficcraft.client.TintedTextures;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
-import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -30,8 +30,8 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
-import static com.tomas65107.moretraffic.registration.MTMenus.*;
-import static com.tomas65107.moretraffic.registration.MTRegistrate.*;
+import static com.tomas65107.moretraffic.mod.registration.MTMenus.*;
+import static com.tomas65107.moretraffic.mod.registration.MTRegistrate.*;
 
 @Mod(value = MoreTraffic.MODID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = MoreTraffic.MODID, value = Dist.CLIENT)
@@ -86,7 +86,8 @@ public class MoreTrafficClient {
                 ADV_2_TRAFFIC_LIGHT.get(),
                 ADV_3_TRAFFIC_LIGHT.get(),
                 BLINKER.get(),
-                GIRDED_TRUSS.get()
+                GIRDED_TRUSS.get(),
+                TRAFFIC_PILLAR.get()
         );
         Minecraft.getInstance().getItemColors().register(
                 new TintedTextures.TintedItem(),
@@ -94,7 +95,8 @@ public class MoreTrafficClient {
                 ADV_2_TRAFFIC_LIGHT.get(),
                 ADV_3_TRAFFIC_LIGHT.get(),
                 BLINKER.get(),
-                GIRDED_TRUSS.get()
+                GIRDED_TRUSS.get(),
+                TRAFFIC_PILLAR.get()
         );
 
         ItemBlockRenderTypes.setRenderLayer(
@@ -106,6 +108,11 @@ public class MoreTrafficClient {
 
         // Some client setup code
         MoreTraffic.LOGGER.info("MoreTraffic Client registration...");
+    }
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Post event) {
+        ClientScheduler.tick();
     }
 
     @SubscribeEvent

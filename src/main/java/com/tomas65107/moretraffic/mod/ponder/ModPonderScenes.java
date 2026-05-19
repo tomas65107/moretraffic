@@ -1,7 +1,7 @@
 package com.tomas65107.moretraffic.mod.ponder;
 
 import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
-import com.tomas65107.moretraffic.registration.MTRegistrate;
+import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;

@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.data.helpers;
+package com.tomas65107.moretraffic.helpers;
 
 import java.awt.*;
 

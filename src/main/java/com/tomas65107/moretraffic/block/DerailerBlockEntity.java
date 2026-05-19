@@ -12,7 +12,7 @@ import com.simibubi.create.content.trains.track.ITrackBlock;
 import com.simibubi.create.content.trains.track.TrackTargetingBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.tomas65107.moretraffic.data.lightinstructions.ICabinetPulsable;
+import com.tomas65107.moretraffic.data.ICabinetPulsable;
 import com.tomas65107.moretraffic.mod.MoreTrafficCompat;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.ChatFormatting;

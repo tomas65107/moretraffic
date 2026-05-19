@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 
-import static com.tomas65107.moretraffic.registration.MTPartials.FLAG;
+import static com.tomas65107.moretraffic.mod.registration.MTPartials.FLAG;
 
 public class DerailerRenderer extends SmartBlockEntityRenderer<DerailerBlockEntity> {
 

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=south": { "model": "moretraffic:block/floodlight", "y": 180 },
+    "facing=north": { "model": "moretraffic:block/floodlight" },
+    "facing=east":  { "model": "moretraffic:block/floodlight", "y": 90 },
+    "facing=west":  { "model": "moretraffic:block/floodlight", "y": 270 },
+    "facing=up":  { "model": "moretraffic:block/floodlight" },
+    "facing=down":  { "model": "moretraffic:block/floodlight", "x": 270 }
+  }
+}

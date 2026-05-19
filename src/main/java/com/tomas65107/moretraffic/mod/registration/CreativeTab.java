@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.registration;
+package com.tomas65107.moretraffic.mod.registration;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import static com.tomas65107.moretraffic.mod.MoreTraffic.MODID;
-import static com.tomas65107.moretraffic.registration.MTRegistrate.*;
+import static com.tomas65107.moretraffic.mod.registration.MTRegistrate.*;
 
 public class CreativeTab {
 

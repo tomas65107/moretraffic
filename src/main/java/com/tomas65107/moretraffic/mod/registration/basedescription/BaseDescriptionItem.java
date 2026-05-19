@@ -1,6 +1,6 @@
-package com.tomas65107.moretraffic.registration.basedescription;
+package com.tomas65107.moretraffic.mod.registration.basedescription;
 
-import com.tomas65107.moretraffic.data.helpers.TextCutter;
+import com.tomas65107.moretraffic.helpers.TextCutter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,9 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import java.awt.*;
 import java.util.List;
 
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
-import static net.minecraft.ChatFormatting.GRAY;
 
 public abstract class BaseDescriptionItem {
 

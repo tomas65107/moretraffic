@@ -1,7 +1,7 @@
 package com.tomas65107.moretraffic.gui.tooltip;
 
 import com.tomas65107.moretraffic.data.ColorsManager;
-import com.tomas65107.moretraffic.data.helpers.TextHelper;
+import com.tomas65107.moretraffic.helpers.TextHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,9 +13,9 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
-import static com.tomas65107.moretraffic.data.helpers.TextCutter.cutTextComponent;
-import static com.tomas65107.moretraffic.data.helpers.TextCutter.joinTogetherComponents;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.TextCutter.cutTextComponent;
+import static com.tomas65107.moretraffic.helpers.TextCutter.joinTogetherComponents;
 
 public class NoticeBoxTooltip implements TooltipComponent {
     Component title;

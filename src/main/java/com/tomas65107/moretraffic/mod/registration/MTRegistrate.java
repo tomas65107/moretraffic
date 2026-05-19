@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.registration;
+package com.tomas65107.moretraffic.mod.registration;
 
 import com.simibubi.create.content.trains.graph.EdgePointType;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tomas65107.moretraffic.block.*;
+import com.tomas65107.moretraffic.data.blocktypes.MTBaseColoredBlockEntity;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -16,7 +17,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 
-import static com.tomas65107.moretraffic.block.MTBaseColoredBlockEntity.getValidHookedBlocks;
+import static com.tomas65107.moretraffic.data.blocktypes.MTBaseColoredBlockEntity.getValidHookedBlocks;
 
 public class MTRegistrate {
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MoreTraffic.MODID);
@@ -56,6 +57,19 @@ public class MTRegistrate {
             .validBlock(BLINKER)
             .register();
 
+    public static final BlockEntry<FloodlightBlock> FLOODLIGHT = REGISTRATE
+            .block("floodlight", FloodlightBlock::new)
+            .item()
+            .onRegisterAfter(Registries.ITEM, item ->
+                    TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)))
+            .removeTab(CreativeModeTabs.SEARCH)
+            .build()
+            .register();
+    public static final BlockEntityEntry<FloodlightBlockEntity> FLOODLIGHT_BE = REGISTRATE
+            .blockEntity("floodlight", FloodlightBlockEntity::new)
+            .validBlock(FLOODLIGHT)
+            .register();
+
     public static final BlockEntry<LightControlCabinetBlock> LIGHT_CONTROL_CABINET = REGISTRATE
             .block("control_cabinet", LightControlCabinetBlock::new)
             .item()
@@ -93,6 +107,8 @@ public class MTRegistrate {
     public static final BlockEntry<TrafficPillarBlock> TRAFFIC_PILLAR = REGISTRATE
             .block("traffic_pillar", TrafficPillarBlock::new)
             .item()
+            .onRegisterAfter(Registries.ITEM, item ->
+                    TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)))
             .removeTab(CreativeModeTabs.SEARCH)
             .build()
             .register();

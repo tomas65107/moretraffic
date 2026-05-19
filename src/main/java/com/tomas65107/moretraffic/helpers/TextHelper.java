@@ -1,10 +1,10 @@
-package com.tomas65107.moretraffic.data.helpers;
+package com.tomas65107.moretraffic.helpers;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
-import static com.tomas65107.moretraffic.data.helpers.ColorHelper.rgb;
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.data.ColorsManager.TERTIARY;
 
 public final class TextHelper {

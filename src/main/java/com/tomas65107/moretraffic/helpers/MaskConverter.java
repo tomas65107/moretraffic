@@ -1,8 +1,7 @@
-package com.tomas65107.moretraffic.data.helpers;
+package com.tomas65107.moretraffic.helpers;
 
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import javax.imageio.ImageIO;

@@ -1,6 +1,6 @@
 package com.tomas65107.moretraffic.networking;
 
-import com.tomas65107.moretraffic.data.helpers.BlockStateHelper;
+import com.tomas65107.moretraffic.helpers.BlockStateHelper;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +15,6 @@ public class ServerTrafficLightStateHandler {
             IPayloadContext ctx
     ) {
         ctx.enqueueWork(() -> {
-            MoreTraffic.LOGGER.debug("Server received traffic light update for pos: {} state: {}", pkt.pos(), pkt.valueName());
            Player player = ctx.player();
 
             Level level = player.level();

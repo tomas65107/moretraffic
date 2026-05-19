@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.registration;
+package com.tomas65107.moretraffic.mod.registration;
 
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.resources.ResourceLocation;
