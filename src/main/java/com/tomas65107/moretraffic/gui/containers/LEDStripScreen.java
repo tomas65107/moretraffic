@@ -3,14 +3,12 @@ package com.tomas65107.moretraffic.gui.containers;
 import com.tomas65107.moretraffic.block.LEDStripBlock;
 import com.tomas65107.moretraffic.block.LEDStripBlockEntity;
 import com.tomas65107.moretraffic.data.AbstractSheet;
-import com.tomas65107.moretraffic.data.ColorsManager;
 import com.tomas65107.moretraffic.data.SpritesManager;
 import com.tomas65107.moretraffic.gui.AbstractTomiContainerScreen;
 import com.tomas65107.moretraffic.gui.components.BetterEditBox;
 import com.tomas65107.moretraffic.gui.components.HelpElementWidget;
 import com.tomas65107.moretraffic.gui.components.LabelWidget;
 import com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton;
-import com.tomas65107.moretraffic.gui.components.buttons.ColorButton;
 import com.tomas65107.moretraffic.gui.makers.GridMaker;
 import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
@@ -32,7 +30,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.*;
-import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
+import static com.tomas65107.moretraffic.data.SpritesManager.INFO;
 import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;
 
@@ -78,10 +76,10 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
         NoticeBoxTooltip tooltip1 = new NoticeBoxTooltip(
                 Component.translatable("gui.moretraffic.led_light.title"),
                 Component.translatable("gui.moretraffic.led_light.message"),
-                null, ColorsManager.HEADER, false);
+                null, NoticeBoxTooltip.TooltipType.INFORMATIVE);
         int finalWidthOfPrevContent = Minecraft.getInstance().font.width(Component.translatable("gui.moretraffic.led_light.title").withStyle(ChatFormatting.BOLD));
         addBaseWidget(
-            new HelpElementWidget(guiX+finalWidthOfPrevContent + 10, guiY +6, ICON_INFO, tooltip1)
+            new HelpElementWidget(guiX+finalWidthOfPrevContent + 10, guiY +6, INFO, tooltip1)
         );
 
         addBaseWidget(
@@ -107,8 +105,8 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
                 sizetextbox.setTextColor(rgb(PRIMARY));
                 sizetextbox.hideFloatingTooltip();
             } catch (Exception e) {
-                sizetextbox.setTextColor(rgb(INVALID));
-                sizetextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.literal("Failed to get valid coordinates that are 1..17"), INVALID));
+                sizetextbox.setTextColor(rgb(ERROR));
+                sizetextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Failed to get valid coordinates that are 1..17"), NoticeBoxTooltip.TooltipType.ERROR));
             }
         });
         addBaseWidget(sizetextbox);
@@ -137,20 +135,20 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
                 offsettextbox.setTextColor(rgb(PRIMARY));
                 offsettextbox.hideFloatingTooltip();
             } catch (Exception e) {
-                offsettextbox.setTextColor(rgb(INVALID));
-                offsettextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.literal("Failed to get valid coordinates that are ..17"), INVALID));
+                offsettextbox.setTextColor(rgb(ERROR));
+                offsettextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Failed to get valid coordinates that are ..17"), NoticeBoxTooltip.TooltipType.ERROR));
             }
         });
         addBaseWidget(offsettextbox);
 
 
-        addBaseWidget(new AdvancedButton(guiX+10, guiY+167, 15, 15, SpritesManager.EDIT_CENTER, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.led_light.center")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+10, guiY+167, 15, 15, SpritesManager.CENTER, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.led_light.center")), true, b->{
             be.startPosX = (16 - be.sizeX) / 2;
             be.startPosY = (16 - be.sizeY) / 2;
             updateBEAndRefreshBE();
         }));
 
-        addBaseWidget(new ColorButton(guiX+35, guiY+167, 15, 15, be.color.getTextureDiffuseColor(), b->{
+        addBaseWidget(new AdvancedButton(guiX+35, guiY+167, 15, 15, SpritesManager.PALETTE, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light.select_color")), true, b->{
             int sheetWidth = 173;
             int sheetHeight = 94;
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
@@ -162,9 +160,9 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
                             NoticeBoxTooltip tooltip1 = new NoticeBoxTooltip(
                                     Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_color"),
                                     Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_color.message"),
-                                    null, ColorsManager.HEADER, false);
+                                    null, NoticeBoxTooltip.TooltipType.INFORMATIVE);
                             int finalWidthOfPrevContent = Minecraft.getInstance().font.width(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light.select_color").withStyle(ChatFormatting.BOLD));
-                            adder.accept(new HelpElementWidget(finalWidthOfPrevContent + 10, 6, ICON_INFO, tooltip1));
+                            adder.accept(new HelpElementWidget(finalWidthOfPrevContent + 10, 6, INFO, tooltip1));
 
                             new GridMaker(10, 25, adder, c -> {
                                 be.color = c;
@@ -172,7 +170,12 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
                             }, be.color, true);
                         }
                     });
-        }, false, true));
+        }));
+
+        addBaseWidget(new AdvancedButton(guiX+60, guiY+167, 15, 15, be.emitsLight ? SpritesManager.EMITS_LIGHT_ON : SpritesManager.EMITS_LIGHT_OFF, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.led_light.emisive.title"), Component.translatable("gui.moretraffic.led_light.emisive.message."+(be.emitsLight ? "yes":"no")), Component.translatable("gui.moretraffic.change"), NoticeBoxTooltip.TooltipType.BASE), true, b->{
+            be.emitsLight = !be.emitsLight;
+            updateBEAndRefreshBE();
+        }));
 
 
     }

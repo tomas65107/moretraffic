@@ -39,7 +39,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.*;
-import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
+import static com.tomas65107.moretraffic.data.SpritesManager.INFO;
 import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.helpers.TextCutter.cutTextComponent;
 import static com.tomas65107.moretraffic.helpers.TextHelper.Alignment.CENTER;
@@ -99,7 +99,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
         if (be.instructions.isEmpty()) {
             int offset = guiY +50;
-            for (Component component : cutTextComponent(Component.translatable("gui.moretraffic.control_cabinet.instructions.empty"), true)) {
+            for (Component component : cutTextComponent(Component.translatable("gui.moretraffic.control_cabinet.instructions.empty"), 0, 180, true)) {
                 addBaseWidget(new LabelWidget(align(CENTER, component, this.width/2), offset, component, rgb(PRIMARY), true));
                 offset += 10;
             }
@@ -199,8 +199,8 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 });
                 textField.onChange(text -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(text))) {
-                        textField.setTextColor(rgb(INVALID));
-                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.literal("Group named '" + text + "' does not exist"), INVALID));
+                        textField.setTextColor(rgb(ERROR));
+                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Group named '" + text + "' does not exist"), NoticeBoxTooltip.TooltipType.ERROR));
                     } else {
                         textField.setTextColor(rgb(PRIMARY));
                         textField.hideFloatingTooltip();
@@ -238,25 +238,25 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                                     NoticeBoxTooltip tooltip3 = new NoticeBoxTooltip(
                                             Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.controls"),
                                             Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.controls.message"),
-                                            null, ColorsManager.HEADER, false);
-                                    adder.accept(new HelpElementWidget(148, 70, ICON_INFO, tooltip3));
+                                            null, NoticeBoxTooltip.TooltipType.INFORMATIVE);
+                                    adder.accept(new HelpElementWidget(148, 70, INFO, tooltip3));
 
 
                                     adder.accept(
-                                            new AdvancedButton(150, 90, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.clear"), SpritesManager.ICON_CLEAR, a-> {
+                                            new AdvancedButton(150, 90, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.clear"), SpritesManager.CLEAR, a-> {
                                                 be.instructions.set(finalIndex, new ModifyDisplay(modifyDisplay.group(), new TrafficDisplayPixels()));
                                                 updateBEAndRefreshBE(); timer = 1;
                                             })
                                     );
 
                                     adder.accept(
-                                            new AdvancedButton(150, 90+28, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export.message"), null), a->{
+                                            new AdvancedButton(150, 90+28, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.export.message"), NoticeBoxTooltip.TooltipType.INFORMATIVE), a->{
                                                 updateBEAndRefreshBE(); timer = 1;
                                                 Minecraft.getInstance().keyboardHandler.setClipboard(((ModifyDisplay) be.instructions.get(finalIndex)).trafficDisplayPixels().serialize());
                                                 refreshContent();
                                             })
                                     );
-                                    adder.accept(new AdvancedButton(150+28, 90+28, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import.message"), null), a->{
+                                    adder.accept(new AdvancedButton(150+28, 90+28, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import"), Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.import.message"), NoticeBoxTooltip.TooltipType.INFORMATIVE), a->{
                                                 try {
                                                     be.instructions.set(finalIndex, new ModifyDisplay(modifyDisplay.group(), TrafficDisplayPixels.deserialize(Minecraft.getInstance().keyboardHandler.getClipboard())));
                                                     updateBEAndRefreshBE(); timer = 1;
@@ -281,8 +281,8 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 });
                 textField.onChange(text -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(text))) {
-                        textField.setTextColor(rgb(INVALID));
-                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.literal("Group named '" + text + "' does not exist"), INVALID));
+                        textField.setTextColor(rgb(ERROR));
+                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Group named '" + text + "' does not exist"), NoticeBoxTooltip.TooltipType.ERROR));
                     } else {
                         textField.setTextColor(rgb(PRIMARY));
                         textField.hideFloatingTooltip();
@@ -306,8 +306,8 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 });
                 textField.onChange(text -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(text))) {
-                        textField.setTextColor(rgb(INVALID));
-                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.literal("Group named '" + text + "' does not exist"), INVALID));
+                        textField.setTextColor(rgb(ERROR));
+                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Group named '" + text + "' does not exist"), NoticeBoxTooltip.TooltipType.ERROR));
                     } else {
                         textField.setTextColor(rgb(PRIMARY));
                         textField.hideFloatingTooltip();
@@ -341,7 +341,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                             mouseX <= guiX + 25 + textWidth + 2 && mouseY >= renderY + 7 && mouseY <= renderY + 7 + Minecraft.getInstance().font.lineHeight && shouldRenderTooltips()) {
                     gfx.renderTooltip(
                             Minecraft.getInstance().font, List.of(Component.empty()),
-                            Optional.of(new NoticeBoxTooltip(instruction.getClassType().getComponentOfProperty(false), instruction.getClassType().getComponentOfProperty(true), Component.literal("id: " + instruction.getClassType().getNameOfProperty() + "  instructionIndex: " + finalIndex))),
+                            Optional.of(new NoticeBoxTooltip(instruction.getClassType().getComponentOfProperty(false), instruction.getClassType().getComponentOfProperty(true), Component.literal("id: " + instruction.getClassType().getNameOfProperty() + "  instructionIndex: " + finalIndex), NoticeBoxTooltip.TooltipType.BASE)),
                             ItemStack.EMPTY, (int) mouseX, (int) mouseY
                     );
                 }
@@ -350,7 +350,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
             currentY += 24;
         }
 
-        addBaseWidget(new AdvancedButton(guiX+10, guiY+224, 15, 15, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.import")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+10, guiY+224, 15, 15, SpritesManager.IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.import")), true, b->{
 
             int sheetWidth = 180;
             int sheetHeight = 90;
@@ -405,7 +405,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                             } else {
                                 int offset = 23;
                                 for (Component component : cutTextComponent(Component.translatable("gui.moretraffic.import_invalid_data"), 0, 170, true)) {
-                                    adder.accept(new LabelWidget(align(CENTER, component, sheetWidth/2), offset, component, rgb(INVALID), true));
+                                    adder.accept(new LabelWidget(align(CENTER, component, sheetWidth/2), offset, component, rgb(ERROR), true));
                                     offset += 10;
                                 }
                             }
@@ -413,7 +413,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                     });
 
         }));
-        addBaseWidget(new AdvancedButton(guiX+26, guiY+224, 15, 15, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.export")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+26, guiY+224, 15, 15, SpritesManager.EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.export")), true, b->{
 
             int sheetWidth = 180;
             int sheetHeight = 130;
@@ -465,13 +465,13 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
 
         }));
-        addBaseWidget(new AdvancedButton(guiX+51, guiY+224, 15, 15, be.shouldLoop ? SpritesManager.ICON_REPEAT : SpritesManager.ICON_ONETIME, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.repeat"), Component.translatable("gui.moretraffic.control_cabinet.repeat.message."+(be.shouldLoop ? "yes":"no")), Component.translatable("gui.moretraffic.change")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+51, guiY+224, 15, 15, be.shouldLoop ? SpritesManager.REPEAT : SpritesManager.ONETIME, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.repeat"), Component.translatable("gui.moretraffic.control_cabinet.repeat.message."+(be.shouldLoop ? "yes":"no")), Component.translatable("gui.moretraffic.change"), NoticeBoxTooltip.TooltipType.BASE), true, b->{
             be.shouldLoop = !be.shouldLoop;
             updateBEAndRefreshBE();
         }));
-        addBaseWidget(new AdvancedButton(guiX+76, guiY+224, 15, 15, SpritesManager.ICON_GROUP, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.groups")), true, b->{
-            int sheetWidth = 410;
-            int sheetHeight = 200;
+        addBaseWidget(new AdvancedButton(guiX+76, guiY+224, 15, 15, SpritesManager.GROUP, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.groups")), true, b->{
+            int sheetWidth = 382;
+            int sheetHeight = 250;
 
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
             int sheetY = guiY + (guiHeight - sheetHeight) / 2;
@@ -492,9 +492,9 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                             NoticeBoxTooltip tooltip1 = new NoticeBoxTooltip(
                                     Component.translatable("gui.moretraffic.control_cabinet.groups.title"),
                                     Component.translatable("gui.moretraffic.control_cabinet.groups.message"),
-                                    Component.translatable("gui.moretraffic.control_cabinet.groups.cta"), HEADER, false);
+                                    Component.translatable("gui.moretraffic.control_cabinet.groups.cta"), NoticeBoxTooltip.TooltipType.INFORMATIVE);
                             int finalWidthOfPrevContent = Minecraft.getInstance().font.width(Component.translatable("gui.moretraffic.control_cabinet.groups").withStyle(ChatFormatting.BOLD));
-                            adder.accept(new HelpElementWidget(finalWidthOfPrevContent + 10, 5, ICON_INFO, tooltip1));
+                            adder.accept(new HelpElementWidget(finalWidthOfPrevContent + 10, 5, INFO, tooltip1));
 
                             adder.accept(new LabelWidget(10, 25, Component.translatable("gui.moretraffic.control_cabinet.groups.group_name"), rgb(SECONDARY), true));
                             adder.accept(new LabelWidget(77, 25, Component.translatable("gui.moretraffic.control_cabinet.groups.group_pos"), rgb(SECONDARY), true));
@@ -527,8 +527,8 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                                     if (be.groups.stream()
                                             .filter(g -> g != be.groups.get(finalIndex))
                                             .anyMatch(g -> g.name.equals(text))) {
-                                        textField.setTextColor(rgb(INVALID));
-                                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.literal("Group named '"+text+"' already exist"), INVALID));
+                                        textField.setTextColor(rgb(ERROR));
+                                        textField.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Group named '"+text+"' already exist"), NoticeBoxTooltip.TooltipType.ERROR));
                                     } else {
                                         textField.setTextColor(rgb(PRIMARY)); textField.hideFloatingTooltip();
                                     }
@@ -538,12 +538,17 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                                 int offsetX = 77;
                                 int lightPosIndex = 0;
                                 for (BlockPos pos : be.groups.get(finalIndex).lightsPositions) {
+                                    if (offsetX > sheetWidth-60) {
+                                        offsetY += 23 - 2;
+                                        offsetX = 77;
+                                    }
+
                                     BetterEditBox posEditBox = new BetterEditBox(offsetX, offsetY, 40, NORMAL_HEIGHT);
 
                                     posEditBox.onChange((text) -> {
                                         if (verifyAndParseCoordinates(text) instanceof String s) {
-                                            posEditBox.setTextColor(rgb(INVALID));
-                                            posEditBox.showFloatingTooltip(new NoticeBoxTooltip(Component.literal(s), INVALID));
+                                            posEditBox.setTextColor(rgb(ERROR));
+                                            posEditBox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal(s), NoticeBoxTooltip.TooltipType.ERROR));
                                         } else {
                                             posEditBox.hideFloatingTooltip();
                                             posEditBox.setTextColor(rgb(PRIMARY));
@@ -570,7 +575,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                                     offsetX += 23;
                                     lightPosIndex++;
                                 }
-                                adder.accept(new AdvancedButton(offsetX, offsetY, NORMAL_HEIGHT, NORMAL_HEIGHT, SpritesManager.ICON_ADD_POSITION, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.groups.add_light_pos"), null, clipboardBlockPos != null ? Component.translatable("gui.moretraffic.control_cabinet.groups.add_light_pos.clipboard_prompt") : null, PRIMARY, true), false, b->{be.groups.get(finalIndex).lightsPositions.add(new BlockPos(0, 0, 0)); updateBEAndRefreshBE();}) {
+                                adder.accept(new AdvancedButton(offsetX, offsetY, NORMAL_HEIGHT, NORMAL_HEIGHT, SpritesManager.ADD_POSITION, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.groups.add_light_pos"), null, clipboardBlockPos != null ? Component.translatable("gui.moretraffic.control_cabinet.groups.add_light_pos.clipboard_prompt") : null, NoticeBoxTooltip.TooltipType.CTA_SPECIAL), false, b->{be.groups.get(finalIndex).lightsPositions.add(new BlockPos(0, 0, 0)); updateBEAndRefreshBE();}) {
                                     @Override
                                     public boolean mouseClicked(double mouseX, double mouseY, int button) {
                                         if (!this.active || !this.visible || !this.isMouseOver(mouseX, mouseY) || button != 1 || clipboardBlockPos == null) return super.mouseClicked(mouseX, mouseY, button);
@@ -579,19 +584,19 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                                     }
                                 } );
 
-                                adder.accept(new AdvancedButton(sheetWidth - 30, offsetY, NORMAL_HEIGHT, NORMAL_HEIGHT, SpritesManager.ICON_TRASHCAN , null, false, b->{be.groups.remove(finalIndex); updateBEAndRefreshBE();}));
+                                adder.accept(new AdvancedButton(sheetWidth - 30, offsetY, NORMAL_HEIGHT, NORMAL_HEIGHT, SpritesManager.ICON_TRASHCAN , new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.groups.delete_group")), false, b->{be.groups.remove(finalIndex); updateBEAndRefreshBE();}));
 
-                                offsetY += 23;
+                                offsetY += 23 + 3;
                                 index++;
                             }
-                            adder.accept(new AdvancedButton(10, sheetHeight - 30, 100, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.groups.create_group"), SpritesManager.ICON_PLUS,b->{be.groups.add(new TrafficLightGroup("", new ArrayList<>())); updateBEAndRefreshBE();}));
+                            adder.accept(new AdvancedButton(10, sheetHeight - 30, 100, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.groups.create_group"), SpritesManager.PLUS, b->{be.groups.add(new TrafficLightGroup("", new ArrayList<>())); updateBEAndRefreshBE();}));
 
                         }
                     }
             );
         }));
 
-        addBaseWidget(new AdvancedButton(guiX+76+25, guiY+224, 15, 15, SpritesManager.ICON_PLUS, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.plus")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+76+25, guiY+224, 15, 15, SpritesManager.PLUS, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.plus")), true, b->{
             int sheetWidth = 150;
             int sheetHeight = 170;
 
@@ -619,7 +624,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
         }));
 
 
-        addBaseWidget(new AdvancedButton(guiX+167, guiY+224, 15, 15, be.isRunning ? SpritesManager.ICON_PLAY_ENGAGED : SpritesManager.ICON_PLAY, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.play"), null, Component.translatable("gui.moretraffic.change")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+167, guiY+224, 15, 15, be.isRunning ? SpritesManager.PLAY_ENGAGED : SpritesManager.PLAY, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.play"), null, Component.translatable("gui.moretraffic.change"), NoticeBoxTooltip.TooltipType.BASE), true, b->{
             if (be.isRunning) {
                 be.isRunning = false;
             } else {

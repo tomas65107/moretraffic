@@ -38,7 +38,7 @@ import java.io.File;
 import java.util.function.Consumer;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.SECONDARY;
-import static com.tomas65107.moretraffic.data.SpritesManager.ICON_INFO;
+import static com.tomas65107.moretraffic.data.SpritesManager.INFO;
 import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton.NORMAL_HEIGHT;
 import static com.tomas65107.moretraffic.networking.ClientSenderPacketTrafficLight.shortsToBytes;
@@ -113,9 +113,9 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                                 NoticeBoxTooltip tooltip1 = new NoticeBoxTooltip(
                                         Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_color"),
                                         Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_color.message"),
-                                        null, ColorsManager.HEADER, false);
+                                        null, NoticeBoxTooltip.TooltipType.INFORMATIVE);
                                 int finalWidthOfPrevContent = Minecraft.getInstance().font.width(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_color"));
-                                adder.accept(new HelpElementWidget(finalWidthOfPrevContent + 10, 21, ICON_INFO, tooltip1));
+                                adder.accept(new HelpElementWidget(finalWidthOfPrevContent + 10, 21, INFO, tooltip1));
 
                                 new GridMaker(
                                     10, 25 + 11, adder,
@@ -138,15 +138,15 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                                 NoticeBoxTooltip tooltip2 = new NoticeBoxTooltip(
                                         Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask"),
                                         Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.message"),
-                                        Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.cta"), ColorsManager.HEADER, false);
+                                        Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.cta"), NoticeBoxTooltip.TooltipType.INFORMATIVE);
                                 int finalWidthOfPrevContent1 = Minecraft.getInstance().font.width(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask"));;
-                                adder.accept(new HelpElementWidget(finalWidthOfPrevContent1 + 10, 76, ICON_INFO, tooltip2));
+                                adder.accept(new HelpElementWidget(finalWidthOfPrevContent1 + 10, 76, INFO, tooltip2));
 
                                 NoticeBoxTooltip tooltip3 = new NoticeBoxTooltip(
                                         Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.controls"),
                                         Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.controls.message"),
-                                        null, ColorsManager.HEADER, false);
-                                adder.accept(new HelpElementWidget((finalWidthOfPrevContent1 + 10)+16, 76, ICON_INFO, tooltip3));
+                                        null, NoticeBoxTooltip.TooltipType.INFORMATIVE);
+                                adder.accept(new HelpElementWidget((finalWidthOfPrevContent1 + 10)+16, 76, INFO, tooltip3));
 
                                 new MaskGridMaker(10, 90, be.lights.get(finalIndex).mask, adder, newMask-> {
                                     sendToServer(new ClientSenderPacketTrafficLight(
@@ -160,7 +160,7 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                                 });
 
                                 adder.accept(
-                                        new AdvancedButton(144, 90, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.clear"), SpritesManager.ICON_CLEAR, a-> {
+                                        new AdvancedButton(144, 90, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.clear"), SpritesManager.CLEAR, a-> {
                                             sendToServer(new ClientSenderPacketTrafficLight(
                                                             pos,
                                                             finalIndex,
@@ -171,7 +171,7 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                                         })
                                 );
                                 adder.accept(
-                                        new AdvancedButton(144, 90+20+5, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.invert"), SpritesManager.ICON_INVERT, a->{
+                                        new AdvancedButton(144, 90+20+5, 70, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.invert"), SpritesManager.INVERT, a->{
                                             short[] rows = be.lights.get(finalIndex).mask.getRows().clone();
                                             for (int i = 0; i < rows.length; i++) {
                                                 rows[i] = (short) ~rows[i];
@@ -186,7 +186,7 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                                         })
                                 );
 
-                                adder.accept(new AdvancedButton(144+28, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import.message"), null), a->{
+                                adder.accept(new AdvancedButton(144+28, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import.message"), NoticeBoxTooltip.TooltipType.BASE), a->{
                                     try {
                                         TrafficLightLight.TrafficLightMask importedContents = TrafficLightLight.TrafficLightMask.deserialize(Minecraft.getInstance().keyboardHandler.getClipboard());
                                         assert importedContents != null;
@@ -203,12 +203,12 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                                 })
                                 );
                                 adder.accept(
-                                        new AdvancedButton(144+30+20, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.export"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.export.message"), null), a->{
+                                        new AdvancedButton(144+30+20, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.export"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.export.message"), NoticeBoxTooltip.TooltipType.BASE), a->{
                                             Minecraft.getInstance().keyboardHandler.setClipboard(be.lights.get(finalIndex).mask.serialize());
                                         })
                                 );
                                 adder.accept(
-                                        new AdvancedButton(144, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.ICON_EXPORT_FROM_IMAGE, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import_img"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import_img.message"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import_img.cta")), a->{
+                                        new AdvancedButton(144, 100+40, NORMAL_HEIGHT, NORMAL_HEIGHT, null, SpritesManager.EXPORT_FROM_IMAGE, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import_img"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import_img.message"), Component.translatable("gui.moretraffic.advanced_traffic_light.options.change_mask.import_img.cta"), NoticeBoxTooltip.TooltipType.BASE), a->{
                                             try {
                                                 String filepath = MaskConverter.openResourcePopUp();
                                                 if (filepath == null || filepath.isEmpty()) return;

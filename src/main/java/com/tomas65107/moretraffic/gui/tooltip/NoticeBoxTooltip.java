@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.gui.tooltip;
 
 import com.tomas65107.moretraffic.data.ColorsManager;
+import com.tomas65107.moretraffic.data.SpritesManager;
 import com.tomas65107.moretraffic.helpers.TextHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -15,37 +16,43 @@ import java.util.Objects;
 
 import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.helpers.TextCutter.cutTextComponent;
-import static com.tomas65107.moretraffic.helpers.TextCutter.joinTogetherComponents;
 
 public class NoticeBoxTooltip implements TooltipComponent {
-    Component title;
-    List<Component> message;
-    List<Component> cta;
-    Color color;
-    boolean makeCtaYellow;
 
-    public NoticeBoxTooltip(Component title) {
-        this(title, null, null, null, false);
+    public enum TooltipType {
+        BASE,
+        INFORMATIVE,
+        WARNING,
+        ERROR,
+        CTA_SPECIAL
     }
 
-    public NoticeBoxTooltip(Component title, Color color) {
-        this(title, null, null, color, false);
+    List<Component> title;
+    List<Component> message;
+    List<Component> cta;
+    TooltipType type;
+
+    public NoticeBoxTooltip(Component title) {
+        this(title, null, null, TooltipType.BASE);
+    }
+
+    public NoticeBoxTooltip(Component title, TooltipType type) {
+        this(title, null, null, type);
     }
 
     public NoticeBoxTooltip(Component title, Component message) {
-        this(title, message, null, null, false);
+        this(title, message, null, TooltipType.BASE);
     }
 
-    public NoticeBoxTooltip(Component title, Component message, Component cta) {
-        this(title, message, cta, null, false);
+    public NoticeBoxTooltip(Component title, Component message, TooltipType type) {
+        this(title, message, null, type);
     }
 
-    public NoticeBoxTooltip(Component title, Component message, Component cta, Color color, boolean makeCtaYellow) {
-        this.title = joinTogetherComponents(cutTextComponent(title, false), false);
+    public NoticeBoxTooltip(Component title, Component message, Component cta, TooltipType type) {
+        this.title = cutTextComponent(title, false);
         this.message = cutTextComponent(message, true);
         this.cta = cutTextComponent(cta, true);
-        this.color = color;
-        this.makeCtaYellow = makeCtaYellow;
+        this.type = type == null ? TooltipType.BASE : type;
     }
 
     public static class Client implements ClientTooltipComponent {
@@ -56,21 +63,37 @@ public class NoticeBoxTooltip implements TooltipComponent {
         }
 
         private int render(int x, int y, Object gfx, String returningStatement) {
-            if (tooltip.color == null) {tooltip.color = ColorsManager.PRIMARY;}
-
+            Color color = Color.black;
+            switch (tooltip.type) {
+                case BASE, CTA_SPECIAL -> color = ColorsManager.PRIMARY;
+                case INFORMATIVE -> color = ColorsManager.HEADER;
+                case WARNING -> color = ColorsManager.HEADER_WARNING;
+                case ERROR -> color = ColorsManager.ERROR;
+            }
             double yTotal = 0;
             int xTotal = 0;
 
             y = y - Minecraft.getInstance().font.lineHeight - 3;
 
-            if (!tooltip.title.getString().isEmpty()) {
-                if (gfx instanceof GuiGraphics) {
-                    TextHelper.renderText((GuiGraphics) gfx, x, y, tooltip.title, 1f, rgb(tooltip.color), true);
-                }
-                yTotal += Minecraft.getInstance().font.lineHeight;
-                xTotal = Math.max(xTotal, Minecraft.getInstance().font.width(tooltip.title));
+            var additionalSpaceForPictogram = 0;
+            if (tooltip.type == TooltipType.WARNING || tooltip.type == TooltipType.ERROR) {
 
-                if (Objects.equals(String.valueOf(tooltip.message), "[empty]") && Objects.equals(String.valueOf(tooltip.cta), "[empty]")) {} else {
+                if (gfx instanceof GuiGraphics) {
+                    SpritesManager.renderSprite((GuiGraphics) gfx, tooltip.type == TooltipType.WARNING ? SpritesManager.WARNING : SpritesManager.ERROR, x, y-1, 10);
+                }
+                additionalSpaceForPictogram = 13;
+            }
+
+            if(!Objects.equals(String.valueOf(tooltip.title), "[empty]")) {
+                for (Component line : tooltip.title) {
+                    if (gfx instanceof GuiGraphics) {
+                        TextHelper.renderText((GuiGraphics) gfx, x + additionalSpaceForPictogram, (int) (y + yTotal), line, 1f, rgb(color), true);
+                    }
+                    yTotal += Minecraft.getInstance().font.lineHeight;
+                    xTotal = Math.max(xTotal, Minecraft.getInstance().font.width(line) + additionalSpaceForPictogram);
+                }
+                if (Objects.equals(String.valueOf(tooltip.message), "[empty]") && Objects.equals(String.valueOf(tooltip.cta), "[empty]")) {
+                } else {
                     yTotal += 4f;
                 }
             }
@@ -92,7 +115,7 @@ public class NoticeBoxTooltip implements TooltipComponent {
                 yTotal += 4f;
                 for (Component line : tooltip.cta) {
                     if (gfx instanceof GuiGraphics) {
-                        TextHelper.renderText((GuiGraphics) gfx, x + 4, (int) (y + yTotal), line, scaleForTs, rgb(tooltip.makeCtaYellow ? Color.YELLOW : ColorsManager.TERTIARY), true);
+                        TextHelper.renderText((GuiGraphics) gfx, x + 4, (int) (y + yTotal), line, scaleForTs, rgb(tooltip.type.equals(TooltipType.CTA_SPECIAL) ? Color.YELLOW : ColorsManager.TERTIARY), true);
                     }
                     yTotal += Minecraft.getInstance().font.lineHeight * scaleForTs;
                     xTotal = (int) Math.max(xTotal, Minecraft.getInstance().font.width(line) * scaleForTs);

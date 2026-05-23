@@ -11,10 +11,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
+import static com.tomas65107.moretraffic.block.LEDStripBlock.LIGHT_LEVEL;
 
 public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -22,6 +26,7 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
     public int startPosY;
     public int sizeX;
     public int sizeY;
+    public boolean emitsLight;
     public DyeColor color;
 
     public LEDStripBlockEntity(BlockEntityType type, BlockPos pos, BlockState blockState) {
@@ -32,6 +37,7 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
         sizeX = 2;
         sizeY = 2;
         color = DyeColor.BLACK;
+        emitsLight = false;
     }
 
     @Override
@@ -42,6 +48,7 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
         startPosY = tag.getInt("StartPosY");
         sizeX = tag.getInt("SizeX");
         sizeY = tag.getInt("SizeY");
+        emitsLight = tag.getBoolean("shouldEmitLight");
         color = DyeColor.byName(tag.getString("Color"), DyeColor.BLACK);
     }
 
@@ -53,7 +60,16 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("StartPosY", startPosY);
         tag.putInt("SizeX", sizeX);
         tag.putInt("SizeY", sizeY);
+        tag.putBoolean("shouldEmitLight", emitsLight);
         tag.putString("Color", color.getName());
+
+        if (level.getBlockEntity(getBlockPos()) instanceof LEDStripBlockEntity be) {
+            if (be.emitsLight && !be.color.equals(DyeColor.BLACK)) {
+                level.setBlock(getBlockPos(), getBlockState().setValue(LIGHT_LEVEL, 8), 3);
+            } else {
+                level.setBlock(getBlockPos(), getBlockState().setValue(LIGHT_LEVEL, 0), 3);
+            }
+        }
     }
 
     @Override

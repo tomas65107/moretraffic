@@ -118,9 +118,7 @@ public class ModelButton extends Button {
 
         if (isHovered && !isCompatible && shouldRenderTooltips) {
             var tooltip = new NoticeBoxTooltip(
-                    null,
-                    Component.translatable("gui.moretraffic.advanced_traffic_light.change_properties.incompatible"),
-                    null);
+                    Component.translatable("gui.moretraffic.advanced_traffic_light.change_properties.incompatible"), NoticeBoxTooltip.TooltipType.WARNING);
             guiGraphics.renderTooltip(Minecraft.getInstance().font, List.of(Component.empty()), Optional.of(tooltip), ItemStack.EMPTY, mouseX, mouseY);
         }
 

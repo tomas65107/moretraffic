@@ -42,7 +42,7 @@
   "block.moretraffic.led_light.tooltip.condition2": "When R-Clicked with Wrench",
   "block.moretraffic.led_light.tooltip.behaviour2": "Opens the _model and color customization_ page",
 
-  "moretraffic.ponder.cabinet_1.text_1": "Can be used to make complex systems and automations that _control_ other MoreTraffic blocks",
+  "moretraffic.ponder.cabinet_1.text_1": "Can be used to make complex systems and automations that control other MoreTraffic blocks",
   "moretraffic.ponder.cabinet_1.text_2": "It has 2 main categories: Groups and Instructions",
   "moretraffic.ponder.cabinet_1.text_3": "Groups allow you to group different MoreTraffic Blocks and modify them together",
   "moretraffic.ponder.cabinet_1.text_4": "You can modify them with instructions",
@@ -71,17 +71,19 @@
   "block.moretraffic.traffic_pillar.tooltip.behaviour3": "_Changes the color_ of the pillar",
 
 
+
   "core.moretraffic.advanced_traffic_light.light1": "First light",
   "core.moretraffic.advanced_traffic_light.light2": "Second light",
   "core.moretraffic.advanced_traffic_light.light3": "Third light",
-  "core.moretraffic.advanced_traffic_light.property.orientation": "Orientation of traffic light",
-  "core.moretraffic.advanced_traffic_light.property.position": "Position of traffic light",
-  "core.moretraffic.advanced_traffic_light.property.scale": "Scale of traffic light (doesent work yet)",
+  "core.moretraffic.advanced_traffic_light.property.orientation": "Orientation of light",
+  "core.moretraffic.advanced_traffic_light.property.position": "Position of light",
+  "core.moretraffic.advanced_traffic_light.property.scale": "Scale of light (doesent work yet)",
 
   "gui.moretraffic.configure": "Configure...",
   "gui.moretraffic.close": "Close",
   "gui.moretraffic.change": "Click to toggle",
   "gui.moretraffic.import_invalid_data": "No valid data in clipboard, please make sure you copied the exported NBT correctly",
+  "gui.moretraffic.error_saving": "One or more errors preventing saving:",
 
   "gui.moretraffic.advanced_traffic_light.title": "Advanced Traffic Light Configuration",
 
@@ -109,7 +111,7 @@
 
   "gui.moretraffic.control_cabinet.title": "Control Cabinet Configuration",
   "gui.moretraffic.control_cabinet.instructions": "Instructions",
-  "gui.moretraffic.control_cabinet.instructions.empty": "No instructions present, (for now)\nAdd them with the plus button!",
+  "gui.moretraffic.control_cabinet.instructions.empty": "No instructions are here!\nAdd instructions or configure groups below.",
 
   "gui.moretraffic.control_cabinet.instruction.delay": "Timed delay",
   "gui.moretraffic.control_cabinet.instruction.delay.message": "Executes next action after a set amount of seconds (can be a decimal)",
@@ -137,7 +139,7 @@
   "gui.moretraffic.control_cabinet.export.to_clipboard": "Copy to clipboard",
   "gui.moretraffic.control_cabinet.import.from_clipboard": "Import from your clipboard",
   "gui.moretraffic.control_cabinet.repeat": "Should Instructions loop?",
-  "gui.moretraffic.control_cabinet.repeat.message.yes": "Currently, when one iteration ends, it starts over",
+  "gui.moretraffic.control_cabinet.repeat.message.yes": "Currently, when one iteration ends, it starts over until manually stopped",
   "gui.moretraffic.control_cabinet.repeat.message.no": "Currently, when one iteration ends, it stops",
   "gui.moretraffic.control_cabinet.plus": "Add instruction...",
   "gui.moretraffic.control_cabinet.play": "Run instruction sheet",
@@ -146,6 +148,7 @@
   "gui.moretraffic.control_cabinet.groups.message": "Groups allow you to group lights (and other things) from this mod to different groups and then modify them with instructions.",
   "gui.moretraffic.control_cabinet.groups.cta": "Create a new group, name it and add a position of a MoreTraffic block (you can use the /copypos command to copy coordinates).\nThen, you can modify blocks in this group using instructions and targeting this group.",
   "gui.moretraffic.control_cabinet.groups.create_group": "Create group",
+  "gui.moretraffic.control_cabinet.groups.delete_group": "Delete whole group including positions",
   "gui.moretraffic.control_cabinet.groups.group_name": "Group name",
   "gui.moretraffic.control_cabinet.groups.group_pos": "Group blocks",
   "gui.moretraffic.control_cabinet.groups.add_light_pos": "Add block position to group",
@@ -156,6 +159,9 @@
   "gui.moretraffic.led_light.size": "Size",
   "gui.moretraffic.led_light.startpos": "Position",
   "gui.moretraffic.led_light.center": "Calculate center offset",
+  "gui.moretraffic.led_light.emisive.title": "Should emit light?",
+  "gui.moretraffic.led_light.emisive.message.yes": "Currently, when the LED has any non-black color, it will emit light into the world.",
+  "gui.moretraffic.led_light.emisive.message.no": "Currently, LED won't emit any light, only will glow.",
 
   "moretraffic.commands.copypos.success": "Copied %s to clipboard",
   "moretraffic.commands.copypos.error": "Failed to get coordinates",

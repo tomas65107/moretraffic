@@ -8,6 +8,7 @@ import com.tomas65107.moretraffic.gui.components.overriderenders.NonInteractable
 import com.tomas65107.moretraffic.gui.components.overriderenders.PriorityWidget;
 import com.tomas65107.moretraffic.helpers.ColorHelper;
 import com.tomas65107.moretraffic.data.ColorsManager;
+import com.tomas65107.moretraffic.mod.MoreTraffic;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -82,7 +83,7 @@ abstract public class AbstractTomiContainerScreen<T extends AbstractContainerMen
                             sheetContainer.y,
                             sheetContainer.x + sheetContainer.width,
                             sheetContainer.y + sheetContainer.height,
-                            ColorHelper.rgb(ColorsManager.TERTIARY))
+                            ColorHelper.rgb(ColorsManager.SHEET_BACKGROUND))
                     ));
 
             addSheetWidget(
@@ -144,8 +145,11 @@ abstract public class AbstractTomiContainerScreen<T extends AbstractContainerMen
     }
 
     @Override
-    protected <T extends GuiEventListener & Renderable & NarratableEntry> @NotNull T addRenderableWidget(T widget) {
-        throw new IllegalArgumentException("Incorrect usage; Please use addBaseWidget() instead of addRenderableWidget() to render widgets!");
+    protected <T extends GuiEventListener & Renderable & NarratableEntry> @NotNull T addRenderableWidget(@NotNull T widget) {
+        MoreTraffic.LOGGER.error("addRenderableWidget() used to render widgets!");
+        MoreTraffic.LOGGER.warn("Redirecting to correct usage!");
+        if (widget != null && widget instanceof AbstractWidget abstractWidget) addBaseWidget(abstractWidget);
+        return widget;
     }
 
 }
