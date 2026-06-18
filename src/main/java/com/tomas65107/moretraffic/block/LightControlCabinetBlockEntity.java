@@ -72,9 +72,7 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
             for (int i = 0; i < instructionsTag.size(); i++) {
                 CompoundTag nbtInstruction = instructionsTag.getCompound(i);
 
-                LightInstructionProperty instruction = switch (
-                        getPropertyOfName(nbtInstruction.getString("Type"))
-                        ) {
+                LightInstructionProperty instruction = switch (getPropertyOfName(nbtInstruction.getString("Type"))) {
                     case AWAIT_REDSTONE -> new AwaitRedstone(
                             nbtInstruction.getInt("InternalTimestamp")
                     );

@@ -66,11 +66,7 @@ public class LEDStripBlock extends MTNormalBlock implements EntityBlock, IWrench
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
         if (level.getBlockEntity(pos) instanceof LEDStripBlockEntity be) {
-            if (be.emitsLight && !be.color.equals(DyeColor.BLACK)) {
-                level.setBlock(pos, state.setValue(LIGHT_LEVEL, 7), 3);
-            } else {
-                level.setBlock(pos, state.setValue(LIGHT_LEVEL, 0), 3);
-            }
+            be.updateLightLevel();
         }
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
     }

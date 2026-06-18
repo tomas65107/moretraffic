@@ -50,6 +50,8 @@ public class BlockBoundingBoxes {
 
     public static final VoxelShape DERAILER;
 
+    public static final VoxelShape SIGNBOARD;
+
 
     static {
         BALLAST = Shapes.or(Block.box(0, 0, 0, 16, 16, 16), Block.box(0, 16, 0, 16, 17, 16));
@@ -62,5 +64,7 @@ public class BlockBoundingBoxes {
         FLOODLIGHT = Block.box(3, 0, 5, 13, 9, 11);
 
         DERAILER = Block.box(2, 2, 0, 14, 14, 12);
+
+        SIGNBOARD = Block.box(0, 0, 0, 16, 2, 16);
     }
 }

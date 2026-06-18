@@ -3,6 +3,7 @@ package com.tomas65107.moretraffic.mod.registration;
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
 import com.tomas65107.moretraffic.gui.containers.LEDStripMenu;
 import com.tomas65107.moretraffic.gui.containers.LightControlCabinetMenu;
+import com.tomas65107.moretraffic.gui.containers.SignboardMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -22,4 +23,7 @@ public class MTMenus {
 
     public static final Supplier<MenuType<LEDStripMenu>> LED_STRIP_MENU =
             MENUS.register("led_light_menu", () -> IMenuTypeExtension.create(LEDStripMenu::new));
+
+    public static final Supplier<MenuType<SignboardMenu>> SIGNBOARD_MENU =
+            MENUS.register("signboard_menu", () -> IMenuTypeExtension.create(SignboardMenu::new));
 }

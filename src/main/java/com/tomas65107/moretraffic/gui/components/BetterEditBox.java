@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import static com.tomas65107.moretraffic.data.ColorsManager.PRIMARY;
 import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 
 public class BetterEditBox extends EditBox {
@@ -33,6 +34,7 @@ public class BetterEditBox extends EditBox {
 
     public BetterEditBox(int x, int y, int width, int height, Component message) {
         super(Minecraft.getInstance().font, x, y, width, height, message);
+        this.setTextColor(rgb(PRIMARY));
     }
 
     public void onSave(Runnable runnable) { onSaveCode = runnable; }
@@ -127,7 +129,6 @@ public class BetterEditBox extends EditBox {
     protected boolean clicked(double mouseX, double mouseY) {
         if (!(this.isMouseOver(mouseX, mouseY)) && isFocused()) {
             setFocused(false);
-            MoreTraffic.LOGGER.info("DSDSDS");
         }
         return super.clicked(mouseX, mouseY);
     }

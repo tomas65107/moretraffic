@@ -101,7 +101,7 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
 
                                 int sheetX = guiX + (guiWidth - sheetWidth) / 2;
                                 int sheetY = guiY + (guiHeight - sheetHeight) / 2;
-                        this.addElement(
+                        this.addScreenSheet(
                                 new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.advanced_traffic_light.options.title.light"+(finalIndex+1)).getString(), true, sheetWidth, sheetHeight) {
 
                             @Override
@@ -245,7 +245,7 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
                     new LabelWidget(guiX + 100, currentY, Component.translatable("core.moretraffic.advanced_traffic_light.property."+property.getNameOfProperty()).withColor(rgb(SECONDARY)), 0xFFFFFF, true)
             );
             currentY += 11+1;
-            new ModelSliderChangerMaker<>(guiX + 100, currentY, be, property.getClassOfProperty(), this::addBaseWidget, b -> queueRefresh = b, this::shouldRenderTooltips);
+            new ModelSliderChangerMaker<>(guiX + 100, currentY, be, property.getClassOfProperty(), this::addBaseWidget, b -> queueRefresh = b, this::safeToRenderTooltips);
             currentY += 30-1;
         }
 

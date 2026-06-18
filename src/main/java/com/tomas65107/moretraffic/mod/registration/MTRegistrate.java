@@ -161,6 +161,19 @@ public class MTRegistrate {
             .validBlocks(getValidHookedBlocks())
             .register();
 
+    public static final BlockEntry<SignboardBlock> SIGNSBOARD = REGISTRATE.
+            block("signboard", SignboardBlock::new)
+            .item()
+            .onRegisterAfter(Registries.ITEM, item ->
+                    TooltipModifier.REGISTRY.register(item, new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)))
+            .removeTab(CreativeModeTabs.SEARCH)
+            .build()
+            .register();
+    public static final BlockEntityEntry<SignboardBlockEntity> SIGNSBOARD_BE = REGISTRATE
+            .blockEntity("signboard", SignboardBlockEntity::new)
+            .validBlock(SIGNSBOARD)
+            .register();
+
     public static void register(IEventBus modEventBus) {
     }
 

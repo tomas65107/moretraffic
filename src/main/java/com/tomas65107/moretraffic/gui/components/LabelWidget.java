@@ -5,6 +5,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
+
+import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 
 public class LabelWidget extends AbstractWidget {
 
@@ -16,6 +21,10 @@ public class LabelWidget extends AbstractWidget {
         this(x, y, text, color, shadow, 1f);
     }
 
+    public LabelWidget(int x, int y, Component text) {
+        this(x, y, text, rgb(Color.WHITE), true, 1f);
+    }
+
     public LabelWidget(int x, int y, Component text, int color, boolean shadow, float size) {
         super(x, y, Minecraft.getInstance().font.width(text), Minecraft.getInstance().font.lineHeight, text);
         this.color = color;
@@ -24,7 +33,12 @@ public class LabelWidget extends AbstractWidget {
     }
 
     @Override
-    protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return false;
+    }
+
+    @Override
+    protected void renderWidget(@NotNull GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         g.pose().pushPose();
         g.pose().translate(this.getX(), this.getY(), 0); // move pivot to text position
         g.pose().scale(size, size, 1f); // scale relative to pivot

@@ -28,6 +28,7 @@ public class SpritesManager {
     public static final ResourceLocation PALETTE = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_palette.png");
     public static final ResourceLocation EMITS_LIGHT_ON = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_emits_light_on.png");
     public static final ResourceLocation EMITS_LIGHT_OFF = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_emits_light_off.png");
+    public static final ResourceLocation MOVE = ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/icon_move.png");
 
     public static void renderSprite(
             GuiGraphics gfx,

@@ -45,4 +45,8 @@ public final class ColorHelper {
         return rgb(red, green, blue, 255);
     }
 
+    public static int withAlpha(int color, int alpha) {
+        return (alpha << 24) | (color & 0x00FFFFFF);
+    }
+
 }

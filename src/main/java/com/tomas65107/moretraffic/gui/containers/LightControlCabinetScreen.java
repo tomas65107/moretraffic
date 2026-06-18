@@ -214,7 +214,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                     int sheetHeight = 200;
                     int sheetX = guiX + (guiWidth - sheetWidth) / 2;
                     int sheetY = guiY + (guiHeight - sheetHeight) / 2;
-                    this.addElement(
+                    this.addScreenSheet(
                             new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_display.modify").getString(), true, sheetWidth, sheetHeight) {
                                 @Override
                                 public void init(Consumer<AbstractWidget> adder) {
@@ -338,7 +338,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 double mouseY = Minecraft.getInstance().mouseHandler.ypos() * this.height / Minecraft.getInstance().getWindow().getScreenHeight();
                 int textWidth = Minecraft.getInstance().font.width(instruction.getClassType().getComponentOfProperty(false).getString());
                 if (mouseX >= guiX + 13 &&
-                            mouseX <= guiX + 25 + textWidth + 2 && mouseY >= renderY + 7 && mouseY <= renderY + 7 + Minecraft.getInstance().font.lineHeight && shouldRenderTooltips()) {
+                            mouseX <= guiX + 25 + textWidth + 2 && mouseY >= renderY + 7 && mouseY <= renderY + 7 + Minecraft.getInstance().font.lineHeight && safeToRenderTooltips()) {
                     gfx.renderTooltip(
                             Minecraft.getInstance().font, List.of(Component.empty()),
                             Optional.of(new NoticeBoxTooltip(instruction.getClassType().getComponentOfProperty(false), instruction.getClassType().getComponentOfProperty(true), Component.literal("id: " + instruction.getClassType().getNameOfProperty() + "  instructionIndex: " + finalIndex), NoticeBoxTooltip.TooltipType.BASE)),
@@ -358,7 +358,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
             int sheetY = guiY + (guiHeight - sheetHeight) / 2;
 
-            this.addElement(
+            this.addScreenSheet(
                     new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.import").getString(), true, sheetWidth, sheetHeight) {
 
                         @Override
@@ -421,7 +421,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
             int sheetY = guiY + (guiHeight - sheetHeight) / 2;
 
-            this.addElement(
+            this.addScreenSheet(
                     new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.export").getString(), true, sheetWidth, sheetHeight) {
 
                         Checkbox includeInstructions;
@@ -476,7 +476,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
             int sheetY = guiY + (guiHeight - sheetHeight) / 2;
 
-            this.addElement(
+            this.addScreenSheet(
                     new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.groups").getString(), true, sheetWidth, sheetHeight) {
 
                         @Override
@@ -603,7 +603,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
             int sheetY = guiY + (guiHeight - sheetHeight) / 2;
 
-            this.addElement(
+            this.addScreenSheet(
                     new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.plus").getString(), true, sheetWidth, sheetHeight) {
                         @Override
                         public void init(Consumer<AbstractWidget> adder) {
@@ -641,7 +641,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
             if (mouseX >= guiX + 182 && mouseX <=  guiX + 195 &&
                 mouseY >= guiY + 221 + 5 && mouseY <= guiY + 221 + 17 &&
-                shouldRenderTooltips()) {
+                safeToRenderTooltips()) {
                 gfx.renderTooltip(
                         Minecraft.getInstance().font, List.of(Component.empty()),
                         Optional.of(new BodyTooltip((c)-> {
@@ -687,7 +687,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
         int sheetX = guiX + (guiWidth - sheetWidth) / 2;
         int sheetY = guiY + (guiHeight - sheetHeight) / 2;
 
-        addElement(new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light.select_color").getString(), true, sheetWidth, sheetHeight) {
+        addScreenSheet(new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light.select_color").getString(), true, sheetWidth, sheetHeight) {
             @Override
             public void init(Consumer<AbstractWidget> adder) {
                 adder.accept(new LabelWidget(10, 20, Component.translatable("core.moretraffic.advanced_traffic_light.light"+(indexOfLight+1)), rgb(PRIMARY), true));
@@ -734,7 +734,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
     protected void containerTick() {
 
         if (be.isRunning) {
-            if (!shouldRenderTooltips()) {onClose();}
+            if (!safeToRenderTooltips()) {onClose();}
             refreshContent();
             timer = 2;
         } else

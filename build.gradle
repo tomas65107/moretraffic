@@ -10,14 +10,14 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def mod_version = "0.2.4-beta"
+def mod_version = "0.2.5-beta"
 
 def mod_changelog = """
-0.2.4-beta
-- Added world emissive light support for LED strip
-- Fixed UI bug that would disconnect on interaction
-- Fixed stacking error for some elements
-- Refreshed UI, icon and tooltip design
+0.2.5-beta
+- Added signboards! Type and customize text and background. Still in development. Adding custom sprites is not fully finished.
+- Fixed SEVERE issue related to LED Strips failing to correctly save and worlds could not be saved.
+- Updated to neoforge 21.1.229
+- Code rebasing and rendering improvements
 """
 
 version = mod_version

@@ -38,5 +38,10 @@ public class MTNetworking {
                 ClientSyncLightPacket.STREAM_CODEC,
                 ServerLightHandle::handle
         );
+        registrar.playToServer(
+                ClientSyncSignboard.TYPE,
+                ClientSyncSignboard.STREAM_CODEC,
+                ServerHandleSignboard::handle
+        );
     }
 }

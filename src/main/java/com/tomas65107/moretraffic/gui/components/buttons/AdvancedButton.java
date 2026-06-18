@@ -54,6 +54,7 @@ public class AdvancedButton extends Button {
             int centerX = getX() + getWidth() / 2 - 8;
             int centerY = getY() + getHeight() / 2 - 8;
             float spriteScale = 0.8f; // half-size
+            if (getWidth() == 11) spriteScale -= 0.1f;
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(centerX + 8, centerY + 8, 0);
             guiGraphics.pose().scale(spriteScale, spriteScale, 1f);

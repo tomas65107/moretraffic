@@ -12,16 +12,6 @@ import java.util.List;
 
 public final class TextCutter {
 
-    public static Component joinTogetherComponents(List<Component> c, boolean useNewLinesInText) {
-        StringBuilder toReturn = new StringBuilder();
-
-        for (Component line : c) {
-            toReturn.append(line.getString().trim())
-                    .append(" ");
-        }
-        return Component.literal(String.valueOf(toReturn).trim());
-    }
-
     public static List<Component> cutTextComponent(Component c, boolean useNewLinesInText) {
         return cutTextComponent(c, 0, 200, useNewLinesInText);
     }

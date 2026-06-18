@@ -106,7 +106,7 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
                 sizetextbox.hideFloatingTooltip();
             } catch (Exception e) {
                 sizetextbox.setTextColor(rgb(ERROR));
-                sizetextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Failed to get valid coordinates that are 1..17"), NoticeBoxTooltip.TooltipType.ERROR));
+                sizetextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Failed to get valid coordinates that are 1..16"), NoticeBoxTooltip.TooltipType.ERROR));
             }
         });
         addBaseWidget(sizetextbox);
@@ -136,7 +136,7 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
                 offsettextbox.hideFloatingTooltip();
             } catch (Exception e) {
                 offsettextbox.setTextColor(rgb(ERROR));
-                offsettextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Failed to get valid coordinates that are ..17"), NoticeBoxTooltip.TooltipType.ERROR));
+                offsettextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Failed to get valid coordinates that are ..16"), NoticeBoxTooltip.TooltipType.ERROR));
             }
         });
         addBaseWidget(offsettextbox);
@@ -153,7 +153,7 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
             int sheetHeight = 94;
             int sheetX = guiX + (guiWidth - sheetWidth) / 2;
             int sheetY = guiY + (guiHeight - sheetHeight) / 2;
-            this.addElement(
+            this.addScreenSheet(
                     new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.instruction.modify_light.select_color").getString(), true, sheetWidth, sheetHeight) {
                         @Override
                         public void init(Consumer<AbstractWidget> adder) {

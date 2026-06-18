@@ -79,7 +79,7 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
         graphics.poseStack().popPose();
     }
 
-    static int getBoostedTint(DyeColor dyeColor) {
+    public static int getBoostedTint(DyeColor dyeColor) {
         if (dyeColor == DyeColor.BLACK) {return DyeColor.BLACK.getTextureDiffuseColor();}
         if (dyeColor == DyeColor.GRAY || dyeColor == DyeColor.LIGHT_GRAY) {return dyeColor.getTextureDiffuseColor();}
 

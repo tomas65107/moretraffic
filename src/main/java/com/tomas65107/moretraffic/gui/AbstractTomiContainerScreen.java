@@ -35,11 +35,12 @@ abstract public class AbstractTomiContainerScreen<T extends AbstractContainerMen
     private AbstractSheet sheetContainer;
     private ArrayList<AbstractWidget> baseWidgets = new ArrayList<>();
 
-    public final boolean shouldRenderTooltips() {
+    public final boolean safeToRenderTooltips() {
         return (sheetContainer == null);
     }
 
-    final protected void addElement(AbstractSheet sheet) {
+    /// Adds a screen sheet. For now, only one is supported
+    final protected void addScreenSheet(AbstractSheet sheet) {
         sheetContainer = sheet;
         refreshContent();
         refreshContent();
@@ -49,15 +50,18 @@ abstract public class AbstractTomiContainerScreen<T extends AbstractContainerMen
         super(menu, playerInventory, title);
     }
 
-    private void addSheetWidget(AbstractWidget widget) {
-        super.addRenderableWidget(new PriorityWidget<>(widget));
-    }
-
+    /// Adds a widget
+    ///
+    /// Use as a replacement for addRenderableWidget()
     final protected void addBaseWidget(AbstractWidget widget) {
         if (sheetContainer == null) {
             super.addRenderableWidget(widget);
         }
         baseWidgets.add(widget);
+    }
+
+    private void addSheetWidget(AbstractWidget widget) {
+        super.addRenderableWidget(new PriorityWidget<>(widget));
     }
 
     @Override

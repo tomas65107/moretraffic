@@ -62,14 +62,20 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("SizeY", sizeY);
         tag.putBoolean("shouldEmitLight", emitsLight);
         tag.putString("Color", color.getName());
+    }
 
-        if (level.getBlockEntity(getBlockPos()) instanceof LEDStripBlockEntity be) {
-            if (be.emitsLight && !be.color.equals(DyeColor.BLACK)) {
-                level.setBlock(getBlockPos(), getBlockState().setValue(LIGHT_LEVEL, 8), 3);
-            } else {
-                level.setBlock(getBlockPos(), getBlockState().setValue(LIGHT_LEVEL, 0), 3);
-            }
+    public void updateLightLevel() {
+        if (level == null) return;
+
+        BlockState state = getBlockState();
+
+        if (emitsLight && color != DyeColor.BLACK) {
+            level.setBlock(worldPosition, state.setValue(LIGHT_LEVEL, 8), 3);
+        } else {
+            level.setBlock(worldPosition, state.setValue(LIGHT_LEVEL, 0), 3);
         }
+
+        setChanged();
     }
 
     @Override

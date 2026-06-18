@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.mod;
 
 import com.tomas65107.moretraffic.block.DerailerVisual;
+import com.tomas65107.moretraffic.gui.containers.SignboardScreen;
 import com.tomas65107.moretraffic.helpers.ClientScheduler;
 import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightScreen;
 import com.tomas65107.moretraffic.gui.containers.LEDStripScreen;
@@ -50,8 +51,8 @@ public class MoreTrafficClient {
                     .factory(DerailerVisual::new).skipVanillaRender(be -> false).apply();
         });
 
-        ItemBlockRenderTypes.setRenderLayer(BALLAST_GRAY.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(LEDSTRIP.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(SIGNSBOARD.get(), RenderType.translucent());
 
         //BER
         BlockEntityRenderers.register(
@@ -77,6 +78,11 @@ public class MoreTrafficClient {
         BlockEntityRenderers.register(
                 LED_STRIP_BE.get(),
                 LedStripBlockEntityRenderer::new
+        );
+
+        BlockEntityRenderers.register(
+                SIGNSBOARD_BE.get(),
+                SignboardStripBlockEntityRenderer::new
         );
 
         //Block Tinting register
@@ -106,8 +112,7 @@ public class MoreTrafficClient {
 
         PonderIndex.addPlugin(new ModPonderPlugin());
 
-        // Some client setup code
-        MoreTraffic.LOGGER.info("MoreTraffic Client registration...");
+        MoreTraffic.LOGGER.info("MoreTraffic Client registration complete");
     }
 
     @SubscribeEvent
@@ -131,5 +136,6 @@ public class MoreTrafficClient {
         event.register(TRAFFIC_LIGHT_SETUP.get(), AdvancedTrafficLightScreen::new);
         event.register(CONTROL_CABINET_MENU.get(), LightControlCabinetScreen::new);
         event.register(LED_STRIP_MENU.get(), LEDStripScreen::new);
+        event.register(SIGNBOARD_MENU.get(), SignboardScreen::new);
     }
 }
