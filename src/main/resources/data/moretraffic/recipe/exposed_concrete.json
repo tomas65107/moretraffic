@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "Cc"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:white_concrete_powder"
+    },
+    "c": {
+      "item": "trafficcraft:concrete"
+    }
+  },
+  "result": {
+    "id": "moretraffic:exposed_concrete",
+    "count": 2
+  }
+}

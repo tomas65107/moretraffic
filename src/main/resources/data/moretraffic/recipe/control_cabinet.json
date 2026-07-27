@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " C ",
-    "SIS",
-    " c "
+    "ScS",
+    "   "
   ],
   "key": {
     "C": {
@@ -11,9 +11,6 @@
     },
     "S": {
       "item": "minecraft:stone"
-    },
-    "I": {
-      "item": "minecraft:iron_block"
     },
     "c": {
       "item": "create:electron_tube"

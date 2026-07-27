@@ -18,26 +18,31 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.tomas65107.moretraffic.data.ColorsManager.*;
 import static com.tomas65107.moretraffic.data.SpritesManager.INFO;
+import static com.tomas65107.moretraffic.data.SpritesManager.WARNING;
 import static com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton.NORMAL_HEIGHT;
 import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.helpers.TextCutter.cutTextComponent;
+import static com.tomas65107.moretraffic.helpers.TextHelper.Alignment.CENTER;
+import static com.tomas65107.moretraffic.helpers.TextHelper.align;
 import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;
 
 public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> {
@@ -52,6 +57,9 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
     protected boolean queueRefresh;
     private int timer = 0;
 
+    private boolean OOBEVisible;
+    boolean toggleoobe = false;
+
     int guiWidth = 191;
     int guiHeight = 164;
 
@@ -64,18 +72,22 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
         this.menu = menu;
         this.be = menu.be;
         this.pos = be.getBlockPos();
+        OOBEVisible = be.firstPlace;
     }
 
     @Override
     protected void init() {
         super.init();
 
-        guiX = (this.width - guiWidth) / 2;
+        guiX = ((this.width - guiWidth) / 2);
         guiY = (this.height - guiHeight) / 2;
 
         assert Minecraft.getInstance().level != null;
         assert Minecraft.getInstance().level.isClientSide;
         assert be != null;
+
+        if (OOBEVisible && !toggleoobe) {toggleoobe = true; showOOBE(be.elements.size()-1);}
+        if (OOBEVisible) return;
 
         addBaseWidget(
                 new LabelWidget(guiX+10, guiY +10, Component.translatable("gui.moretraffic.signboard.title").withStyle(ChatFormatting.BOLD), 0xFFFFFF, true)
@@ -90,7 +102,13 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
                 new HelpElementWidget(guiX+finalWidthOfPrevContent + 10, guiY +6, INFO, tooltip1)
         );
 
-
+        if (focusedIndex.get() == -1) {
+            int offset = guiY +50;
+            for (Component component : cutTextComponent(Component.translatable("gui.moretraffic.signboard.none_selected"), 0, 85, true)) {
+                addBaseWidget(new LabelWidget(align(CENTER, component, (this.width/2)-46), offset, component, rgb(PRIMARY), true));
+                offset += 10;
+            }
+        }
 
         if (focusedIndex.get() != -1) {
             int YOffset = 30;
@@ -127,6 +145,18 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
             if (element instanceof BoardElement.Background) {
 
+
+                // add presets for position (oobe)
+                NoticeBoxTooltip tooltipwarning = new NoticeBoxTooltip(
+                        Component.literal("Recent update introduced changes regarding Signboard position"),
+                        Component.literal("RECOMMENDED USAGE: Use the preset size picker.\nYou can also manually input the numbers but that may present some errors."),
+                        null, NoticeBoxTooltip.TooltipType.WARNING);
+                addBaseWidget(
+                        new HelpElementWidget(guiX+10+30, guiY +39, WARNING, tooltipwarning)
+                );
+
+                addBaseWidget(new AdvancedButton(guiX+58, guiY+40-2, 18, 18, null, SpritesManager.LIBRARY, new NoticeBoxTooltip(Component.literal("Show preset sizes (recommended)")), button -> showOOBE(focusedIndex.get())));
+
                 addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.literal("Color").withColor(rgb(SECONDARY)), 0xFFFFFF, true));
                 YOffset += 11;
                 addBaseWidget(new ColorButton(guiX+10, guiY+YOffset, 16, 16, ((BoardElement.Background) element).color.getTextureDiffuseColor(), b->{
@@ -151,7 +181,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
                 addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.literal("Text").withColor(rgb(SECONDARY)), 0xFFFFFF, true));
                 YOffset += 11;
 
-                addBaseWidget(new AdvancedButton(guiX+10, guiY+YOffset, 80, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.configure"), SpritesManager.EDIT_DISPLAY, p->{
+                addBaseWidget(new AdvancedButton(guiX+10, guiY+YOffset, 80, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.configure").withColor(rgb(HEADER)), SpritesManager.EDIT_DISPLAY, p->{
                     int sheetWidth = 270;
                     int sheetHeight = 150;
                     int sheetX = guiX + (guiWidth - sheetWidth) / 2;
@@ -244,11 +274,11 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
             addBaseWidget(
                     new InLineActionLabel(guiX+97, guiY+40+(finalIndex*13),
                     BoardElement.BoardElementType.byClass(element.getClass()).getComponentOfProperty(),
-                    rgb(ColorsManager.PRIMARY),
+                    isTheMainBg(finalIndex) ? rgb(SECONDARY) :  rgb(PRIMARY),
                     true,
-                    be.elements.size() > 1 ? List.of(
+                    !isTheMainBg(finalIndex) ? List.of(
                             new AdvancedButton(0, 0, 0, 0, SpritesManager.ICON_TRASHCAN, safeToRenderTooltips() ? new NoticeBoxTooltip(Component.translatable("gui.moretraffic.signboard.element.delete")): null, true, a->{
-                                be.elements.remove(element);
+                                if (finalIndex < be.elements.size()) be.elements.remove(element);
                                 updateBEAndRefreshBE();
                             }),
                             new AdvancedButton(0, 0, 0, 0, SpritesManager.MOVE, safeToRenderTooltips() ? new NoticeBoxTooltip(Component.translatable("gui.moretraffic.signboard.element.move")) : null, true, a->{
@@ -256,6 +286,10 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
                                     Collections.swap(be.elements, finalIndex, finalIndex - 1);
                                     updateBEAndRefreshBE();
                                 }
+                            }),
+                            new AdvancedButton(0, 0, 0, 0, SpritesManager.EXPORT, safeToRenderTooltips() ? new NoticeBoxTooltip(Component.translatable("gui.moretraffic.signboard.element.duplicate")) : null, true, a->{
+                                be.elements.add(finalIndex, be.elements.get(finalIndex));
+                                updateBEAndRefreshBE();
                             })
                     ) : List.of(),
                     82, () -> {
@@ -271,7 +305,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
             index++;
         }
 
-        addBaseWidget(new AdvancedButton(guiX+10, guiY+139, 15, 15, SpritesManager.PLUS, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.signboard.plus")), true, b->{
+        addBaseWidget(new AdvancedButton(guiX+51, guiY+139, 15, 15, SpritesManager.PLUS, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.signboard.plus")), true, b->{
             int sheetWidth = 150;
             int sheetHeight = 130;
 
@@ -288,7 +322,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
                                 if (property.equals(BoardElement.BoardElementType.SPRITE)) continue;
                                 adder.accept(new AdvancedButton(10, offsetY, 130, NORMAL_HEIGHT, property.getComponentOfProperty(), new NoticeBoxTooltip(property.getComponentOfProperty()), b -> {
                                     if (be.elements.size() > 6) return;
-                                    be.elements.add((BoardElement) property.defaultValue);
+                                    be.elements.addFirst((BoardElement) property.defaultValue);
                                     updateBEAndRefreshBE();
                                     onClose();
                                 }));
@@ -300,7 +334,138 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
             );
         }));
 
+        addBaseWidget(new AdvancedButton(guiX+10, guiY+139, 15, 15, SpritesManager.IMPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.import")), true, b->{
 
+            int sheetWidth = 180;
+            int sheetHeight = 90;
+
+            int sheetX = guiX + (guiWidth - sheetWidth) / 2;
+            int sheetY = guiY + (guiHeight - sheetHeight) / 2;
+
+            this.addScreenSheet(
+                    new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.import").getString(), true, sheetWidth, sheetHeight) {
+
+                        @Override
+                        public void init(Consumer<AbstractWidget> adder) {
+
+                            String clipboard = Minecraft.getInstance().keyboardHandler.getClipboard();
+
+                            boolean validClipboardContents = false;
+                            CompoundTag tagToSave = new CompoundTag();
+
+                            if (!clipboard.isBlank()) {
+                                try {
+
+                                    CompoundTag parsed = TagParser.parseTag(clipboard);
+
+                                    be.saveAdditional(tagToSave, Minecraft.getInstance().level.registryAccess());
+
+                                    if (parsed.contains("elements")) {
+                                        tagToSave.put("elements", parsed.get("elements").copy());
+                                    }
+
+                                    //everything finished without throwing
+                                    validClipboardContents = true;
+
+                                } catch (Exception e) {
+                                    validClipboardContents = false;
+                                }
+                            }
+
+                            var buttonSuccess = new AdvancedButton(10, 25, 160, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.import.from_clipboard"), null, null, b -> {
+                                if (!tagToSave.isEmpty()) {
+                                    be.loadAdditional(tagToSave, Minecraft.getInstance().level.registryAccess());
+                                    updateBEAndRefreshBE();
+                                    onClose();
+                                }
+                            });
+
+                            if (validClipboardContents && (!tagToSave.isEmpty())) {
+                                adder.accept(buttonSuccess);
+                            } else {
+                                int offset = 23;
+                                for (Component component : cutTextComponent(Component.translatable("gui.moretraffic.import_invalid_data"), 0, 170, true)) {
+                                    adder.accept(new LabelWidget(align(CENTER, component, sheetWidth/2), offset, component, rgb(ERROR), true));
+                                    offset += 10;
+                                }
+                            }
+                        }
+                    });
+
+        }));
+        addBaseWidget(new AdvancedButton(guiX+26, guiY+139, 15, 15, SpritesManager.EXPORT, new NoticeBoxTooltip(Component.translatable("gui.moretraffic.control_cabinet.export")), true, b->{
+
+            int sheetWidth = 180;
+            int sheetHeight = 90;
+
+            int sheetX = guiX + (guiWidth - sheetWidth) / 2;
+            int sheetY = guiY + (guiHeight - sheetHeight) / 2;
+
+            this.addScreenSheet(
+                    new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.control_cabinet.export").getString(), true, sheetWidth, sheetHeight) {
+
+                        AdvancedButton button;
+
+                        @Override
+                        public void init(Consumer<AbstractWidget> adder) {
+
+                            adder.accept(new LabelWidget(10, 25, Component.translatable("gui.moretraffic.signboard.export_all"), rgb(SECONDARY), true));
+
+                            button = new AdvancedButton(10, sheetHeight - 30, 100, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.export.to_clipboard"), null, null, b -> {
+                                CompoundTag exportTag = new CompoundTag();
+                                be.saveAdditional(exportTag, Minecraft.getInstance().level.registryAccess());
+
+                                CompoundTag toCopy = new CompoundTag();
+
+                                if (exportTag.contains("elements"))
+                                    toCopy.put("elements", exportTag.get("elements").copy());
+
+                                Minecraft.getInstance().keyboardHandler.setClipboard(toCopy.toString());
+                                onClose();
+                            });
+                            adder.accept(button);
+                        }
+
+                    });
+        }));
+
+
+    }
+
+    public void showOOBE(int indexToModify) { //def: be.elements.size()-1
+        if (be.firstPlace) {
+            be.firstPlace = false;
+            updateBEAndRefreshBE();
+        }
+
+        int sheetWidth = 150;
+        int sheetHeight = 160;
+
+        int sheetX = guiX + (guiWidth - sheetWidth) / 2;
+        int sheetY = guiY + (guiHeight - sheetHeight) / 2;
+
+//        if (!isTheMainBg(be.elements.size()-1)) return;
+
+        addScreenSheet(
+                new AbstractSheet(sheetX, sheetY, Component.translatable("gui.moretraffic.signboard_oobe.title").getString(), true, sheetWidth, sheetHeight) {
+                    @Override
+                    public void init(Consumer<AbstractWidget> adder) {
+                        int offsetY = 25;
+
+                        DyeColor currentColor = ((BoardElement.Background)(be.elements.get(indexToModify))).color;
+
+                        for (BoardElement.BoardSizes property : BoardElement.BoardSizes.values()) {
+                            adder.accept(new AdvancedButton(10, offsetY, 130, NORMAL_HEIGHT, Component.literal(property.sizeX + "x" + property.sizeY), new NoticeBoxTooltip(null), b -> {
+                                be.elements.set(indexToModify, new BoardElement.Background((16 - property.sizeX) / 2, (16 - property.sizeY) / 2, currentColor));
+                                updateBEAndRefreshBE();
+                                onClose();
+                            }));
+                            offsetY += 23;
+                        }
+
+                    }
+                }
+        );
     }
 
     private void updateBEAndRefreshBE() {
@@ -321,6 +486,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
     @Override
     protected void containerTick() {
+        if (OOBEVisible && safeToRenderTooltips()) onClose();
 
         if (queueRefresh) {
             MoreTraffic.LOGGER.debug("queuing ui refresh...");
@@ -339,26 +505,29 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(guiX -150, guiY +137, 10);
+        if (!OOBEVisible) {
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(guiX -150, guiY +137, 10);
 
-        BlockState model = be.getBlockState().setValue(SignboardBlock.FACING, Direction.SOUTH);
+            BlockState model = be.getBlockState().setValue(SignboardBlock.FACING, Direction.SOUTH);
 
-        float scale = 127f;
-        guiGraphics.pose().scale(scale, -scale, scale);
+            float scale = 127f;
+            guiGraphics.pose().scale(scale, -scale, scale);
 
-        BlockState originalBeBs = be.getBlockState();
-        be.setBlockState(model);
-        beDispatcher.render(be, 0f, guiGraphics.pose(), Minecraft.getInstance().renderBuffers().bufferSource());
-        be.setBlockState(originalBeBs);
+            BlockState originalBeBs = be.getBlockState();
+            be.setBlockState(model);
+            beDispatcher.render(be, 0f, guiGraphics.pose(), Minecraft.getInstance().renderBuffers().bufferSource());
+            be.setBlockState(originalBeBs);
 
-        guiGraphics.pose().popPose();
+            guiGraphics.pose().popPose();
+        }
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
+        if (OOBEVisible) return;
 
         ResourceLocation BG_TEXTURE =
                 ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/gui/signboard_gui.png");
@@ -374,6 +543,15 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
                 256, 256       // full texture size
         );
 
+    }
+
+    private boolean isTheMainBg(int index) {
+        for (int i = be.elements.size() - 1; i >= 0; i--) {
+            if (be.elements.get(i) instanceof BoardElement.Background) {
+                return (i == index);
+            }
+        }
+        throw new ArrayStoreException("Invalid array passed for arithmetic operation; does not contain Background"); // no background found
     }
 
     @Override

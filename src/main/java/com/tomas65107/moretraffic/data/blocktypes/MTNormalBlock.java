@@ -23,11 +23,11 @@ import static com.tomas65107.moretraffic.helpers.HelperFunctions.rotateShapeSpec
 
 public class MTNormalBlock extends Block implements ISimpleBlockProperties {
 
-    public final DirectionProperty INTERNAL_FACING;
-    public final VoxelShape INTERNAL_SHAPE; //DirectionalBlock or HorizontalDirectionalBlock
+    public final DirectionProperty INTERNAL_FACING; //DirectionalBlock or HorizontalDirectionalBlock
+    public final VoxelShape INTERNAL_SHAPE;
     public final Class<? extends DiggerItem> INTERNAL_DIGGER_ITEM;
 
-    public MTNormalBlock(@NotNull Properties properties, @NotNull DirectionProperty FACING, VoxelShape SHAPE, @NotNull Class<? extends DiggerItem> item) {
+    public MTNormalBlock(@NotNull Properties properties, DirectionProperty FACING, VoxelShape SHAPE, @NotNull Class<? extends DiggerItem> item) {
         super(properties);
         INTERNAL_FACING = FACING;
         INTERNAL_SHAPE = SHAPE;
@@ -50,9 +50,10 @@ public class MTNormalBlock extends Block implements ISimpleBlockProperties {
     }
 
     protected VoxelShape figureOutShapeRotation(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (INTERNAL_FACING == null) return INTERNAL_SHAPE;
         if (INTERNAL_FACING.equals(DirectionalBlock.FACING)) return rotateShapeSpecial(state.getValue(INTERNAL_FACING), INTERNAL_SHAPE);
         if (INTERNAL_FACING.equals(HorizontalDirectionalBlock.FACING)) return rotateShape(state.getValue(INTERNAL_FACING), INTERNAL_SHAPE);
-        throw new IllegalArgumentException();
+        return INTERNAL_SHAPE;
     }
 
     @Override public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return figureOutShapeRotation(state, level, pos, context);}
@@ -60,11 +61,13 @@ public class MTNormalBlock extends Block implements ISimpleBlockProperties {
 
     @Override
     public @NotNull BlockState rotate(@NotNull BlockState pState, @NotNull Rotation pRotation) {
+        if (INTERNAL_FACING == null) return pState;
         return (BlockState)pState.setValue((DirectionProperty)INTERNAL_FACING, pRotation.rotate(pState.getValue((DirectionProperty)INTERNAL_FACING)));
     }
 
     @Override
     public @NotNull BlockState mirror(@NotNull BlockState pState, @NotNull Mirror pMirror) {
+        if (INTERNAL_FACING == null) return pState;
         return pState.rotate(pMirror.getRotation((Direction)pState.getValue((DirectionProperty)INTERNAL_FACING)));
     }
 }

@@ -3,21 +3,31 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.126'
     id 'idea'
-    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
+    id "me.modmuss50.mod-publish-plugin" version "2.1.1"
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def mod_version = "0.2.5-beta"
+def mod_version = "0.2.6-beta"
 
 def mod_changelog = """
-0.2.5-beta
-- Added signboards! Type and customize text and background. Still in development. Adding custom sprites is not fully finished.
-- Fixed SEVERE issue related to LED Strips failing to correctly save and worlds could not be saved.
-- Updated to neoforge 21.1.229
-- Code rebasing and rendering improvements
+### 0.2.6-beta
+> ⚠️ Important changes:
+> Recent update introduced changes regarding Signboard position. This may visually break some placed signboards.
+
+Added:
+- New Block "Exposed Concrete" with variants.
+- You can now copy and duplicate elements in Signboard
+
+Fixes and changes:
+- Signboards are now centered on block.
+- You can customize size of signboards' backgrounds and background must be a first element.
+- Finally changed all saving/mouse focusing issues.
+- Fixed issues with how Signboards render elements
+- Fixed a LED Strip bug that allowed you to place them fully out of block and prevent them from being broken.
+- Remade recipes so they are a little bit more reasonable.
 """
 
 version = mod_version
@@ -53,6 +63,8 @@ publishMods {
     curseforge {
         accessToken = providers.environmentVariable("CURSEFORGE_PAT")
         projectId = "1487775"
+        client = true
+        server = true
         minecraftVersions.add("1.21.1")
     }
 

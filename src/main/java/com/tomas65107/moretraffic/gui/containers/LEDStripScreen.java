@@ -122,7 +122,7 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
         offsettextbox.onSave(() -> {
             try {
                 int[] values = Arrays.stream(offsettextbox.getValue().split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray();
-                if (!((values[0] < 17) && (values[1] < 17))) throw new Exception();
+                if (!((values[0] < 16) && (values[1] < 16) && (values[0] > -16) && (values[1] > -16))) throw new Exception();
                 be.startPosX = values[0]; be.startPosY = values[1];
                 updateBEAndRefreshBE();
             } catch (Exception ignored) {}
@@ -130,13 +130,13 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
         offsettextbox.onChange(text -> {
             try {
                 int[] values = Arrays.stream(text.split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray();
-                if (!((values[0] < 17) && (values[1] < 17))) throw new Exception();
+                if (!((values[0] < 16) && (values[1] < 16) && (values[0] > -16) && (values[1] > -16))) throw new Exception();
 
                 offsettextbox.setTextColor(rgb(PRIMARY));
                 offsettextbox.hideFloatingTooltip();
             } catch (Exception e) {
                 offsettextbox.setTextColor(rgb(ERROR));
-                offsettextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Failed to get valid coordinates that are ..16"), NoticeBoxTooltip.TooltipType.ERROR));
+                offsettextbox.showFloatingTooltip(new NoticeBoxTooltip(Component.translatable("gui.moretraffic.error_saving"), Component.literal("Make sure the base size is inside a block"), NoticeBoxTooltip.TooltipType.ERROR));
             }
         });
         addBaseWidget(offsettextbox);

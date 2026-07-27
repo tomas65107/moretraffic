@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "   ",
-    "TTT",
-    " A "
+    " T ",
+    " C "
   ],
   "key": {
     "T": {
       "item": "trafficcraft:traffic_sign_post"
     },
-    "A": {
-      "tag": "c:plates/iron"
+    "C": {
+      "item": "trafficcraft:concrete"
     }
   },
   "result": {

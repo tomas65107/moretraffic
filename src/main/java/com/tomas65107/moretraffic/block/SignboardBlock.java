@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
@@ -41,6 +42,23 @@ public class SignboardBlock extends MTNormalBlock implements IWrenchable, Entity
 
     public SignboardBlock(@NotNull Properties properties) {
         super(ISimpleBlockProperties.set(properties, SoundType.BASALT, MapColor.NONE, Material.MODEL_NORMAL), FACING, SIGNBOARD, PickaxeItem.class);
+    }
+
+    @Override
+    public void setPlacedBy(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            LivingEntity placer,
+            ItemStack stack
+    ) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+
+        if (!level.isClientSide && placer instanceof ServerPlayer serverPlayer) {
+            serverPlayer.openMenu(new SimpleMenuProvider(
+                    (id, inventory, p) -> new SignboardMenu(id, inventory, pos), Component.empty()
+            ), buf -> buf.writeBlockPos(pos));
+        }
     }
 
     @Override

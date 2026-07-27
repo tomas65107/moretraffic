@@ -43,6 +43,21 @@ public abstract class BoardElement {
         };
     }
 
+    public enum BoardSizes {
+        TINY(4, 4),
+        SMALL(8, 6),
+        MEDIUM(12, 10),
+        FULL(16, 16);
+
+        public final int sizeX;
+        public final int sizeY;
+
+        BoardSizes(int sizeX, int sizeY) {
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+        }
+    }
+
     public enum BoardElementType {
         TEXT("Text", Text.class, new Text(0, 0, "", 3)),
         BACKGROUND("Background", Background.class, new Background(0,0, DyeColor.WHITE)),
@@ -191,13 +206,18 @@ public abstract class BoardElement {
 
         @Override
         public void render(BERGraphics<? extends BlockEntity> graphics) {
-            graphics.poseStack().translate(startX, startY, 0);
+            float width = 16f - startX;
+            float height = 16f - startY;
+
+            graphics.poseStack().translate(startX / 2f, -startY / 2f, 0);
+
             LegacyCube light = LegacyCube.cube(
                     ResourceLocation.fromNamespaceAndPath("moretraffic", "textures/block/light_on_solid.png"),
-                    16, 16f, 0f,
-                    dir -> dir.equals(Direction.SOUTH) || dir.equals(Direction.NORTH),
-                    dir -> Pair.of(new Vec2(0f,0f), new Vec2(1f,1f))
+                    width, height, 0f,
+                    dir -> dir == Direction.SOUTH || dir == Direction.NORTH,
+                    dir -> Pair.of(new Vec2(0f, 0f), new Vec2(1f, 1f))
             );
+
             light.setLight(NOT_EMISSIVE);
             light.setTint(getBoostedTint(color));
             light.render(graphics);

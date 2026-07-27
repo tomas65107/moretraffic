@@ -136,6 +136,13 @@ public class MTRegistrate {
             .build()
             .register();
 
+    public static final BlockEntry<ExposedConcrete> EXPOSED_CONCRETE = REGISTRATE
+            .block("exposed_concrete", ExposedConcrete::new)
+            .item()
+            .removeTab(CreativeModeTabs.SEARCH)
+            .build()
+            .register();
+
     public static final BlockEntry<LEDStripBlock> LEDSTRIP = REGISTRATE
             .block("led_light", LEDStripBlock::new)
             .item()

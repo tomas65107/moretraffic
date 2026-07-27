@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "p",
+    "i"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "i": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "result": {
+    "id": "moretraffic:signboard",
+    "count": 1
+  }
+}

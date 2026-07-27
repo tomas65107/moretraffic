@@ -26,6 +26,7 @@ public class CreativeTab {
                         output.accept(DERAILER.get().asItem().getDefaultInstance());
                         output.accept(SIGNSBOARD.get().asItem().getDefaultInstance());
 
+                        output.accept(EXPOSED_CONCRETE.get().asItem().getDefaultInstance());
                         output.accept(BALLAST_GRAY.get().asItem().getDefaultInstance());
                         output.accept(BALLAST_BROWN.get().asItem().getDefaultInstance());
                         output.accept(TRAFFIC_PILLAR.get().asItem().getDefaultInstance());

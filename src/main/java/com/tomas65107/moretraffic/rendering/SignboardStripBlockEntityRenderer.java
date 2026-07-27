@@ -17,12 +17,12 @@ public class SignboardStripBlockEntityRenderer extends RotatableAllBlockEntityRe
         SignboardBlockEntity be = graphics.blockEntity();
 
         graphics.poseStack().pushPose();
-        graphics.poseStack().translate(0, 15.8, 0.15);
+        graphics.poseStack().translate(0, 15.8, 0.2);
 
         if (be.elements != null) {
             for (int i = be.elements.size() - 1; i >= 0; i--) {
                 graphics.poseStack().pushPose();
-                graphics.poseStack().translate(0, 0, -i*0.05);
+                graphics.poseStack().translate(0, 0, -i*0.02);
                 be.elements.get(i).render(graphics);
                 graphics.poseStack().popPose();
             }

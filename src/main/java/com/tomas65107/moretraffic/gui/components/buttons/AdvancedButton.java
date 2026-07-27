@@ -50,7 +50,7 @@ public class AdvancedButton extends Button {
         if (!hideBackgroundButton) {
             super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
         }
-        if (pictogram != null && hideBackgroundButton) {
+        if (pictogram != null && (component == null || component.equals(Component.empty()))) {
             int centerX = getX() + getWidth() / 2 - 8;
             int centerY = getY() + getHeight() / 2 - 8;
             float spriteScale = 0.8f; // half-size

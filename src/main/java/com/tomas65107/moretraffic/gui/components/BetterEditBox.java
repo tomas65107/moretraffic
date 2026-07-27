@@ -56,6 +56,12 @@ public class BetterEditBox extends EditBox {
             guiGraphics.renderTooltip(Minecraft.getInstance().font, List.of(Component.empty()), Optional.of(floatingTooltip), ItemStack.EMPTY, getX()-9, getY() + getHeight() + 18);
         }
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+
+//        var original = Minecraft.getInstance().screen.getFocused();
+//        if (original instanceof PriorityWidget<?> p) original = p.getOriginal();
+//        if (original instanceof BetterEditBox focusingBox) {
+//            System.out.println(focusingBox.getValue());
+//        }
     }
 
     @Override
@@ -72,6 +78,8 @@ public class BetterEditBox extends EditBox {
             if (!child.equals(Optional.empty())) {
                 final GuiEventListener[] original = {child.get()};
                 if (original[0] instanceof PriorityWidget<?> p) original[0] = p.getOriginal();
+
+                // If the newly clicked element is a bettereditbox
                 if (original[0] instanceof BetterEditBox focusingBox) {
                     if (focusingBox.focusLock || focusLock) return;
 
@@ -83,52 +91,24 @@ public class BetterEditBox extends EditBox {
                             focusingBox.focusLock = false;
                         }
                     });
+                } else {
+                    if (onSaveCode != null) onSaveCode.run();
                 }
+            } else {
+                if (onSaveCode != null) onSaveCode.run();
             }
         } else {
             super.setFocused(true);
         }
     }
 
-    //
-//    @Override
-//    public void setFocused(boolean focused) {
-//        super.setFocused(focused);
-
-//        if (!focused) {
-//            Minecraft mc = Minecraft.getInstance();
-//            double guiMouseX = mc.mouseHandler.xpos() * mc.getWindow().getGuiScaledWidth() / mc.getWindow().getScreenWidth();
-//            double guiMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
-//
-//            assert Minecraft.getInstance().screen != null;
-//            var child = Minecraft.getInstance().screen.getChildAt(guiMouseX, guiMouseY);
-//            if (child.isPresent()) {
-//                var original = child.get();
-//                if (original instanceof PriorityWidget<?> p) original = p.getOriginal();
-//                if (original instanceof BetterEditBox box) {
-//                    if (!focusLock) {
-////                        if (onSaveCode != null) onSaveCode.run();
-//                        MoreTraffic.LOGGER.info("RAN ON SAVE CODE");
-//                        box.focusLock = true;
-//                        super.setFocused(focused);
-//
-//                        ClientScheduler.runLater(5, () -> {
-//                            if (box != null) {
-//                                MoreTraffic.LOGGER.info("wanting to focus " + box.getValue());
-//                                Minecraft.getInstance().screen.setFocused(box);
-//                            }
-////                            ClientScheduler.runLater(6, () -> box.focusLock = false);
-//                        });
-//                    }
-//                }
-//            }
-//        } else super.setFocused(focused);
-//    }
-
     @Override
     protected boolean clicked(double mouseX, double mouseY) {
-        if (!(this.isMouseOver(mouseX, mouseY)) && isFocused()) {
-            setFocused(false);
+        if (isActive()) {
+            if (!(isMouseOver(mouseX, mouseY))) {
+                Minecraft.getInstance().screen.setFocused(null);
+                return false;
+            }
         }
         return super.clicked(mouseX, mouseY);
     }
@@ -136,28 +116,8 @@ public class BetterEditBox extends EditBox {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
-            setFocused(false);
+            Minecraft.getInstance().screen.setFocused(null);
             return true;
-        }
-        if (keyCode == GLFW.GLFW_KEY_X) {
-            Minecraft mc = Minecraft.getInstance();
-            double guiMouseX = mc.mouseHandler.xpos() * mc.getWindow().getGuiScaledWidth() / mc.getWindow().getScreenWidth();
-            double guiMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
-
-            assert Minecraft.getInstance().screen != null;
-            var child = Minecraft.getInstance().screen.getChildAt(guiMouseX, guiMouseY);
-            if (child.isPresent()) {
-                var original = child.get();
-                if (original instanceof PriorityWidget<?> p) original = p.getOriginal();
-                if (original instanceof BetterEditBox box) {
-                    ClientScheduler.runLater(5, () -> {
-                        if (box != null) {
-                            Minecraft.getInstance().screen.setFocused(child.orElseThrow());
-                            box.focusLock = false;
-                        }
-                    });
-                }
-            }
         }
         if (keyCode == GLFW.GLFW_KEY_E) return true;
         return super.keyPressed(keyCode, scanCode, modifiers);

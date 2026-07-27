@@ -24,12 +24,14 @@ import java.util.List;
 public class SignboardBlockEntity extends BlockEntity implements MenuProvider {
 
     public List<BoardElement> elements;
+    public boolean firstPlace;
 
     public SignboardBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
 
         elements = new ArrayList<>();
         elements.add(new BoardElement.Background(0, 0, DyeColor.WHITE));
+        firstPlace = true;
     }
 
     @Override
@@ -46,6 +48,7 @@ public class SignboardBlockEntity extends BlockEntity implements MenuProvider {
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
 
+        firstPlace = tag.getBoolean("firstPlace");
         elements = new ArrayList<>();
 
         CompoundTag elementsTag = tag.getCompound("elements");
@@ -71,6 +74,7 @@ public class SignboardBlockEntity extends BlockEntity implements MenuProvider {
         }
 
         tag.put("elements", elementsTag);
+        tag.putBoolean("firstPlace", firstPlace);
     }
 
     @Override
