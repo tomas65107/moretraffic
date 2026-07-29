@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.rendering;
 
+import static com.tomas65107.moretraffic.helpers.ColorHelper.textureDiffuseColor;
+
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlock;
 import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
 import com.tomas65107.moretraffic.data.TrafficLightLight;
@@ -80,10 +82,10 @@ public class TrafficLightBlockEntityRenderer extends RotatableBlockEntityRendere
     }
 
     public static int getBoostedTint(DyeColor dyeColor) {
-        if (dyeColor == DyeColor.BLACK) {return DyeColor.BLACK.getTextureDiffuseColor();}
-        if (dyeColor == DyeColor.GRAY || dyeColor == DyeColor.LIGHT_GRAY) {return dyeColor.getTextureDiffuseColor();}
+        if (dyeColor == DyeColor.BLACK) {return textureDiffuseColor(DyeColor.BLACK);}
+        if (dyeColor == DyeColor.GRAY || dyeColor == DyeColor.LIGHT_GRAY) {return textureDiffuseColor(dyeColor);}
 
-        int color = dyeColor.getTextureDiffuseColor();
+        int color = textureDiffuseColor(dyeColor);
 
         // extract RGB in 0..1
         float r = ((color >> 16) & 0xFF) / 255f;

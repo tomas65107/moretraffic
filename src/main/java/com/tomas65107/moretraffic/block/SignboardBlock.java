@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.block;
 
+import net.minecraftforge.network.NetworkHooks;
+
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.data.blocktypes.MTNormalBlock;
@@ -10,7 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -55,23 +57,24 @@ public class SignboardBlock extends MTNormalBlock implements IWrenchable, Entity
         super.setPlacedBy(level, pos, state, placer, stack);
 
         if (!level.isClientSide && placer instanceof ServerPlayer serverPlayer) {
-            serverPlayer.openMenu(new SimpleMenuProvider(
+            NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
                     (id, inventory, p) -> new SignboardMenu(id, inventory, pos), Component.empty()
             ), buf -> buf.writeBlockPos(pos));
         }
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem) {
             if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.openMenu(new SimpleMenuProvider(
+                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
                         (id, inventory, p) -> new SignboardMenu(id, inventory, pos), Component.empty()
                 ), buf -> buf.writeBlockPos(pos));
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return super.use(state, level, pos, player, hand, hit);
     }
 
 

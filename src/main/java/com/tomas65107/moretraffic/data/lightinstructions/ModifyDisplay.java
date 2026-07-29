@@ -19,7 +19,9 @@ public record ModifyDisplay(String group, TrafficDisplayPixels trafficDisplayPix
 
     @Override
     public boolean executePayload(LightControlCabinetBlockEntity be, LightInstructionProperty instruction, Level level, BlockPos blockPos) {
-        if (instruction instanceof ModifyDisplay(String igroup, TrafficDisplayPixels displayPixels)) {
+        if (instruction instanceof ModifyDisplay modifyDisplay) {
+            String igroup = modifyDisplay.group();
+            TrafficDisplayPixels displayPixels = modifyDisplay.trafficDisplayPixels();
             List<BlockPos> blockPosList = new ArrayList<>();
             for (TrafficLightGroup group : be.groups) if (group.name.equals(igroup)) {blockPosList = new ArrayList<>(group.lightsPositions); break;}
             if (!blockPosList.isEmpty()) {

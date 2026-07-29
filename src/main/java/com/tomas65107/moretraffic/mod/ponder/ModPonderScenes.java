@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModPonderScenes {
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
         HELPER.forComponents(MTRegistrate.LIGHT_CONTROL_CABINET)
                 .addStoryBoard("cabinet_1", ControlCabinetScenes::scene1, AllCreatePonderTags.REDSTONE);

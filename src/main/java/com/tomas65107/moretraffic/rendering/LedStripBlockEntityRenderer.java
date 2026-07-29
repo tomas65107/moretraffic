@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.rendering;
 
+import static com.tomas65107.moretraffic.helpers.ColorHelper.textureDiffuseColor;
+
 import com.tomas65107.moretraffic.block.LEDStripBlockEntity;
 import com.tomas65107.moretraffic.rendering.helpers.LegacyCube;
 import com.tomas65107.moretraffic.rendering.helpers.RotatableAllBlockEntityRenderer;
@@ -44,7 +46,7 @@ public class LedStripBlockEntityRenderer extends RotatableAllBlockEntityRenderer
         graphics.poseStack().pushPose();
         graphics.poseStack().translate(be.startPosX, 16-be.startPosY - 0.2, 0 + 0.01);
         backplate.setLight(NOT_EMISSIVE);
-        backplate.setTint(DyeColor.BLACK.getTextureDiffuseColor());
+        backplate.setTint(textureDiffuseColor(DyeColor.BLACK));
         backplate.render(graphics);
         graphics.poseStack().popPose();
 

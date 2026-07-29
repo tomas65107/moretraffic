@@ -1,6 +1,5 @@
 package com.tomas65107.moretraffic.block;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.data.blocktypes.MTBaseColoredBlockEntity;
@@ -16,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -71,50 +69,43 @@ public class TrafficPillarBlock extends ColorableBlock implements ITrafficPostLi
         public String getSerializedName() { return stringRepresentableName; }
     }
 
-    public static final MapCodec<TrafficPillarBlock> CODEC = simpleCodec(TrafficPillarBlock::new);
-
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
     public static final EnumProperty<PillarTypes> TYPE = EnumProperty.create("type", PillarTypes.class);
 
     public TrafficPillarBlock(Properties properties) {
         super(ISimpleBlockProperties.set(properties, SoundType.STONE, MapColor.COLOR_LIGHT_GRAY, ISimpleBlockProperties.Material.MODEL_TOUGH));
     }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
+@Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new MTBaseColoredBlockEntity(MTRegistrate.BASE_COLORED_BE.get(), blockPos, blockState);
     }
 
     @Override
-    protected @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
+    public @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
         return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 
     @Override
-    public @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem) {
             var newState = state.cycle(TYPE);
             if (newState.getValue(TYPE).equals(PillarTypes.L_BEAM)) newState = newState.cycle(TYPE);
             level.setBlock(pos, newState, 3);
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
         if (stack.getItem().equals(MTRegistrate.TRAFFIC_PILLAR.asItem())) {
-            if (state.getValue(TYPE).equals(PillarTypes.L_BEAM)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            if (state.getValue(TYPE).equals(PillarTypes.L_BEAM)) return useDefaultInteraction(state, level, pos, player, hand, hit);
             MoreTraffic.LOGGER.debug(hit.getDirection().getName());
 
             if (state.getValue(FACING).equals(Direction.UP) || state.getValue(FACING).equals(Direction.DOWN)) {
                 //model upright
                 switch (hit.getDirection()) {
-                    case UP, DOWN -> {return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;}}
+                    case UP, DOWN -> {return useDefaultInteraction(state, level, pos, player, hand, hit);}}
             } else {
                 //model flat
                 switch (hit.getDirection()) {
-                    case SOUTH, EAST, WEST, NORTH, UP -> {return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;}
+                    case SOUTH, EAST, WEST, NORTH, UP -> {return useDefaultInteraction(state, level, pos, player, hand, hit);}
                 }
             }
 
@@ -122,7 +113,7 @@ public class TrafficPillarBlock extends ColorableBlock implements ITrafficPostLi
             state = state.setValue(TYPE, PillarTypes.L_BEAM);
             level.setBlock(pos, state, 3);
 
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
         if (stack.getItem().equals(BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("trafficcraft", "traffic_sign_post")).asItem())) {
             if (hit.getDirection().equals(Direction.UP) && state.getValue(FACING).equals(Direction.DOWN)) {
@@ -130,17 +121,16 @@ public class TrafficPillarBlock extends ColorableBlock implements ITrafficPostLi
             }
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return useDefaultInteraction(state, level, pos, player, hand, hit);
     }
 
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    private InteractionResult useDefaultInteraction(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (player.isShiftKeyDown()) {
             level.setBlock(pos, state.setValue(FACING, state.getValue(FACING).getOpposite()), 3);
             return InteractionResult.SUCCESS;
         }
 
-        return super.useWithoutItem(state, level, pos, player, hitResult);
+        return super.use(state, level, pos, player, hand, hitResult);
     }
 
     @Override

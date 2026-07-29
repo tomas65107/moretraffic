@@ -5,7 +5,6 @@ import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
 import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import de.mrjulsen.trafficcraft.block.entity.ColoredBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -65,8 +64,8 @@ public class AdvancedTrafficLightBlockEntity extends ColoredBlockEntity implemen
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookup) {
-        super.loadAdditional(tag, lookup);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
         for (int i = 0; i < this.lights.size(); i++) {
             if (tag.contains("LightColor_" + i)) {
@@ -79,8 +78,8 @@ public class AdvancedTrafficLightBlockEntity extends ColoredBlockEntity implemen
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookup) {
-        super.saveAdditional(tag, lookup);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
         for (int i = 0; i < lights.size(); i++) {
             tag.putString("LightColor_" + i, lights.get(i).color.getName());
@@ -91,9 +90,9 @@ public class AdvancedTrafficLightBlockEntity extends ColoredBlockEntity implemen
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider lookup) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, lookup);
+        saveAdditional(tag);
         return tag;
     }
 
@@ -104,9 +103,9 @@ public class AdvancedTrafficLightBlockEntity extends ColoredBlockEntity implemen
     }
 
     @Override
-    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookup) {
-        super.onDataPacket(connection, packet, lookup);
-        this.loadAdditional(packet.getTag(), lookup);
+    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet) {
+        super.onDataPacket(connection, packet);
+        this.load(packet.getTag());
     }
 
     @Override

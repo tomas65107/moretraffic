@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.gui;
 
+import static com.tomas65107.moretraffic.helpers.ColorHelper.textureDiffuseColor;
+
 import com.tomas65107.moretraffic.data.AbstractSheet;
 import com.tomas65107.moretraffic.gui.components.BetterEditBox;
 import com.tomas65107.moretraffic.gui.components.CustomRenderAsWidget;
@@ -98,7 +100,7 @@ abstract public class AbstractTomiContainerScreen<T extends AbstractContainerMen
 
             if (sheetContainer.showDoneButton) {
                 addSheetWidget(
-                        Button.builder(Component.translatable("gui.moretraffic.close").withColor(DyeColor.LIME.getTextureDiffuseColor()),
+                        Button.builder(Component.translatable("gui.moretraffic.close").withStyle(style -> style.withColor(textureDiffuseColor(DyeColor.LIME))),
                                 b -> onClose()
                         ).bounds(sheetContainer.x + sheetContainer.width - 60, sheetContainer.y + sheetContainer.height - 30, 50, 20).build()
                 );

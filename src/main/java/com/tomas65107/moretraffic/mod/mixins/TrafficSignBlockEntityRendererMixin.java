@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.mod.mixins;
 
+import com.tomas65107.moretraffic.integration.TrafficSignBlockEntityExtension;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -25,7 +27,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,6 +38,7 @@ public class TrafficSignBlockEntityRendererMixin {
 
     @Inject(
             method = "renderBlock",
+            remap = false,
             at = @At("HEAD")
     )
     private void moretraffic$renderExtraModel(BERGraphics<TrafficSignBlockEntity> graphics, float partialTick, CallbackInfo ci) {
@@ -43,7 +46,7 @@ public class TrafficSignBlockEntityRendererMixin {
         if (entity == null || entity.getLevel() == null) return;
         BlockState state = entity.getBlockState();
 
-        float offset = ((TrafficSignBlockEntityMixinAccessor)(Object) entity).moretraffic$getVisualOffset();
+        float offset = ((TrafficSignBlockEntityExtension)(Object) entity).moretraffic$getVisualOffset();
 
         graphics.poseStack().translate(0, 0, offset);
 

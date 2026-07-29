@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.helpers;
 
+import net.minecraft.world.item.DyeColor;
+
 import java.awt.*;
 
 public final class ColorHelper {
@@ -49,4 +51,12 @@ public final class ColorHelper {
         return (alpha << 24) | (color & 0x00FFFFFF);
     }
 
+    public static int textureDiffuseColor(DyeColor color) {
+        float[] components = color.getTextureDiffuseColors();
+        return rgb(
+                Math.round(components[0] * 255.0F),
+                Math.round(components[1] * 255.0F),
+                Math.round(components[2] * 255.0F)
+        );
+    }
 }

@@ -89,7 +89,7 @@ public class DerailerBlockEntity extends SmartBlockEntity implements Transformab
                         if (!train.derailed) {
                             train.derailed = true;
                             train.graph = null;
-                            train.status.addMessage(new TrainStatus.StatusMessage(Component.literal(" - ").withStyle(ChatFormatting.GRAY).append(Component.translatable("interaction.moretraffic.derailment").withColor(16765876))));
+                            train.status.addMessage(new TrainStatus.StatusMessage(Component.literal(" - ").withStyle(ChatFormatting.GRAY).append(Component.translatable("interaction.moretraffic.derailment").withStyle(style -> style.withColor(16765876)))));
                         }
                     }
                     return;

@@ -2,7 +2,6 @@ package com.tomas65107.moretraffic.block;
 
 import com.tomas65107.moretraffic.data.TrafficDisplayPixels;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -28,21 +27,21 @@ public class TrafficDisplayBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         if (tag.contains("DisplayPixels")) pixelMask = deserialize(tag.getString("DisplayPixels"));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putString("DisplayPixels", pixelMask.serialize());
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider lookup) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, lookup);
+        saveAdditional(tag);
         return tag;
     }
 
@@ -53,9 +52,9 @@ public class TrafficDisplayBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookup) {
-        super.onDataPacket(connection, packet, lookup);
-        this.loadAdditional(packet.getTag(), lookup);
+    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet) {
+        super.onDataPacket(connection, packet);
+        this.load(packet.getTag());
     }
 
 

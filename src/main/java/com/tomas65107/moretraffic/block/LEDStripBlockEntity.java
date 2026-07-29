@@ -1,7 +1,6 @@
 package com.tomas65107.moretraffic.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -41,8 +40,8 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
         startPosX = tag.getInt("StartPosX");
         startPosY = tag.getInt("StartPosY");
@@ -53,8 +52,8 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
         tag.putInt("StartPosX", startPosX);
         tag.putInt("StartPosY", startPosY);
@@ -79,9 +78,9 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider lookup) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, lookup);
+        saveAdditional(tag);
         return tag;
     }
 
@@ -92,9 +91,9 @@ public class LEDStripBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookup) {
-        super.onDataPacket(connection, packet, lookup);
-        this.loadAdditional(packet.getTag(), lookup);
+    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet) {
+        super.onDataPacket(connection, packet);
+        this.load(packet.getTag());
     }
 
     @Override

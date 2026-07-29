@@ -35,7 +35,7 @@ public class MTNormalBlock extends Block implements ISimpleBlockProperties {
     }
 
     @Override
-    protected @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LootParams.@NotNull Builder params) {
+    public @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LootParams.@NotNull Builder params) {
         return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 

@@ -1,7 +1,6 @@
 package com.tomas65107.moretraffic.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -16,9 +15,9 @@ public class FloodlightBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider lookup) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, lookup);
+        saveAdditional(tag);
         return tag;
     }
 
@@ -29,8 +28,8 @@ public class FloodlightBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookup) {
-        super.onDataPacket(connection, packet, lookup);
-        this.loadAdditional(packet.getTag(), lookup);
+    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet) {
+        super.onDataPacket(connection, packet);
+        this.load(packet.getTag());
     }
 }

@@ -17,15 +17,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 
 import java.util.Objects;
 
-@EventBusSubscriber(modid = MoreTraffic.MODID)
+@Mod.EventBusSubscriber(modid = MoreTraffic.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class MoreTrafficServer {
 
     @SubscribeEvent
@@ -44,13 +44,13 @@ public class MoreTrafficServer {
                 if (state.hasProperty(AdvancedTrafficLightBlock.FACING)) oldFacing = state.getValue(AdvancedTrafficLightBlock.FACING);
 
                 CompoundTag tag = null;
-                if (level.getBlockEntity(pos) != null) tag = Objects.requireNonNull(level.getBlockEntity(pos)).saveWithoutMetadata(level.registryAccess());
+                if (level.getBlockEntity(pos) != null) tag = Objects.requireNonNull(level.getBlockEntity(pos)).saveWithoutMetadata();
 
                 boolean shouldApplyBe = false;
 
                 if (player.isShiftKeyDown()) {
-                    if (!(player.getMainHandItem().getItem() instanceof WrenchItem)) return;
-                    if (!(player.getMainHandItem().getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem)) return;
+                    if (!(player.getMainHandItem().getItem() instanceof WrenchItem)
+                            && !(player.getMainHandItem().getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem)) return;
 
                     if (state.getBlock() == MTRegistrate.ADV_1_TRAFFIC_LIGHT.get()) {
                         newState = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("trafficcraft", "traffic_sign_post")).defaultBlockState();
@@ -65,7 +65,7 @@ public class MoreTrafficServer {
                     if (!player.getAbilities().instabuild) player.addItem(MTRegistrate.LIGHT_DIODE.asStack());
 
                 } else {
-                    if (!(player.getMainHandItem().is(MTRegistrate.LIGHT_DIODE))) return;
+                    if (!(player.getMainHandItem().is(MTRegistrate.LIGHT_DIODE.asItem()))) return;
 
                     if (state.getBlock() instanceof TrafficSignPostBlock) {
                         newState = MTRegistrate.ADV_1_TRAFFIC_LIGHT.get().defaultBlockState().setValue(AdvancedTrafficLightBlock.FACING, player.getDirection().getOpposite());
@@ -84,7 +84,7 @@ public class MoreTrafficServer {
                 if (tag != null && shouldApplyBe) {
                     BlockEntity newBe = level.getBlockEntity(pos);
                     if (newBe != null) {
-                        newBe.loadWithComponents(tag, level.registryAccess());
+                        newBe.load(tag);
                         newBe.setChanged();
                     }
                 }

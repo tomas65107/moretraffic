@@ -11,9 +11,9 @@ public final class TextHelper {
 
     public static Component buttonEnabled(boolean buttonEnabled) {
         if (buttonEnabled) {
-            return Component.translatable("gui.createinterlinked.option_set").withColor(TERTIARY.getRGB()).withStyle(ChatFormatting.ITALIC);
+            return Component.translatable("gui.createinterlinked.option_set").withStyle(style -> style.withColor(TERTIARY.getRGB())).withStyle(ChatFormatting.ITALIC);
         } else {
-            return Component.translatable("gui.createinterlinked.option_not_set").withColor(TERTIARY.getRGB()).withStyle(ChatFormatting.ITALIC);
+            return Component.translatable("gui.createinterlinked.option_not_set").withStyle(style -> style.withColor(TERTIARY.getRGB())).withStyle(ChatFormatting.ITALIC);
         }
     }
 

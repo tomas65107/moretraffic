@@ -3,13 +3,13 @@
   "minVersion": "0.8",
   "package": "com.tomas65107.moretraffic.mod.mixins",
   "compatibilityLevel": "JAVA_17",
+  "refmap": "moretraffic.refmap.json",
   "client": [
-//    "TrafficSignBlockEntityRendererMixin",
-//    "TrafficSignBlockMixin"
+    "TrafficSignBlockEntityRendererMixin",
+    "TrafficSignBlockMixin"
   ],
   "mixins": [
-//    "TrafficSignBlockEntityMixin",
-//    "TrafficSignBlockEntityMixinAccessor"
+    "TrafficSignBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

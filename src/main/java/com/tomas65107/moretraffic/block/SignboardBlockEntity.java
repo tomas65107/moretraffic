@@ -2,7 +2,6 @@ package com.tomas65107.moretraffic.block;
 
 import com.tomas65107.moretraffic.data.BoardElement;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -36,7 +35,7 @@ public class SignboardBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return null;
+        return Component.empty();
     }
 
     @Override
@@ -45,8 +44,8 @@ public class SignboardBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
         firstPlace = tag.getBoolean("firstPlace");
         elements = new ArrayList<>();
@@ -57,13 +56,13 @@ public class SignboardBlockEntity extends BlockEntity implements MenuProvider {
         keys.sort(Comparator.comparingInt(Integer::parseInt));
 
         for (String key : keys) {
-            elements.add(BoardElement.deserialize(elementsTag.getCompound(key), registries));
+            elements.add(BoardElement.deserialize(elementsTag.getCompound(key)));
         }
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
         CompoundTag elementsTag = new CompoundTag();
 
@@ -78,9 +77,9 @@ public class SignboardBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider lookup) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, lookup);
+        saveAdditional(tag);
         return tag;
     }
 
@@ -91,8 +90,8 @@ public class SignboardBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookup) {
-        super.onDataPacket(connection, packet, lookup);
-        this.loadAdditional(packet.getTag(), lookup);
+    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet) {
+        super.onDataPacket(connection, packet);
+        this.load(packet.getTag());
     }
 }

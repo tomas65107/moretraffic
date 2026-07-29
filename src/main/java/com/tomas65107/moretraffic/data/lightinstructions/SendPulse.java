@@ -18,7 +18,9 @@ public record SendPulse(String group, boolean enable) implements LightInstructio
 
     @Override
     public boolean executePayload(LightControlCabinetBlockEntity be, LightInstructionProperty instruction, Level level, BlockPos blockPos) {
-        if (instruction instanceof SendPulse(String igroup, boolean enable)) {
+        if (instruction instanceof SendPulse sendPulse) {
+            String igroup = sendPulse.group();
+            boolean enable = sendPulse.enable();
 
             List<BlockPos> blockPosList = new ArrayList<>();
             for (TrafficLightGroup group : be.groups) if (group.name.equals(igroup)) { blockPosList = new ArrayList<>(group.lightsPositions); break; }

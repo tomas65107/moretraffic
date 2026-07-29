@@ -1,6 +1,5 @@
 package com.tomas65107.moretraffic.block;
 
-import com.mojang.serialization.MapCodec;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import net.minecraft.core.BlockPos;
@@ -29,8 +28,6 @@ import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.traffic_di
 
 public class TrafficDisplayBlock extends Block implements EntityBlock {
 
-    public static final MapCodec<FlashingBlinkerBlock> CODEC = simpleCodec(FlashingBlinkerBlock::new);
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public TrafficDisplayBlock(Properties properties) {
@@ -39,7 +36,7 @@ public class TrafficDisplayBlock extends Block implements EntityBlock {
 
 
     @Override
-    protected @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
+    public @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
         return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 
@@ -78,11 +75,5 @@ public class TrafficDisplayBlock extends Block implements EntityBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new TrafficDisplayBlockEntity(MTRegistrate.TRAFFIC_DISPLAY_BE.get(), blockPos, blockState);
-    }
-
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 }
