@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.block;
 
+import net.minecraftforge.network.NetworkHooks;
+
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.gui.containers.LightControlCabinetMenu;
 import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
@@ -7,7 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -62,7 +64,7 @@ public class LightControlCabinetBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
+    public @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
         return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 
@@ -83,8 +85,7 @@ public class LightControlCabinetBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
-            ItemStack stack,
+    public InteractionResult use(
             BlockState state,
             Level level,
             BlockPos pos,
@@ -92,15 +93,16 @@ public class LightControlCabinetBlock extends Block implements EntityBlock {
             InteractionHand hand,
             BlockHitResult hit
     ) {
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem) {
             if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.openMenu(new SimpleMenuProvider(
+                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
                         (id, inventory, p) -> new LightControlCabinetMenu(id, inventory, pos), Component.empty()
                 ), buf -> buf.writeBlockPos(pos));
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return super.use(state, level, pos, player, hand, hit);
     }
 
     @Override

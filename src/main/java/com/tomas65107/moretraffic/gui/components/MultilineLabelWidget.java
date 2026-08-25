@@ -18,7 +18,7 @@ public class MultilineLabelWidget extends AbstractWidget {
 
         int offset = 0;
 //        for (Component component : cutTextComponent(text, 0, 180, true)) {
-//            adder.accept(new LabelWidget(10, offset, component.copy().withColor(rgb(SECONDARY)), rgb(PRIMARY), true));
+//            adder.accept(new LabelWidget(10, offset, component.copy().withStyle(style -> style.withColor(rgb(SECONDARY))), rgb(PRIMARY), true));
 //            offset += 10;
 //        }
     }

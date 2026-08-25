@@ -18,7 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.tomas65107.moretraffic.mod.registration.MTNetworking;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -129,7 +129,7 @@ public class ModelButton extends Button {
     @Override
     public void onPress() {
         if (isHovered && isCompatible) {
-            PacketDistributor.sendToServer(
+            MTNetworking.sendToServer(
                     new UpdateTrafficLightStatePacket(
                             be.getBlockPos(),
                             value.getClassType().getNameOfProperty(),

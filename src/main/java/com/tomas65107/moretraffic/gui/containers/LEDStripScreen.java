@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 import static com.tomas65107.moretraffic.data.ColorsManager.*;
 import static com.tomas65107.moretraffic.data.SpritesManager.INFO;
 import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
-import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;
+import static com.tomas65107.moretraffic.mod.registration.MTNetworking.sendToServer;
 
 public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
 
@@ -83,7 +83,7 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
         );
 
         addBaseWidget(
-                new LabelWidget(guiX+145, guiY+30, Component.translatable("gui.moretraffic.led_light.size").withColor(rgb(SECONDARY)), 0xFFFFFF, true)
+                new LabelWidget(guiX+145, guiY+30, Component.translatable("gui.moretraffic.led_light.size").withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true)
         );
         BetterEditBox sizetextbox = new BetterEditBox(guiX + 148, guiY + 43, 40, 14);
         sizetextbox.setBordered(false);
@@ -113,7 +113,7 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
 
 
         addBaseWidget(
-                new LabelWidget(guiX+145, guiY+76, Component.translatable("gui.moretraffic.led_light.startpos").withColor(rgb(SECONDARY)), 0xFFFFFF, true)
+                new LabelWidget(guiX+145, guiY+76, Component.translatable("gui.moretraffic.led_light.startpos").withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true)
         );
         BetterEditBox offsettextbox = new BetterEditBox(guiX + 148, guiY + 89, 40, 14);
         offsettextbox.setBordered(false);
@@ -186,7 +186,7 @@ public class LEDStripScreen extends AbstractTomiContainerScreen<LEDStripMenu> {
 
         // serialize BE state into NBT
         CompoundTag tag = new CompoundTag();
-        be.saveAdditional(tag, minecraft.level.registryAccess());
+        be.saveAdditional(tag);
 
         // create and send packet
         ClientSyncLightPacket packet = new ClientSyncLightPacket(be.getBlockPos(), tag);

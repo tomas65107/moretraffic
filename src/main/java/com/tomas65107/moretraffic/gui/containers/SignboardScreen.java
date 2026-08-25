@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.gui.containers;
 
+import static com.tomas65107.moretraffic.helpers.ColorHelper.textureDiffuseColor;
+
 import com.tomas65107.moretraffic.block.SignboardBlock;
 import com.tomas65107.moretraffic.block.SignboardBlockEntity;
 import com.tomas65107.moretraffic.data.AbstractSheet;
@@ -43,7 +45,7 @@ import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.helpers.TextCutter.cutTextComponent;
 import static com.tomas65107.moretraffic.helpers.TextHelper.Alignment.CENTER;
 import static com.tomas65107.moretraffic.helpers.TextHelper.align;
-import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;
+import static com.tomas65107.moretraffic.mod.registration.MTNetworking.sendToServer;
 
 public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> {
 
@@ -114,7 +116,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
             int YOffset = 30;
             var element = be.elements.get(focusedIndex.get());
 
-            addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.translatable("gui.moretraffic.led_light.startpos").withColor(rgb(SECONDARY)), 0xFFFFFF, true));
+            addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.translatable("gui.moretraffic.led_light.startpos").withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true));
             YOffset += 11;
 
             BetterEditBox startposbox = new NumberEditBox(guiX+10, guiY + YOffset);
@@ -157,9 +159,9 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
                 addBaseWidget(new AdvancedButton(guiX+58, guiY+40-2, 18, 18, null, SpritesManager.LIBRARY, new NoticeBoxTooltip(Component.literal("Show preset sizes (recommended)")), button -> showOOBE(focusedIndex.get())));
 
-                addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.literal("Color").withColor(rgb(SECONDARY)), 0xFFFFFF, true));
+                addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.literal("Color").withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true));
                 YOffset += 11;
-                addBaseWidget(new ColorButton(guiX+10, guiY+YOffset, 16, 16, ((BoardElement.Background) element).color.getTextureDiffuseColor(), b->{
+                addBaseWidget(new ColorButton(guiX+10, guiY+YOffset, 16, 16, textureDiffuseColor(((BoardElement.Background) element).color), b->{
                     int sheetWidth = 173;
                     int sheetHeight = 94;
                     int sheetX = guiX + (guiWidth - sheetWidth) / 2;
@@ -178,10 +180,10 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
             } else if (element instanceof BoardElement.Text) {
 
-                addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.literal("Text").withColor(rgb(SECONDARY)), 0xFFFFFF, true));
+                addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.literal("Text").withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true));
                 YOffset += 11;
 
-                addBaseWidget(new AdvancedButton(guiX+10, guiY+YOffset, 80, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.configure").withColor(rgb(HEADER)), SpritesManager.EDIT_DISPLAY, p->{
+                addBaseWidget(new AdvancedButton(guiX+10, guiY+YOffset, 80, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.configure").withStyle(style -> style.withColor(rgb(HEADER))), SpritesManager.EDIT_DISPLAY, p->{
                     int sheetWidth = 270;
                     int sheetHeight = 150;
                     int sheetX = guiX + (guiWidth - sheetWidth) / 2;
@@ -194,7 +196,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
                                     final int[] offset = {25};
                                     for (Component component : cutTextComponent(Component.literal("Type in here simple text by surrounding it with quotes or if you want more precise control over color and format, use JSON"), 0, 250, true)) {
-                                        adder.accept(new LabelWidget(10, offset[0], component.copy().withColor(rgb(SECONDARY)), rgb(PRIMARY), true));
+                                        adder.accept(new LabelWidget(10, offset[0], component.copy().withStyle(style -> style.withColor(rgb(SECONDARY))), rgb(PRIMARY), true));
                                         offset[0] += 10;
                                     }
                                     offset[0] += 3;
@@ -230,7 +232,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
                                 static String getJsonParseErrorMessage(String json) {
                                     try {
-                                        Component.Serializer.fromJson(json, Minecraft.getInstance().level.registryAccess());
+                                        Component.Serializer.fromJson(json);
                                         return null; // valid
                                     } catch (Exception e) {
                                         return e.getCause() != null ? e.getCause().getMessage() : e.getMessage(); // or custom friendly message
@@ -241,7 +243,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
                 }));
                 YOffset += 26;
 
-                addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.literal("Text Size").withColor(rgb(SECONDARY)), 0xFFFFFF, true));
+                addBaseWidget(new LabelWidget(guiX+10, guiY+YOffset, Component.literal("Text Size").withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true));
                 YOffset += 11;
                 var sizebox = new NumberEditBox(guiX+10, guiY+YOffset);
                 sizebox.setValue(String.valueOf(((BoardElement.Text) element).size));
@@ -322,7 +324,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
                                 if (property.equals(BoardElement.BoardElementType.SPRITE)) continue;
                                 adder.accept(new AdvancedButton(10, offsetY, 130, NORMAL_HEIGHT, property.getComponentOfProperty(), new NoticeBoxTooltip(property.getComponentOfProperty()), b -> {
                                     if (be.elements.size() > 6) return;
-                                    be.elements.addFirst((BoardElement) property.defaultValue);
+                                    be.elements.add(0, (BoardElement) property.defaultValue);
                                     updateBEAndRefreshBE();
                                     onClose();
                                 }));
@@ -358,7 +360,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
                                     CompoundTag parsed = TagParser.parseTag(clipboard);
 
-                                    be.saveAdditional(tagToSave, Minecraft.getInstance().level.registryAccess());
+                                    be.saveAdditional(tagToSave);
 
                                     if (parsed.contains("elements")) {
                                         tagToSave.put("elements", parsed.get("elements").copy());
@@ -374,7 +376,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
                             var buttonSuccess = new AdvancedButton(10, 25, 160, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.import.from_clipboard"), null, null, b -> {
                                 if (!tagToSave.isEmpty()) {
-                                    be.loadAdditional(tagToSave, Minecraft.getInstance().level.registryAccess());
+                                    be.load(tagToSave);
                                     updateBEAndRefreshBE();
                                     onClose();
                                 }
@@ -413,7 +415,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
                             button = new AdvancedButton(10, sheetHeight - 30, 100, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.export.to_clipboard"), null, null, b -> {
                                 CompoundTag exportTag = new CompoundTag();
-                                be.saveAdditional(exportTag, Minecraft.getInstance().level.registryAccess());
+                                be.saveAdditional(exportTag);
 
                                 CompoundTag toCopy = new CompoundTag();
 
@@ -474,7 +476,7 @@ public class SignboardScreen extends AbstractTomiContainerScreen<SignboardMenu> 
 
         // serialize BE state into NBT
         CompoundTag tag = new CompoundTag();
-        be.saveAdditional(tag, minecraft.level.registryAccess());
+        be.saveAdditional(tag);
 
         // create and send packet
         ClientSyncSignboard packet = new ClientSyncSignboard(be.getBlockPos(), tag);

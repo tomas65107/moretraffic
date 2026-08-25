@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.gui.components.buttons;
 
+import static com.tomas65107.moretraffic.helpers.ColorHelper.textureDiffuseColor;
+
 import com.tomas65107.moretraffic.data.ColorsManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -65,7 +67,7 @@ public class PixelButton extends Button {
                 (enabled ? rgb(ColorsManager.SECONDARY) : rgb(ColorsManager.TERTIARY))
                 : (enabled ? rgb(ColorsManager.PRIMARY) : rgb(ColorsManager.BACKGROUND));
 
-        if (color != null && enabled) bg = color.getTextureDiffuseColor();
+        if (color != null && enabled) bg = textureDiffuseColor(color);
 
         g.fill(getX(), getY(), getX() + width, getY() + height, bg);
 

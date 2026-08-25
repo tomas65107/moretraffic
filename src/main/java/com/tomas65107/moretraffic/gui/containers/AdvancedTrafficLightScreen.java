@@ -42,7 +42,7 @@ import static com.tomas65107.moretraffic.data.SpritesManager.INFO;
 import static com.tomas65107.moretraffic.helpers.ColorHelper.rgb;
 import static com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton.NORMAL_HEIGHT;
 import static com.tomas65107.moretraffic.networking.ClientSenderPacketTrafficLight.shortsToBytes;
-import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;
+import static com.tomas65107.moretraffic.mod.registration.MTNetworking.sendToServer;
 
 public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<AdvancedTrafficLightMenu> {
 
@@ -89,12 +89,12 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
             int finalIndex = index;
 
             addBaseWidget(
-                    new LabelWidget(guiX+10, currentY, Component.translatable("core.moretraffic.advanced_traffic_light.light"+(finalIndex+1)).withColor(rgb(SECONDARY)), 0xFFFFFF, true)
+                    new LabelWidget(guiX+10, currentY, Component.translatable("core.moretraffic.advanced_traffic_light.light"+(finalIndex+1)).withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true)
             );
             currentY += 11;
 
             addBaseWidget(
-                    Button.builder(Component.translatable("gui.moretraffic.configure").withColor(rgb(ColorsManager.HEADER)),
+                    Button.builder(Component.translatable("gui.moretraffic.configure").withStyle(style -> style.withColor(rgb(ColorsManager.HEADER))),
                             b -> {
                                 int sheetWidth = 220;
                                 int sheetHeight = 230;
@@ -242,7 +242,7 @@ public class AdvancedTrafficLightScreen extends AbstractTomiContainerScreen<Adva
 
         for (TrafficLightProperty.PropertyTypes property : TrafficLightProperty.PropertyTypes.values()) {
             addBaseWidget(
-                    new LabelWidget(guiX + 100, currentY, Component.translatable("core.moretraffic.advanced_traffic_light.property."+property.getNameOfProperty()).withColor(rgb(SECONDARY)), 0xFFFFFF, true)
+                    new LabelWidget(guiX + 100, currentY, Component.translatable("core.moretraffic.advanced_traffic_light.property."+property.getNameOfProperty()).withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true)
             );
             currentY += 11+1;
             new ModelSliderChangerMaker<>(guiX + 100, currentY, be, property.getClassOfProperty(), this::addBaseWidget, b -> queueRefresh = b, this::safeToRenderTooltips);

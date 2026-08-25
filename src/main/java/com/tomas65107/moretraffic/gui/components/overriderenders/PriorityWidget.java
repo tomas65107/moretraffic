@@ -46,8 +46,8 @@ public class PriorityWidget<T extends AbstractWidget> extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
-        return original.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaY) {
+        return original.mouseScrolled(mouseX, mouseY, deltaY);
     }
 
     @Override

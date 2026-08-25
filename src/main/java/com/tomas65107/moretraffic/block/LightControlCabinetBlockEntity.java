@@ -5,7 +5,6 @@ import com.tomas65107.moretraffic.data.TrafficLightGroup;
 import com.tomas65107.moretraffic.data.lightinstructions.*;
 import com.tomas65107.moretraffic.gui.containers.LightControlCabinetMenu;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongTag;
@@ -54,8 +53,8 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
     }
 
     @Override
-    public void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
-        super.loadAdditional(tag, registries);
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
 
         isRunning = tag.getBoolean("IsRunning");
         shouldLoop = tag.getBoolean("ShouldLoop");
@@ -98,8 +97,7 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
                             nbtInstruction.getBoolean("Enable")
                     );
 
-                    case null, default ->
-                            throw new IllegalArgumentException("Error loading BE; Unknown instruction type");
+                    default -> throw new IllegalArgumentException("Error loading BE; Unknown instruction type");
                 };
 
                 instructions.add(instruction);
@@ -124,8 +122,8 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
     }
 
     @Override
-    public void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
-        super.saveAdditional(tag, registries);
+    public void saveAdditional(@NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
 
         tag.putBoolean("IsRunning", isRunning);
         tag.putBoolean("ShouldLoop", shouldLoop);
@@ -141,24 +139,24 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
 
             entry.putString("Type", instruction.getClassType().getNameOfProperty());
 
-            if (instruction instanceof ModifyLight(String group, DyeColor light0, DyeColor light1, DyeColor light2)) {
-                entry.putString("Group", group);
-                entry.putString("LightColor0", light0.getName());
-                entry.putString("LightColor1", light1.getName());
-                entry.putString("LightColor2", light2.getName());
+            if (instruction instanceof ModifyLight modifyLight) {
+                entry.putString("Group", modifyLight.group());
+                entry.putString("LightColor0", modifyLight.light0().getName());
+                entry.putString("LightColor1", modifyLight.light1().getName());
+                entry.putString("LightColor2", modifyLight.light2().getName());
             }
-            else if (instruction instanceof Delay(int delayInTicks)) {
-                entry.putInt("Ticks", delayInTicks);
+            else if (instruction instanceof Delay delay) {
+                entry.putInt("Ticks", delay.delayInTicks());
             }
-            else if (instruction instanceof AwaitRedstone(int internalTimestamp)) {
-                entry.putInt("InternalTimestamp", internalTimestamp);
+            else if (instruction instanceof AwaitRedstone awaitRedstone) {
+                entry.putInt("InternalTimestamp", awaitRedstone.internalTimestampWhenRedstoneDetected());
             }
-            else if (instruction instanceof ModifyDisplay(String group, TrafficDisplayPixels trafficDisplayPixels)) {
-                entry.putString("Group", group);
-                entry.putString("TrafficDisplayPixels", trafficDisplayPixels.serialize());
-            } else if (instruction instanceof SendPulse(String group, boolean enable)) {
-                entry.putString("Group", group);
-                entry.putBoolean("Enable", enable);
+            else if (instruction instanceof ModifyDisplay modifyDisplay) {
+                entry.putString("Group", modifyDisplay.group());
+                entry.putString("TrafficDisplayPixels", modifyDisplay.trafficDisplayPixels().serialize());
+            } else if (instruction instanceof SendPulse sendPulse) {
+                entry.putString("Group", sendPulse.group());
+                entry.putBoolean("Enable", sendPulse.enable());
             }
             else {
                 throw new IllegalArgumentException("Error saving BE; Unknown instruction type");
@@ -225,9 +223,9 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
     }
 
         @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider lookup) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, lookup);
+        saveAdditional(tag);
         return tag;
     }
 
@@ -238,9 +236,9 @@ public class LightControlCabinetBlockEntity extends BlockEntity implements MenuP
     }
 
     @Override
-    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookup) {
-        super.onDataPacket(connection, packet, lookup);
-        this.loadAdditional(packet.getTag(), lookup);
+    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet) {
+        super.onDataPacket(connection, packet);
+        this.load(packet.getTag());
     }
 
     @Override

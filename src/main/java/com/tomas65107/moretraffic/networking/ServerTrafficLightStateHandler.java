@@ -1,39 +1,35 @@
 package com.tomas65107.moretraffic.networking;
 
+import com.tomas65107.moretraffic.block.AdvancedTrafficLightBlockEntity;
+import com.tomas65107.moretraffic.gui.containers.AdvancedTrafficLightMenu;
 import com.tomas65107.moretraffic.helpers.BlockStateHelper;
-import com.tomas65107.moretraffic.mod.MoreTraffic;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import com.tomas65107.moretraffic.mod.registration.MTNetworking;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.minecraftforge.network.NetworkEvent;
 
-public class ServerTrafficLightStateHandler {
+import java.util.function.Supplier;
 
-    public static void handle(
-            UpdateTrafficLightStatePacket pkt,
-            IPayloadContext ctx
-    ) {
-        ctx.enqueueWork(() -> {
-           Player player = ctx.player();
-
-            Level level = player.level();
-            BlockPos pos = pkt.pos();
-
-            if (!level.isLoaded(pos)) return;
-
-            BlockState state = level.getBlockState(pos);
-
-            BlockState newState = BlockStateHelper.setValueFromString(
-                    state,
-                    pkt.valueName(),
-                    pkt.valueData()
-            );
-
-            if (newState != state) {
-                level.setBlock(pos, newState, 3);
-            }
-        });
+public final class ServerTrafficLightStateHandler {
+    private ServerTrafficLightStateHandler() {
     }
 
+    public static void handle(UpdateTrafficLightStatePacket message, Supplier<NetworkEvent.Context> contextSupplier) {
+        NetworkEvent.Context context = contextSupplier.get();
+        ServerPlayer player = context.getSender();
+
+        if (player != null
+                && MTNetworking.canEdit(player, message.pos())
+                && player.containerMenu instanceof AdvancedTrafficLightMenu menu
+                && menu.pos.equals(message.pos())
+                && player.level().getBlockEntity(message.pos()) instanceof AdvancedTrafficLightBlockEntity) {
+            BlockState state = player.level().getBlockState(message.pos());
+            BlockState newState = BlockStateHelper.setValueFromString(state, message.valueName(), message.valueData());
+            if (newState != state) {
+                player.level().setBlock(message.pos(), newState, 3);
+            }
+        }
+
+        context.setPacketHandled(true);
+    }
 }

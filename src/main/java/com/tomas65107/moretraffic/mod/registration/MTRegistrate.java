@@ -15,7 +15,7 @@ import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.neoforged.bus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 
 import static com.tomas65107.moretraffic.data.blocktypes.MTBaseColoredBlockEntity.getValidHookedBlocks;
 

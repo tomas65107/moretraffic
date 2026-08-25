@@ -1,6 +1,5 @@
 package com.tomas65107.moretraffic.block;
 
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
@@ -34,21 +33,12 @@ import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.blinker;
 
 public class FlashingBlinkerBlock extends ColorableBlock implements IWrenchable {
 
-    public static final MapCodec<FlashingBlinkerBlock> CODEC = simpleCodec(FlashingBlinkerBlock::new);
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public FlashingBlinkerBlock(Properties properties) {
         super(ISimpleBlockProperties.set(properties, SoundType.METAL, MapColor.METAL, ISimpleBlockProperties.Material.MODEL_NORMAL));
     }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-
-    @Override
+@Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
 
@@ -56,7 +46,7 @@ public class FlashingBlinkerBlock extends ColorableBlock implements IWrenchable 
     }
 
     @Override
-    protected @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
+    public @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
         return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 

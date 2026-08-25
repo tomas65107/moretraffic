@@ -1,6 +1,5 @@
 package com.tomas65107.moretraffic.block;
 
-import com.mojang.serialization.MapCodec;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.data.blocktypes.MTNormalBlock;
 import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
@@ -19,20 +18,13 @@ import org.jetbrains.annotations.Nullable;
 import static com.tomas65107.moretraffic.rendering.BlockBoundingBoxes.FLOODLIGHT;
 
 public class FloodlightBlock extends MTNormalBlock implements EntityBlock {
-    public static final MapCodec<FloodlightBlock> CODEC = simpleCodec(FloodlightBlock::new);
 
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
     public FloodlightBlock(Properties properties) {
         super(ISimpleBlockProperties.set(properties, SoundType.METAL, MapColor.METAL, ISimpleBlockProperties.Material.MODEL_NORMAL), FACING, FLOODLIGHT, PickaxeItem.class);
     }
-
-    @Override
-    protected MapCodec<FloodlightBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
+@Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 //        if (level.getBlockEntity(pos) instanceof FlashingBlinkerBlockEntity be) {
 //            be.lightStatus = level.hasNeighborSignal(pos);

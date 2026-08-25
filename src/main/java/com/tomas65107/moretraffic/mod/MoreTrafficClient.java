@@ -11,7 +11,7 @@ import com.tomas65107.moretraffic.gui.tooltip.NoticeBoxTooltip;
 import com.tomas65107.moretraffic.mod.ponder.ModPonderPlugin;
 import com.tomas65107.moretraffic.mod.registration.MTPartials;
 import com.tomas65107.moretraffic.rendering.*;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.minecraftforge.event.TickEvent;
 import de.mrjulsen.trafficcraft.client.TintedTextures;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -20,27 +20,21 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.client.event.RegisterClientCommandsEvent;
+import net.minecraft.client.gui.screens.MenuScreens;
 
 import static com.tomas65107.moretraffic.mod.registration.MTMenus.*;
 import static com.tomas65107.moretraffic.mod.registration.MTRegistrate.*;
 
-@Mod(value = MoreTraffic.MODID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = MoreTraffic.MODID, value = Dist.CLIENT)
+
+@Mod.EventBusSubscriber(modid = MoreTraffic.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MoreTrafficClient {
 
-    public MoreTrafficClient(ModContainer container) {
-        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-    }
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
@@ -49,6 +43,7 @@ public class MoreTrafficClient {
         event.enqueueWork(() -> {
             SimpleBlockEntityVisualizer.builder(DERAILER_BE.get())
                     .factory(DerailerVisual::new).skipVanillaRender(be -> false).apply();
+            registerScreens();
         });
 
         ItemBlockRenderTypes.setRenderLayer(LEDSTRIP.get(), RenderType.translucent());
@@ -115,27 +110,39 @@ public class MoreTrafficClient {
         MoreTraffic.LOGGER.info("MoreTraffic Client registration complete");
     }
 
-    @SubscribeEvent
-    public static void onClientTick(ClientTickEvent.Post event) {
-        ClientScheduler.tick();
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            ClientScheduler.tick();
+        }
     }
 
-    @SubscribeEvent
     public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
         ClientCommands.register(event.getDispatcher());
     }
 
+    @Mod.EventBusSubscriber(modid = MoreTraffic.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static final class ForgeEvents {
+        @SubscribeEvent
+        public static void onClientTick(TickEvent.ClientTickEvent event) {
+            MoreTrafficClient.onClientTick(event);
+        }
+
+        @SubscribeEvent
+        public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
+            MoreTrafficClient.onRegisterClientCommands(event);
+        }
+    }
+
     @SubscribeEvent
-    public static void registerTooltips(net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent event) {
+    public static void registerTooltips(net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(NoticeBoxTooltip.class, NoticeBoxTooltip.Client::new);
         event.register(BodyTooltip.class, BodyTooltip.Client::new);
     }
 
-    @SubscribeEvent
-    public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(TRAFFIC_LIGHT_SETUP.get(), AdvancedTrafficLightScreen::new);
-        event.register(CONTROL_CABINET_MENU.get(), LightControlCabinetScreen::new);
-        event.register(LED_STRIP_MENU.get(), LEDStripScreen::new);
-        event.register(SIGNBOARD_MENU.get(), SignboardScreen::new);
+    public static void registerScreens() {
+        MenuScreens.register(TRAFFIC_LIGHT_SETUP.get(), AdvancedTrafficLightScreen::new);
+        MenuScreens.register(CONTROL_CABINET_MENU.get(), LightControlCabinetScreen::new);
+        MenuScreens.register(LED_STRIP_MENU.get(), LEDStripScreen::new);
+        MenuScreens.register(SIGNBOARD_MENU.get(), SignboardScreen::new);
     }
 }

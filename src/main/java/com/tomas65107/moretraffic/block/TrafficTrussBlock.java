@@ -4,7 +4,7 @@ import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
@@ -39,7 +39,7 @@ public class TrafficTrussBlock extends Block {
     }
 
     @Override
-    protected @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
+    public @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
         return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 
@@ -53,19 +53,20 @@ public class TrafficTrussBlock extends Block {
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Blocks.IRON_BARS.asItem()) && !state.getValue(WALKWAY)) {
             if (!player.isCreative()) stack.shrink(1);
             level.setBlock(pos, state.setValue(WALKWAY, true), 3);
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
         if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem
         && state.getValue(WALKWAY)) {
             if (!player.isCreative()) player.addItem(Blocks.IRON_BARS.asItem().getDefaultInstance());
             level.setBlock(pos, state.setValue(WALKWAY, false), 3);
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return super.use(state, level, pos, player, hand, hitResult);
     }
 
     public static VoxelShape getVoxelShape(BlockState block) {

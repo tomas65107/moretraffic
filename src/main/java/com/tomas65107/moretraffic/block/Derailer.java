@@ -4,7 +4,6 @@ import com.simibubi.create.content.logistics.filter.FilterItemStack;
 import com.simibubi.create.content.trains.graph.DimensionPalette;
 import com.simibubi.create.content.trains.graph.TrackGraph;
 import com.simibubi.create.content.trains.signal.SingleBlockEntityEdgePoint;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,10 +21,10 @@ public class Derailer extends SingleBlockEntityEdgePoint {
         super.tick(graph, preTrains);
     }
 
-    public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean migration, DimensionPalette dimensions) {
-        super.read(nbt, registries, migration, dimensions);
+    public void read(CompoundTag nbt, boolean migration, DimensionPalette dimensions) {
+        super.read(nbt, migration, dimensions);
         this.activated = nbt.getInt("Activated");
-        this.filter = FilterItemStack.of(registries, nbt.getCompound("Filter"));
+        this.filter = FilterItemStack.of(nbt.getCompound("Filter"));
 
     }
 
@@ -33,10 +32,10 @@ public class Derailer extends SingleBlockEntityEdgePoint {
         super.read(buffer, dimensions);
     }
 
-    public void write(CompoundTag nbt, HolderLookup.Provider registries, DimensionPalette dimensions) {
-        super.write(nbt, registries, dimensions);
+    public void write(CompoundTag nbt, DimensionPalette dimensions) {
+        super.write(nbt, dimensions);
         nbt.putInt("Activated", this.activated);
-        nbt.put("Filter", this.filter.serializeNBT(registries));
+        nbt.put("Filter", this.filter.serializeNBT());
 
     }
 

@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.gui.components.buttons;
 
+import static com.tomas65107.moretraffic.helpers.ColorHelper.textureDiffuseColor;
+
 import com.tomas65107.moretraffic.data.ColorsManager;
 import com.tomas65107.moretraffic.helpers.TextHelper;
 import net.minecraft.client.Minecraft;
@@ -35,7 +37,7 @@ public class ColorButton extends Button {
                 ://not hovered
                 selected ? rgb(ColorsManager.BUTTON_SELECTED) : rgb(ColorsManager.SECONDARY);
 
-        if (color != DyeColor.BLACK.getTextureDiffuseColor() || shouldMinimizeBlack) {
+        if (color != textureDiffuseColor(DyeColor.BLACK) || shouldMinimizeBlack) {
             g.fill(getX(), getY(), getX() + width, getY() + height, bg);
             g.fill(
                     getX() + 2,

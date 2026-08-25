@@ -38,9 +38,9 @@ public abstract class BaseDescriptionItem {
         }
 
         var flags = Component.empty();
-        if (wrenchable) flags.append(Component.translatable("core.description.wrenchable").withStyle(ChatFormatting.ITALIC).withColor(rgb(new Color(116, 155, 182))));
+        if (wrenchable) flags.append(Component.translatable("core.description.wrenchable").withStyle(ChatFormatting.ITALIC).withStyle(style -> style.withColor(rgb(new Color(116, 155, 182)))));
         if (wrenchable && colorable) flags.append("  ");
-        if (colorable) flags.append(Component.translatable("core.description.colorable").withStyle(ChatFormatting.ITALIC).withColor(rgb(new Color(165, 188, 96))));
+        if (colorable) flags.append(Component.translatable("core.description.colorable").withStyle(ChatFormatting.ITALIC).withStyle(style -> style.withColor(rgb(new Color(165, 188, 96)))));
 
         if (!flags.equals(Component.empty())) tooltip.add(flags);
 

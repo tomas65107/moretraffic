@@ -1,233 +1,205 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7.38'
+    }
+}
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.126'
     id 'idea'
-    id "me.modmuss50.mod-publish-plugin" version "2.1.1"
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'me.modmuss50.mod-publish-plugin' version '2.1.1'
 }
+
+apply plugin: 'org.spongepowered.mixin'
+
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def mod_version = "0.2.6-beta"
+def mod_version = '0.2.6-beta-forge-1.20.1'
 
-def mod_changelog = """
-### 0.2.6-beta
-> ⚠️ Important changes:
-> Recent update introduced changes regarding Signboard position. This may visually break some placed signboards.
+def mod_changelog = '''
+### 0.2.6-beta-forge-1.20.1-port.1
 
-Added:
-- New Block "Exposed Concrete" with variants.
-- You can now copy and duplicate elements in Signboard
+> Unofficial Forge 1.20.1 port of MoreTraffic 0.2.6-beta.
 
-Fixes and changes:
-- Signboards are now centered on block.
-- You can customize size of signboards' backgrounds and background must be a first element.
-- Finally changed all saving/mouse focusing issues.
-- Fixed issues with how Signboards render elements
-- Fixed a LED Strip bug that allowed you to place them fully out of block and prevent them from being broken.
-- Remade recipes so they are a little bit more reasonable.
-"""
+Port changes:
+- Ported the mod from NeoForge 1.21.1 to Forge 1.20.1.
+- Migrated the project to Java 17.
+- Reworked networking for Forge SimpleChannel.
+- Ported block interactions, menus, GUI registration and configuration.
+- Updated integrations with Create, Flywheel, Ponder, TrafficCraft and DragonLib.
+- Updated mixins and rendering compatibility.
+- Added dedicated server compatibility.
+
+Original 0.2.6-beta changes:
+- Added Exposed Concrete with variants.
+- Added copying and duplicating elements in Signboard.
+- Centered Signboards on blocks.
+- Added customizable Signboard background size.
+- Fixed Signboard saving and mouse focus issues.
+- Fixed Signboard element rendering.
+- Fixed LED Strip placement outside block bounds.
+- Reworked recipes.
+'''
 
 version = mod_version
 group = mod_group_id
-
-repositories {
-    // Add here additional repositories if required by some of the dependencies below.
-    maven {
-        name = "CurseMaven"
-        url = "https://cursemaven.com"
-    }
-
-    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
-    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
-}
 
 base {
     archivesName = mod_id
 }
 
-publishMods {
-    file = tasks.named("jar").flatMap { it.archiveFile }
-    changelog = mod_changelog
-    type = "BETA"
-    modLoaders.add("neoforge")
-
-    modrinth {
-        accessToken = providers.environmentVariable("MODRINTH_PAT")
-        projectId = "ehd4WTU1"
-        minecraftVersions.add("1.21.1")
-    }
-
-    curseforge {
-        accessToken = providers.environmentVariable("CURSEFORGE_PAT")
-        projectId = "1487775"
-        client = true
-        server = true
-        minecraftVersions.add("1.21.1")
-    }
-
-    github {
-        accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        repository = "tomas65107/moretraffic"
-        commitish = "neoforge-1.21.1"
-
-        tagName = "v${project.version}"
-    }
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
-
-// Mojang ships Java 21 to end users in 1.21.1, so mods should target Java 21.
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-neoForge {
-    // Specify the version of NeoForge to use.
-    version = project.neo_version
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
+repositories {
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
     }
+    maven { url = 'https://maven.createmod.net' }
+    maven { url = 'https://maven.ithundxr.dev/mirror' }
+    maven { url = 'https://maven.architectury.dev' }
+    mavenCentral()
+}
 
-    // This line is optional. Access Transformers are automatically detected
-    // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
-        client {
-            client()
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', project.mod_id
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
         }
+
+        client {}
 
         server {
-            server()
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            args '--nogui'
         }
 
-        // This run config launches GameTestServer and runs all registered gametests, then exits.
-        // By default, the server will crash when no gametests are provided.
-        // The gametest system is also enabled by default for other run configs under the /test command.
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
+        gameTestServer {}
 
         data {
-            data()
-
-            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-            // gameDirectory = project.file('run-data')
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-
-        // applies to all the run configs above
-        configureEach {
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
-
-    mods {
-        // define mod <-> source bindings
-        // these are used to tell the game which sources are for which mod
-        // multi mod projects should define one per mod
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
+            workingDirectory project.file('run-data')
+            args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').absolutePath,
+                    '--existing', file('src/main/resources/').absolutePath
         }
     }
 }
 
-// Include resources generated by data generators.
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-// Sets up a dependency configuration called 'localRuntime'.
-// This configuration should be used instead of 'runtimeOnly' to declare
-// a dependency that will be present for runtime testing but that is
-// "optional", meaning it will not be pulled by dependents of this mod.
 configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
 dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // TrafficCraft dependency (required)
-    implementation "curse.maven:trafficcraft-852322:7754967"
-    implementation "curse.maven:dragonlib-946163:7763966"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
-    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
-    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
-    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    implementation fg.deobf("maven.modrinth:Y1PXWvWn:${trafficcraft_version_id}")
+    implementation fg.deobf("maven.modrinth:sbIsGaOV:${dragonlib_version_id}")
+    implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
 
-    localRuntime "curse.maven:jei-238222:7420587"
+    implementation(fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim")) {
+        transitive = false
+    }
+    implementation fg.deobf("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+    compileOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    // Example optional mod dependency with JEI
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
-    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
-
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
-
-    // Example mod dependency using a file as dependency
-    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
-
-    // Example project dependency using a sister or child project:
-    // implementation project(":myproject")
-
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    compileOnly annotationProcessor('io.github.llamalad7:mixinextras-common:0.4.1')
+    implementation 'io.github.llamalad7:mixinextras-forge:0.4.1'
 }
 
-// This block of code expands all declared replace properties in the specified resource targets.
-// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description
+def generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    def replaceProperties = [
+            minecraft_version_range   : minecraft_version_range,
+            forge_version_range       : forge_version_range,
+            loader_version_range      : loader_version_range,
+            create_version_range      : create_version_range,
+            trafficcraft_version_range: trafficcraft_version_range,
+            dragonlib_version_range   : dragonlib_version_range,
+            mod_id                    : mod_id,
+            mod_name                  : mod_name,
+            mod_license               : mod_license,
+            mod_version               : mod_version,
+            mod_authors               : mod_authors,
+            mod_description           : mod_description
     ]
     inputs.properties replaceProperties
     expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+    from 'src/main/templates'
+    into 'build/generated/sources/modMetadata'
 }
-// Include the output of "generateModMetadata" as an input directory for the build
-// this works with both building through Gradle and the IDE.
-sourceSets.main.resources.srcDir generateModMetadata
-// To avoid having to run "generateModMetadata" manually, make it run on every project reload
-neoForge.ideSyncTask generateModMetadata
 
-// Example configuration to allow publishing using the maven-publish plugin
+sourceSets.main.resources.srcDir generateModMetadata
+tasks.named('processResources').configure { dependsOn generateModMetadata }
+
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'   : mod_id,
+                'Specification-Vendor'  : mod_authors,
+                'Specification-Version' : '1',
+                'Implementation-Title'  : project.name,
+                'Implementation-Version': project.jar.archiveVersion,
+                'Implementation-Vendor' : mod_authors,
+                'MixinConfigs'           : 'moretraffic.mixins.json'
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
+
+publishMods {
+    file = tasks.named('jar').flatMap { it.archiveFile }
+    changelog = mod_changelog
+    type = me.modmuss50.mpp.ReleaseType.BETA
+    modLoaders.add('forge')
+
+    modrinth {
+        accessToken = providers.environmentVariable('MODRINTH_PAT')
+        projectId = 'ehd4WTU1'
+        minecraftVersions.add('1.20.1')
+    }
+
+    curseforge {
+        accessToken = providers.environmentVariable('CURSEFORGE_PAT')
+        projectId = '1487775'
+        client = true
+        server = true
+        minecraftVersions.add('1.20.1')
+    }
+
+    github {
+        accessToken = providers.environmentVariable('GITHUB_TOKEN')
+        repository = 'tomas65107/moretraffic'
+        commitish = 'forge-1.20.1'
+        tagName = "v${project.version}"
+    }
+}
+
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
@@ -235,17 +207,23 @@ publishing {
         }
     }
     repositories {
-        maven {
-            url "file://${project.projectDir}/repo"
-        }
+        maven { url "file://${project.projectDir}/repo" }
     }
 }
 
+mixin {
+    add sourceSets.main, 'moretraffic.refmap.json'
+    config 'moretraffic.mixins.json'
+}
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(['-Xmaxerrs', '1000'])
 }
 
-// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+tasks.named('compileJava', JavaCompile).configure {
+    outputs.file(layout.buildDirectory.file('tmp/compileJava/compileJava-refmap.json'))
+}
+
 idea {
     module {
         downloadSources = true

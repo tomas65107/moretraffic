@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.block;
 
-import com.mojang.serialization.MapCodec;
+import net.minecraftforge.network.NetworkHooks;
+
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightOrientation;
 import com.tomas65107.moretraffic.data.trafficlightproperties.TrafficLightPosition;
@@ -55,12 +56,12 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
     }
 
     @Override
-    protected @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
+    public @NotNull List<ItemStack> getDrops(BlockState state, LootParams.@NotNull Builder params) {
         return List.of(state.getBlock().asItem().getDefaultInstance());
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         return new ItemStack(MTRegistrate.LIGHT_DIODE.asItem());
     }
 
@@ -91,14 +92,11 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
     public static final EnumProperty<TrafficLightPosition> POSITION = EnumProperty.create("position", TrafficLightPosition.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final MapCodec<AdvancedTrafficLightBlock> CODEC = simpleCodec(AdvancedTrafficLightBlock::new);
-
     @Override public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return boundingBoxGetter(state);}
     @Override public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return boundingBoxGetter(state);}
 
     @Override
-    protected ItemInteractionResult useItemOn(
-            ItemStack stack,
+    public InteractionResult use(
             BlockState state,
             Level level,
             BlockPos pos,
@@ -106,24 +104,19 @@ public class AdvancedTrafficLightBlock extends ColorableBlock implements SimpleW
             InteractionHand hand,
             BlockHitResult hit
     ) {
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem) {
             if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.openMenu(new SimpleMenuProvider(
+                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
                         (id, inventory, p) -> new AdvancedTrafficLightMenu(id, inventory, pos),
                         Component.empty()
                 ), buf -> buf.writeBlockPos(pos));
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return super.use(state, level, pos, player, hand, hit);
     }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
+@Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(FACING, SCALE, ORIENTATION, POSITION, WATERLOGGED);

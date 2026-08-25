@@ -30,11 +30,12 @@ public class SignboardMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int i) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return access.evaluate((level, blockPos) -> level.getBlockEntity(blockPos) == be
+                && player.distanceToSqr(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D) <= 64.0D, false);
     }
 }

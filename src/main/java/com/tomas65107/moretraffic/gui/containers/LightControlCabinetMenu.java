@@ -7,9 +7,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 
 public class LightControlCabinetMenu extends AbstractContainerMenu {
+    private final ContainerLevelAccess access;
     public LightControlCabinetBlockEntity be;
     public final BlockPos pos;
 
@@ -21,17 +23,18 @@ public class LightControlCabinetMenu extends AbstractContainerMenu {
         super(MTMenus.CONTROL_CABINET_MENU.get(), id);
         this.pos = pos;
         this.be = (LightControlCabinetBlockEntity) inventory.player.level().getBlockEntity(pos);
-//        this.access = ContainerLevelAccess.create(inventory.player.level(), pos);
+this.access = ContainerLevelAccess.create(inventory.player.level(), pos);
     }
 
 
     @Override
     public ItemStack quickMoveStack(Player player, int i) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return access.evaluate((level, blockPos) -> level.getBlockEntity(blockPos) == be
+                && player.distanceToSqr(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D) <= 64.0D, false);
     }
 }

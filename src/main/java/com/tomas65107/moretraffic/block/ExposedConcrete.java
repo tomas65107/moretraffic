@@ -1,7 +1,6 @@
 package com.tomas65107.moretraffic.block;
 
 
-import com.mojang.serialization.MapCodec;
 import com.tomas65107.moretraffic.data.ISimpleBlockProperties;
 import com.tomas65107.moretraffic.data.blocktypes.MTNormalBlock;
 import net.minecraft.core.BlockPos;
@@ -9,7 +8,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -51,7 +50,7 @@ public class ExposedConcrete extends MTNormalBlock {
     }
 
     @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         super.onPlace(state, level, pos, oldState, isMoving);
         if (level.isClientSide()) return;
 
@@ -63,7 +62,8 @@ public class ExposedConcrete extends MTNormalBlock {
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof de.mrjulsen.trafficcraft.item.WrenchItem || stack.getItem() instanceof com.simibubi.create.content.equipment.wrench.WrenchItem) {
             int next = state.getValue(TYPE) + 1;
             if (next > 4) next = 1;
@@ -71,8 +71,8 @@ public class ExposedConcrete extends MTNormalBlock {
             if (!level.isClientSide) level.setBlock(pos, state.setValue(TYPE, next), 3);
 
             player.displayClientMessage(Component.translatable("interaction.moretraffic.type", next), true);
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return super.use(state, level, pos, player, hand, hit);
     }
 }

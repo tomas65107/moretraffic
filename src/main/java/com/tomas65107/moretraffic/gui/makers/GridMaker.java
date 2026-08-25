@@ -1,5 +1,7 @@
 package com.tomas65107.moretraffic.gui.makers;
 
+import static com.tomas65107.moretraffic.helpers.ColorHelper.textureDiffuseColor;
+
 import com.tomas65107.moretraffic.gui.components.buttons.ColorButton;
 import com.tomas65107.moretraffic.mod.MoreTraffic;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -33,7 +35,7 @@ public final class GridMaker {
             ColorButton button = new ColorButton(
                     gridX, gridY,
                     16, 16,
-                    color.getTextureDiffuseColor(),
+                    textureDiffuseColor(color),
                     b -> onColorSelected.accept(color), currentlySelectedColor.equals(color),
                     showBlackMinimized
             );

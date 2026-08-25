@@ -1,11 +1,14 @@
 package com.tomas65107.moretraffic.gui.containers;
 
+import static com.tomas65107.moretraffic.helpers.ColorHelper.textureDiffuseColor;
+
 import com.tomas65107.moretraffic.block.LightControlCabinetBlockEntity;
 import com.tomas65107.moretraffic.data.*;
 import com.tomas65107.moretraffic.gui.AbstractTomiContainerScreen;
 import com.tomas65107.moretraffic.helpers.TextHelper;
 import com.tomas65107.moretraffic.data.lightinstructions.*;
 import com.tomas65107.moretraffic.gui.components.BetterEditBox;
+import com.tomas65107.moretraffic.gui.components.CallbackCheckbox;
 import com.tomas65107.moretraffic.gui.components.CustomRenderAsWidget;
 import com.tomas65107.moretraffic.gui.components.HelpElementWidget;
 import com.tomas65107.moretraffic.gui.components.LabelWidget;
@@ -45,7 +48,7 @@ import static com.tomas65107.moretraffic.helpers.TextCutter.cutTextComponent;
 import static com.tomas65107.moretraffic.helpers.TextHelper.Alignment.CENTER;
 import static com.tomas65107.moretraffic.helpers.TextHelper.align;
 import static com.tomas65107.moretraffic.gui.components.buttons.AdvancedButton.NORMAL_HEIGHT;
-import static net.neoforged.neoforge.network.PacketDistributor.sendToServer;
+import static com.tomas65107.moretraffic.mod.registration.MTNetworking.sendToServer;
 
 public class LightControlCabinetScreen extends AbstractTomiContainerScreen<LightControlCabinetMenu> {
 
@@ -91,7 +94,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
         int currentY = guiY + 41; // initial Y for first instruction (after header)
 
         addBaseWidget(
-                new LabelWidget(guiX+10, guiY + 30, Component.translatable("gui.moretraffic.control_cabinet.instructions").withColor(rgb(SECONDARY)), 0xFFFFFF, true)
+                new LabelWidget(guiX+10, guiY + 30, Component.translatable("gui.moretraffic.control_cabinet.instructions").withStyle(style -> style.withColor(rgb(SECONDARY))), 0xFFFFFF, true)
         );
         // currentY for instructions is handled below
 
@@ -114,14 +117,21 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
             int finalIndex = index++;
             int renderY = currentY - scrollOffset;
 
-            int spriteY = (be.isRunning && be.programStep == finalIndex ? 124 : 1) + 23 *
-                    switch (instruction) {
-                        case Delay d -> 0;
-                        case ModifyLight m -> 1;
-                        case AwaitRedstone a -> 2;
-                        case ModifyDisplay m -> 3;
-                        case SendPulse s -> 4;
-                    };
+            int instructionTypeIndex;
+            if (instruction instanceof Delay) {
+                instructionTypeIndex = 0;
+            } else if (instruction instanceof ModifyLight) {
+                instructionTypeIndex = 1;
+            } else if (instruction instanceof AwaitRedstone) {
+                instructionTypeIndex = 2;
+            } else if (instruction instanceof ModifyDisplay) {
+                instructionTypeIndex = 3;
+            } else if (instruction instanceof SendPulse) {
+                instructionTypeIndex = 4;
+            } else {
+                throw new IllegalArgumentException("Unknown light instruction type: " + instruction.getClass().getName());
+            }
+            int spriteY = (be.isRunning && be.programStep == finalIndex ? 124 : 1) + 23 * instructionTypeIndex;
 
             // Only render if in viewport
             if (renderY + instructionHeight < viewportTop || renderY > viewportBottom) {
@@ -179,13 +189,13 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 textField.active = !be.isRunning;
                 addBaseWidget(textField);
             } else if (instruction instanceof ModifyLight modifyLight) {
-                addBaseWidget(new ColorButton(guiX + 134, renderY + 4, 14, 14, modifyLight.light0().getTextureDiffuseColor(), b -> {
+                addBaseWidget(new ColorButton(guiX + 134, renderY + 4, 14, 14, textureDiffuseColor(modifyLight.light0()), b -> {
                     displaySheet(finalIndex, modifyLight, 0);
                 }, false, true));
-                addBaseWidget(new ColorButton(guiX + 149, renderY + 4, 14, 14, modifyLight.light1().getTextureDiffuseColor(), b -> {
+                addBaseWidget(new ColorButton(guiX + 149, renderY + 4, 14, 14, textureDiffuseColor(modifyLight.light1()), b -> {
                     displaySheet(finalIndex, modifyLight, 1);
                 }, false, true));
-                addBaseWidget(new ColorButton(guiX + 164, renderY + 4, 14, 14, modifyLight.light2().getTextureDiffuseColor(), b -> {
+                addBaseWidget(new ColorButton(guiX + 164, renderY + 4, 14, 14, textureDiffuseColor(modifyLight.light2()), b -> {
                     displaySheet(finalIndex, modifyLight, 2);
                 }, false, true));
                 BetterEditBox textField = new BetterEditBox(guiX + 89, renderY + 7, 40, 14);
@@ -290,18 +300,19 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
                 });
                 textField.active = !be.isRunning;
                 addBaseWidget(textField);
-            } else if (instruction instanceof SendPulse(String group, boolean enable)) {
-                addBaseWidget(Checkbox.builder(Component.literal(""), Minecraft.getInstance().font).pos(guiX + 164, renderY + 4) .selected(enable) .onValueChange((b, a)-> {
-                    be.instructions.set(finalIndex, new SendPulse(group, a)); updateBEAndRefreshBE();
-                }) .build());
+            } else if (instruction instanceof SendPulse sendPulse) {
+                addBaseWidget(new CallbackCheckbox(guiX + 164, renderY + 4, Component.empty(), sendPulse.enable(), enabled -> {
+                    be.instructions.set(finalIndex, new SendPulse(sendPulse.group(), enabled));
+                    updateBEAndRefreshBE();
+                }));
 
                 BetterEditBox textField = new BetterEditBox(guiX + 120, renderY + 7, 40, 14);
                 textField.setBordered(false);
-                textField.setValue(group);
+                textField.setValue(sendPulse.group());
                 textField.setTextColor(rgb(PRIMARY));
                 textField.onSave(() -> {
                     if (be.groups.stream().noneMatch(g -> g.name.equals(textField.getValue()))) return;
-                    be.instructions.set(finalIndex, new SendPulse(textField.getValue(), enable));
+                    be.instructions.set(finalIndex, new SendPulse(textField.getValue(), sendPulse.enable()));
                     updateBEAndRefreshBE();
                 });
                 textField.onChange(text -> {
@@ -374,7 +385,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
                                     CompoundTag parsed = TagParser.parseTag(clipboard);
 
-                                    be.saveAdditional(tagToSave, Minecraft.getInstance().level.registryAccess());
+                                    be.saveAdditional(tagToSave);
 
                                     if (parsed.contains("Instructions")) {
                                         tagToSave.put("Instructions", parsed.get("Instructions").copy());
@@ -394,7 +405,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
                             var button = new AdvancedButton(10, 25, 160, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.import.from_clipboard"), null, null, b -> {
                                 if (!tagToSave.isEmpty()) {
-                                    be.loadAdditional(tagToSave, Minecraft.getInstance().level.registryAccess());
+                                    be.load(tagToSave);
                                     updateBEAndRefreshBE();
                                     onClose();
                                 }
@@ -433,14 +444,14 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
                             adder.accept(new LabelWidget(10, 25, Component.translatable("gui.moretraffic.control_cabinet.export.include"), rgb(SECONDARY), true));
 
-                            includeInstructions = Checkbox.builder(Component.translatable("gui.moretraffic.control_cabinet.export.include_instruction"), Minecraft.getInstance().font).pos(10, 36) .selected(false) .onValueChange((b, a)-> updateButton()) .build();
-                            includeGroups = Checkbox.builder(Component.translatable("gui.moretraffic.control_cabinet.export.include_groups"), Minecraft.getInstance().font).pos(10, 54) .selected(false) .onValueChange((b, a)-> updateButton()) .build();
+                            includeInstructions = new CallbackCheckbox(10, 36, Component.translatable("gui.moretraffic.control_cabinet.export.include_instruction"), false, selected -> updateButton());
+                            includeGroups = new CallbackCheckbox(10, 54, Component.translatable("gui.moretraffic.control_cabinet.export.include_groups"), false, selected -> updateButton());
                             adder.accept(includeInstructions);
                             adder.accept(includeGroups);
 
                             button = new AdvancedButton(10, sheetHeight - 30, 100, NORMAL_HEIGHT, Component.translatable("gui.moretraffic.control_cabinet.export.to_clipboard"), null, null, b -> {
                                 CompoundTag exportTag = new CompoundTag();
-                                be.saveAdditional(exportTag, Minecraft.getInstance().level.registryAccess());
+                                be.saveAdditional(exportTag);
 
                                 CompoundTag toCopy = new CompoundTag();
 
@@ -707,7 +718,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
 
         // serialize BE state into NBT
         CompoundTag tag = new CompoundTag();
-        be.saveAdditional(tag, minecraft.level.registryAccess());
+        be.saveAdditional(tag);
 
         // create and send packet
         ClientSyncCabinetPacket packet = new ClientSyncCabinetPacket(be.getBlockPos(), tag);
@@ -718,7 +729,7 @@ public class LightControlCabinetScreen extends AbstractTomiContainerScreen<Light
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollY) {
         if (be.instructions.size() < 6) return false;
         int scrollSpeed = 10;
 

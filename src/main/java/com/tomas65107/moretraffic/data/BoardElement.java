@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,11 +34,11 @@ public abstract class BoardElement {
     public abstract void render(BERGraphics<? extends BlockEntity> graphics);
     public abstract CompoundTag serialize();
 
-    public static BoardElement deserialize(CompoundTag tag, HolderLookup.Provider registries) {
+    public static BoardElement deserialize(CompoundTag tag) {
         return switch (BoardElementType.byId(tag.getString("Type"))) {
-            case TEXT -> Text.deserialize(tag, registries);
-            case BACKGROUND -> Background.deserialize(tag, registries);
-            case SPRITE -> Sprite.deserialize(tag, registries);
+            case TEXT -> Text.deserialize(tag);
+            case BACKGROUND -> Background.deserialize(tag);
+            case SPRITE -> Sprite.deserialize(tag);
         };
     }
 
@@ -92,7 +91,7 @@ public abstract class BoardElement {
                 case TEXT -> Component.translatable("gui.moretraffic.signboard.element.text");
                 case BACKGROUND -> Component.translatable("gui.moretraffic.signboard.element.bg");
                 case SPRITE -> Component.translatable("gui.moretraffic.signboard.element.sprite");
-                case null, default -> throw new IllegalArgumentException("Unknown BoardElementType: " + id);
+                default -> throw new IllegalArgumentException("Unknown BoardElementType: " + id);
             };
         }
     }
@@ -123,7 +122,7 @@ public abstract class BoardElement {
 
             try {
                 Component component = Objects.requireNonNull(
-                        Component.Serializer.fromJson(json, Minecraft.getInstance().level.registryAccess())
+                        Component.Serializer.fromJson(json)
                 );
 
                 float scale = size / 8f;
@@ -176,7 +175,6 @@ public abstract class BoardElement {
 
         @Override
         public CompoundTag serialize() {
-            assert Minecraft.getInstance().level != null;
             CompoundTag tag = new CompoundTag();
             tag.putString("Type", "Text");
             tag.putInt("startX", startX);
@@ -186,8 +184,7 @@ public abstract class BoardElement {
             return tag;
         }
 
-        public static Text deserialize(CompoundTag tag, HolderLookup.Provider registries) {
-            assert Minecraft.getInstance().level != null;
+        public static Text deserialize(CompoundTag tag) {
             int x = tag.getInt("startX");
             int y = tag.getInt("startY");
             float size = tag.getFloat("size");
@@ -233,8 +230,7 @@ public abstract class BoardElement {
             return tag;
         }
 
-        public static Background deserialize(CompoundTag tag, HolderLookup.Provider registries) {
-            assert Minecraft.getInstance().level != null;
+        public static Background deserialize(CompoundTag tag) {
             int x = tag.getInt("startX");
             int y = tag.getInt("startY");
             DyeColor color = DyeColor.byName(tag.getString("color"), DyeColor.BLACK);
@@ -286,8 +282,7 @@ public abstract class BoardElement {
             return tag;
         }
 
-        public static Sprite deserialize(CompoundTag tag, HolderLookup.Provider registries) {
-            assert Minecraft.getInstance().level != null;
+        public static Sprite deserialize(CompoundTag tag) {
             int x = tag.getInt("startX");
             int y = tag.getInt("startY");
             String data = tag.getString("rows");
