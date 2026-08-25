@@ -1,4 +1,4 @@
-package com.tomas65107.moretraffic.mod;
+package com.tomas65107.moretraffic.mod.compat;
 
 import com.simibubi.create.content.trains.graph.EdgePointType;
 import com.tomas65107.moretraffic.block.Derailer;

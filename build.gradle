@@ -40,6 +40,7 @@ repositories {
         url = "https://cursemaven.com"
     }
 
+    maven { url = "https://maven.blamejared.com/" } // JEI
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
 }
@@ -176,6 +177,9 @@ dependencies {
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
+    // JEI API is compile-time only: the plugin class below is loaded by JEI itself,
+    // so the mod still runs fine when JEI is absent.
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     localRuntime "curse.maven:jei-238222:7420587"
 
     // Example optional mod dependency with JEI

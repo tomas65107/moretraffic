@@ -1,5 +1,6 @@
 package com.tomas65107.moretraffic.mod;
 
+import com.tomas65107.moretraffic.mod.compat.MoreTrafficCompat;
 import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import org.slf4j.Logger;
 
