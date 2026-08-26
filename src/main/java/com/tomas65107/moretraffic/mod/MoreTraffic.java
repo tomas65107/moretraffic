@@ -1,6 +1,7 @@
 package com.tomas65107.moretraffic.mod;
 
 import com.tomas65107.moretraffic.mod.compat.MoreTrafficCompat;
+import com.tomas65107.moretraffic.mod.gametests.SelfServerTest;
 import com.tomas65107.moretraffic.mod.registration.MTRegistrate;
 import org.slf4j.Logger;
 
@@ -23,10 +24,12 @@ import static com.tomas65107.moretraffic.mod.registration.MTRegistrate.REGISTRAT
 public class MoreTraffic {
     public static final String MODID = "moretraffic";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final Boolean SELF_SERVER_TEST = Boolean.getBoolean("moretraffic.server_test");
 
 
     public MoreTraffic(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+//        NeoForge.EVENT_BUS.register(this);
 
         REGISTRATE.registerEventListeners(modEventBus);
         MTRegistrate.register(modEventBus);
@@ -34,7 +37,10 @@ public class MoreTraffic {
         MENUS.register(modEventBus);
         MoreTrafficCompat.init();
 
-        NeoForge.EVENT_BUS.register(this);
+        if (SELF_SERVER_TEST) {
+            LOGGER.info("Registering MoreTraffic Server Self-test");
+            NeoForge.EVENT_BUS.register(SelfServerTest.class);
+        }
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -42,10 +48,5 @@ public class MoreTraffic {
     private void commonSetup(FMLCommonSetupEvent event) {
         LOGGER.info("MoreTraffic commonSetup");
         LOGGER.warn("\nMORETRAFFIC IS IN ALPHA\nSome things are not finished and things may crash or break.\nPlease PLEASE make sure you backup any important worlds, you are responsible for corruption.\nMod is in early stage of development");
-    }
-
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("HELLO from server starting");
     }
 }

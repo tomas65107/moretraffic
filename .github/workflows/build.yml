@@ -21,10 +21,92 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # This is needed to be able to run ./gradlew below
-      # You can run `git update-index --chmod +x gradlew` then remove this step.
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
+
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Start MoreTraffic self-test
+        run: |
+          set -o pipefail
+
+          ./gradlew runServer \
+            -Dmoretraffic.server_test=true \
+            > self-test.log 2>&1 &
+
+          GRADLE_PID=$!
+
+          echo "Started Gradle with PID $GRADLE_PID"
+
+          START_TIME=$(date +%s)
+
+          while true; do
+            # Check for successful test result
+            if grep -q "MORETRAFFIC_SELF_TEST:SUCCESS" self-test.log; then
+              echo "MoreTraffic self-test PASSED SUCCESSFULLY"
+
+              kill "$GRADLE_PID" 2>/dev/null || true
+              wait "$GRADLE_PID" 2>/dev/null || true
+
+              exit 0
+            fi
+
+            # Check for failed test result
+            if grep -q "MORETRAFFIC_SELF_TEST:FAIL" self-test.log; then
+              echo "MoreTraffic self-test FAILED!"
+
+              cat self-test.log
+
+              kill "$GRADLE_PID" 2>/dev/null || true
+              wait "$GRADLE_PID" 2>/dev/null || true
+
+              exit 1
+            fi
+
+            # Check timeout
+            NOW=$(date +%s)
+            ELAPSED=$((NOW - START_TIME))
+
+            if [ "$ELAPSED" -ge 120 ]; then
+              echo "MoreTraffic self-test TIMED OUT"
+
+              cat self-test.log
+
+              kill "$GRADLE_PID" 2>/dev/null || true
+              wait "$GRADLE_PID" 2>/dev/null || true
+
+              exit 1
+            fi
+
+            # Check whether Gradle/Minecraft died unexpectedly
+            if ! kill -0 "$GRADLE_PID" 2>/dev/null; then
+              echo "Minecraft/Gradle exited before producing a self-test result"
+
+              cat self-test.log
+              exit 1
+            fi
+
+            sleep 1
+          done
