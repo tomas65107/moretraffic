@@ -55,10 +55,8 @@ jobs:
         run: |
           set -o pipefail
 
-          ./gradlew runServer \
-            -Dmoretraffic.server_test=true \
-            > self-test.log 2>&1 &
-
+          ./gradlew runServer -PselfTest > self-test.log 2>&1 &
+          
           GRADLE_PID=$!
 
           echo "Started Gradle with PID $GRADLE_PID"

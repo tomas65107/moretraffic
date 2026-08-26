@@ -10,6 +10,12 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
+tasks.configureEach {
+    if (name == "runServer" && project.hasProperty("selfTest")) {
+        jvmArgs("-Dmoretraffic.server_test=true")
+    }
+}
+
 def mod_version = "0.2.6-beta"
 
 def mod_changelog = """
